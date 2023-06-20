@@ -17,14 +17,14 @@ final class SummaryView: UIView {
     private let countLabel: UILabel = {
         let label = UILabel()
         label.font = .caption1
-        label.text = "3 NFT"
+        label.text = "0 NFT"
         return label
     }()
     private let priceLabel: UILabel = {
         let label = UILabel()
         label.font = .bodyBold
         label.textColor = .green
-        label.text = "5,34 ETH"
+        label.text = "0 ETH"
         return label
     }()
     
@@ -37,6 +37,13 @@ final class SummaryView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Public
+    
+    func configure(with summaryInfo: CartViewModel.SummaryInfo) {
+        countLabel.text = "\(summaryInfo.count) NFT"
+        priceLabel.text = "\(String(format:"%.2f", summaryInfo.price)) ETH"
     }
 }
 

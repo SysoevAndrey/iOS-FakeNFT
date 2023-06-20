@@ -4,6 +4,7 @@ final class CartViewController: UIViewController {
 
     // MARK: - Layout elements
 
+    private let summaryView = SummaryView()
     private lazy var sortButton = UIBarButtonItem(
         image: UIImage.Icons.sort,
         style: .plain,
@@ -11,12 +12,18 @@ final class CartViewController: UIViewController {
         action: #selector(didTapSortButton)
     )
     
-    private let summaryView = SummaryView()
+    // MARK: - Properties
+    
+    private var viewModel: CartViewModel?
     
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        viewModel = CartViewModel(viewController: self)
+        bind()
+        viewModel?.viewDidLoad()
         
         setupView()
     }
@@ -27,6 +34,16 @@ final class CartViewController: UIViewController {
     private func didTapSortButton() {
         // TODO: добавить сортировку
     }
+    
+    // MARK: - Private
+    
+    private func bind() {
+        guard let viewModel = viewModel else { return }
+        
+        viewModel.onChange = { [weak self] in
+            self?.summaryView.configure(with: viewModel.summaryInfo)
+        }
+    }
 }
 
 // MARK: - Layout methods
@@ -34,8 +51,8 @@ final class CartViewController: UIViewController {
 private extension CartViewController {
 
     func setupView() {
-        setupNavBar()
         view.addSubview(summaryView)
+        setupNavBar()
         setupConstraints()
     }
 
