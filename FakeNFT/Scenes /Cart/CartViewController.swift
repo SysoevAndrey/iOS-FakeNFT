@@ -8,6 +8,7 @@ final class CartViewController: UIViewController {
     private let summaryView = SummaryView()
     private lazy var nftsTableView: UITableView = {
         let tableView = UITableView()
+        tableView.backgroundColor = .clear
         tableView.separatorStyle = .none
         tableView.allowsSelection = false
         tableView.dataSource = self
@@ -24,6 +25,7 @@ final class CartViewController: UIViewController {
     // MARK: - Properties
     
     private var viewModel: CartViewModel?
+    private var summaryViewTopConstraint: NSLayoutConstraint?
     
     // MARK: - Lifecycle
     
@@ -55,6 +57,10 @@ final class CartViewController: UIViewController {
             guard let self else { return }
             self.summaryView.configure(with: viewModel.summaryInfo)
             self.nftsTableView.reloadData()
+            UIView.animate(withDuration: 0.3) {
+                self.summaryViewTopConstraint?.constant = -self.summaryView.bounds.height
+                self.view.layoutIfNeeded()
+            }
             ProgressHUD.dismiss()
         }
     }
@@ -65,6 +71,8 @@ final class CartViewController: UIViewController {
 private extension CartViewController {
 
     func setupView() {
+        view.backgroundColor = .white
+        
         [summaryView, nftsTableView]
             .forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
         
@@ -84,13 +92,16 @@ private extension CartViewController {
             // summaryView
             summaryView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             summaryView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            summaryView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             // nftsTableView
             nftsTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             nftsTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             nftsTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             nftsTableView.bottomAnchor.constraint(equalTo: summaryView.topAnchor)
         ])
+        
+        summaryViewTopConstraint = summaryView.topAnchor
+            .constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        summaryViewTopConstraint?.isActive = true
     }
 }
 

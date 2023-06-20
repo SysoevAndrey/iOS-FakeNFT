@@ -79,6 +79,8 @@ final class CartNFTCell: UITableViewCell {
 private extension CartNFTCell {
     
     func setupView() {
+        contentView.backgroundColor = .white
+        
         [nftImageView, nftLabel, ratingStackView, priceLabel, priceValue, removeButton]
             .forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
         
