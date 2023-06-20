@@ -3,14 +3,18 @@ import Foundation
 final class CartViewModel {
     
     // MARK: - Properties
-    
-    private(set) var summaryInfo = SummaryInfo(count: 0, price: 0) {
+
+    var onLoad: (() -> Void)?
+    var summaryInfo: SummaryInfo {
+        let price = nfts.reduce(0.0) { $0 + $1.price }
+        return SummaryInfo(count: nfts.count, price: price)
+    }
+    private(set) var nfts: [NFTModel] = [] {
         didSet {
-            onChange?()
+            onLoad?()
         }
     }
 
-    var onChange: (() -> Void)?
     private let orderLoader: OrderLoading
     private weak var viewController: CartViewController?
     
@@ -29,20 +33,13 @@ final class CartViewModel {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let nfts):
-                    self.summaryInfo = self.obtainSummaryInfo(of: nfts)
+                    self.nfts = nfts
                 case .failure(let error):
                     // TODO: обработать ошибку
                     print(error.localizedDescription)
                 }
             }
         }
-    }
-    
-    // MARK: - Private
-    
-    private func obtainSummaryInfo(of nfts: [NFTModel]) -> SummaryInfo {
-        let price = nfts.reduce(0.0) { $0 + $1.price }
-        return SummaryInfo(count: nfts.count, price: price)
     }
 }
 

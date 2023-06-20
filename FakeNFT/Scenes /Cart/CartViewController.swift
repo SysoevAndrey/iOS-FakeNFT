@@ -1,3 +1,4 @@
+import ProgressHUD
 import UIKit
 
 final class CartViewController: UIViewController {
@@ -5,6 +6,14 @@ final class CartViewController: UIViewController {
     // MARK: - Layout elements
 
     private let summaryView = SummaryView()
+    private lazy var nftsTableView: UITableView = {
+        let tableView = UITableView()
+        tableView.separatorStyle = .none
+        tableView.allowsSelection = false
+        tableView.dataSource = self
+        tableView.register(CartNFTCell.self)
+        return tableView
+    }()
     private lazy var sortButton = UIBarButtonItem(
         image: UIImage.Icons.sort,
         style: .plain,
@@ -20,6 +29,8 @@ final class CartViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        ProgressHUD.show()
         
         viewModel = CartViewModel(viewController: self)
         bind()
@@ -40,8 +51,11 @@ final class CartViewController: UIViewController {
     private func bind() {
         guard let viewModel = viewModel else { return }
         
-        viewModel.onChange = { [weak self] in
-            self?.summaryView.configure(with: viewModel.summaryInfo)
+        viewModel.onLoad = { [weak self] in
+            guard let self else { return }
+            self.summaryView.configure(with: viewModel.summaryInfo)
+            self.nftsTableView.reloadData()
+            ProgressHUD.dismiss()
         }
     }
 }
@@ -51,7 +65,11 @@ final class CartViewController: UIViewController {
 private extension CartViewController {
 
     func setupView() {
+        [summaryView, nftsTableView]
+            .forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
+        
         view.addSubview(summaryView)
+        view.addSubview(nftsTableView)
         setupNavBar()
         setupConstraints()
     }
@@ -66,7 +84,29 @@ private extension CartViewController {
             // summaryView
             summaryView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             summaryView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            summaryView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            summaryView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            // nftsTableView
+            nftsTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            nftsTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            nftsTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            nftsTableView.bottomAnchor.constraint(equalTo: summaryView.topAnchor)
         ])
+    }
+}
+
+// MARK: - UITableViewDataSource
+
+extension CartViewController: UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        viewModel?.nfts.count ?? 0
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell: CartNFTCell = tableView.dequeueReusableCell()
+        if let model = viewModel?.nfts[indexPath.row] {
+            cell.configure(with: model)
+        }
+        return cell
     }
 }

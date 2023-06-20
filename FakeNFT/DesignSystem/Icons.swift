@@ -8,5 +8,6 @@ extension UIImage {
 
         static let cartActive = UIImage(named: "Cart-Active")
         static let cartNoActive = UIImage(named: "Cart-No-Active")
+        static let trash = UIImage(named: "Trash")
     }
 }
