@@ -1,11 +1,16 @@
 import UIKit
 
+protocol SummaryViewDelegate: AnyObject {
+    func didTapCheckoutButton()
+}
+
 final class SummaryView: UIView {
     
     // MARK: - Layout elements
     
-    private let button: Button = {
-        let button = Button(title: "Оплатить")
+    private lazy var checkoutButton: Button = {
+        let button = Button(title: "К оплате")
+        button.addTarget(self, action: #selector(didTapCheckoutButton), for: .touchUpInside)
         return button
     }()
     private let labelsStack: UIStackView = {
@@ -28,6 +33,10 @@ final class SummaryView: UIView {
         return label
     }()
     
+    // MARK: - Properties
+    
+    weak var delegate: SummaryViewDelegate?
+    
     // MARK: - Lifecycle
 
     override init(frame: CGRect) {
@@ -37,6 +46,13 @@ final class SummaryView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Actions
+    
+    @objc
+    private func didTapCheckoutButton() {
+        delegate?.didTapCheckoutButton()
     }
     
     // MARK: - Public
@@ -56,10 +72,10 @@ private extension SummaryView {
         layer.cornerRadius = 16
         layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         
-        [button, labelsStack]
+        [checkoutButton, labelsStack]
             .forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
         
-        addSubview(button)
+        addSubview(checkoutButton)
         addSubview(labelsStack)
         labelsStack.addArrangedSubview(countLabel)
         labelsStack.addArrangedSubview(priceLabel)
@@ -73,11 +89,11 @@ private extension SummaryView {
             labelsStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             labelsStack.topAnchor.constraint(equalTo: topAnchor, constant: 16),
             labelsStack.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16),
-            // button
-            button.leadingAnchor.constraint(equalTo: labelsStack.trailingAnchor, constant: 24),
-            button.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            button.centerYAnchor.constraint(equalTo: labelsStack.centerYAnchor),
-            button.heightAnchor.constraint(equalToConstant: 44)
+            // checkoutButton
+            checkoutButton.leadingAnchor.constraint(equalTo: labelsStack.trailingAnchor, constant: 24),
+            checkoutButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            checkoutButton.centerYAnchor.constraint(equalTo: labelsStack.centerYAnchor),
+            checkoutButton.heightAnchor.constraint(equalToConstant: 44)
         ])
     }
 }
