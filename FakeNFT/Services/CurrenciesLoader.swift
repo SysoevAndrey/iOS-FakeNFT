@@ -2,6 +2,7 @@ import Foundation
 
 protocol CurrenciesLoading {
     func load(completion: @escaping (Result<[CurrencyModel], Error>) -> Void)
+    func performPayment(with currencyId: String, completion: @escaping (Result<PaymentModel, Error>) -> Void)
 }
 
 struct CurrenciesLoader: CurrenciesLoading {
@@ -24,6 +25,18 @@ struct CurrenciesLoader: CurrenciesLoading {
             switch result {
             case .success(let currencies):
                 completion(.success(currencies))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func performPayment(with currencyId: String, completion: @escaping (Result<PaymentModel, Error>) -> Void) {
+        let getOrderPaymentRequest = GetOrderPaymentRequest(id: currencyId)
+        networkClient.send(request: getOrderPaymentRequest, type: PaymentModel.self) { result in
+            switch result {
+            case .success(let payment):
+                completion(.success(payment))
             case .failure(let error):
                 completion(.failure(error))
             }

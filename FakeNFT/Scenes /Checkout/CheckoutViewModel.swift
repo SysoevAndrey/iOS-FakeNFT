@@ -14,16 +14,27 @@ final class CheckoutViewModel {
             onSelectCurrency?()
         }
     }
+    private(set) var paymentStatus: PaymentStatus = .notPay {
+        didSet {
+            onPay?()
+        }
+    }
 
     var onLoad: (() -> Void)?
     var onSelectCurrency: (() -> Void)?
+    var onPay: (() -> Void)?
     weak var viewController: CartViewController?
     private let currenciesLoader: CurrenciesLoading
+    private let orderLoader: OrderLoading?
     
     // MARK: - Lifecycle
     
-    init(currenciesLoader: CurrenciesLoading = CurrenciesLoader()) {
+    init(
+        currenciesLoader: CurrenciesLoading = CurrenciesLoader(),
+        orderLoader: OrderLoading = OrderLoader()
+    ) {
         self.currenciesLoader = currenciesLoader
+        self.orderLoader = orderLoader
     }
     
     // MARK: - Public
@@ -45,5 +56,47 @@ final class CheckoutViewModel {
     
     func selectCurrency(with id: String) {
         selectedCurrency = currencies.first(where: { $0.id == id })
+    }
+    
+    func performPayment() {
+        guard let selectedCurrency else { return }
+        currenciesLoader.performPayment(with: selectedCurrency.id) { [weak self] result in
+            guard let self else { return }
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let payment):
+                    self.clearCart {
+                        self.paymentStatus = payment.success ? .success : .failure
+                    }
+                case .failure(let error):
+                    // TODO: обработать ошибку
+                    self.paymentStatus = .failure
+                    print(error.localizedDescription)
+                }
+            }
+        }
+    }
+    
+    // MARK: - Private
+    
+    private func clearCart(completion: @escaping () -> Void) {
+        orderLoader?.update(with: []) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    completion()
+                case .failure(let error):
+                    // TODO: обработать ошибку
+                    self.paymentStatus = .failure
+                    print(error.localizedDescription)
+                }
+            }
+        }
+    }
+}
+
+extension CheckoutViewModel {
+    enum PaymentStatus {
+        case notPay, success, failure
     }
 }
