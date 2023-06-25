@@ -19,6 +19,13 @@ final class CartViewController: UIViewController {
         tableView.register(CartNFTCell.self)
         return tableView
     }()
+    private let emptyLabel: UILabel = {
+        let label = UILabel()
+        label.font = .bodyBold
+        label.text = "Корзина пуста"
+        label.isHidden = true
+        return label
+    }()
     private lazy var sortButton = UIBarButtonItem(
         image: UIImage.Icons.sort,
         style: .plain,
@@ -78,9 +85,16 @@ final class CartViewController: UIViewController {
                 }
                 self.view.layoutIfNeeded()
             }
+            self.setupTableState()
             self.nftsTableView.reloadData()
             ProgressHUD.dismiss()
         }
+    }
+    
+    private func setupTableState() {
+        guard let viewModel else { return }
+        emptyLabel.isHidden = !viewModel.nfts.isEmpty
+        nftsTableView.isHidden = viewModel.nfts.isEmpty
     }
 }
 
@@ -91,11 +105,12 @@ private extension CartViewController {
     func setupView() {
         view.backgroundColor = .white
         
-        [summaryView, nftsTableView]
+        [summaryView, nftsTableView, emptyLabel]
             .forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
         
         view.addSubview(summaryView)
         view.addSubview(nftsTableView)
+        view.addSubview(emptyLabel)
         setupNavBar()
         setupConstraints()
     }
@@ -113,7 +128,10 @@ private extension CartViewController {
             nftsTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             nftsTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             nftsTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            nftsTableView.bottomAnchor.constraint(equalTo: summaryView.topAnchor)
+            nftsTableView.bottomAnchor.constraint(equalTo: summaryView.topAnchor),
+            // emptyLabel
+            emptyLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            emptyLabel.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
         ])
         
         summaryViewTopConstraint = summaryView.topAnchor

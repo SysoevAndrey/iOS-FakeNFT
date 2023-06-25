@@ -24,6 +24,10 @@ struct OrderLoader: OrderLoading {
         networkClient.send(request: getOrderRequest, type: OrderModel.self) { result in
             switch result {
             case .success(let order):
+                guard !order.nfts.isEmpty else {
+                    completion(.success([]))
+                    return
+                }
                 var nftDict = [String: NFTModel]()
                 var requestsFinished = 0  {
                     didSet {
