@@ -197,7 +197,7 @@
 		3F6806C729CBBC5B00B4F915 /* Scenes  */ = {
 			isa = PBXGroup;
 			children = (
-				435C65572A483F0400104ECE /* CatalogueScene */,
+				435C65692A484A1700104ECE /* Catalogue */,
 				559CF0012A3E1931006B6B88 /* Cart */,
 				3F6806C829CBBC8100B4F915 /* ProductDetails */,
 			);
@@ -277,6 +277,22 @@
 				435C65632A48424D00104ECE /* MockCatalogueDataProvider.swift */,
 			);
 			path = CatalogueDataProvider;
+			sourceTree = "<group>";
+		};
+		435C65692A484A1700104ECE /* Catalogue */ = {
+			isa = PBXGroup;
+			children = (
+				435C65572A483F0400104ECE /* CatalogueScene */,
+				435C656A2A484A9000104ECE /* CollectionScene */,
+			);
+			path = Catalogue;
+			sourceTree = "<group>";
+		};
+		435C656A2A484A9000104ECE /* CollectionScene */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = CollectionScene;
 			sourceTree = "<group>";
 		};
 		559CEFFD2A3E1850006B6B88 /* Resources */ = {
