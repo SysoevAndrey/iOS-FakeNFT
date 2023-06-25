@@ -5,7 +5,11 @@ final class CartViewController: UIViewController {
 
     // MARK: - Layout elements
 
-    private let summaryView = SummaryView()
+    private lazy var summaryView: SummaryView = {
+        let view = SummaryView()
+        view.delegate = self
+        return view
+    }()
     private lazy var nftsTableView: UITableView = {
         let tableView = UITableView()
         tableView.backgroundColor = .clear
@@ -46,6 +50,7 @@ final class CartViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        self.navigationItem.rightBarButtonItem = nil
         viewModel?.clearCart()
     }
     
@@ -65,7 +70,12 @@ final class CartViewController: UIViewController {
             guard let self else { return }
             self.summaryView.configure(with: viewModel.summaryInfo)
             UIView.animate(withDuration: 0.3) {
-                self.summaryViewTopConstraint?.constant = viewModel.nfts.isEmpty ? 0 : -self.summaryView.bounds.height
+                if viewModel.nfts.isEmpty {
+                    self.summaryViewTopConstraint?.constant = 0
+                } else {
+                    self.summaryViewTopConstraint?.constant = -self.summaryView.bounds.height
+                    self.navigationItem.rightBarButtonItem = self.sortButton
+                }
                 self.view.layoutIfNeeded()
             }
             self.nftsTableView.reloadData()
@@ -92,7 +102,6 @@ private extension CartViewController {
 
     func setupNavBar() {
         navigationController?.navigationBar.tintColor = .black
-        navigationItem.rightBarButtonItem = sortButton
     }
     
     func setupConstraints() {
@@ -128,6 +137,17 @@ extension CartViewController: UITableViewDataSource {
             cell.configure(with: model)
         }
         return cell
+    }
+}
+
+// MARK: - SummaryViewDelegate
+
+extension CartViewController: SummaryViewDelegate {
+
+    func didTapCheckoutButton() {
+        let checkoutViewController = CheckoutViewController()
+        checkoutViewController.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(checkoutViewController, animated: true)
     }
 }
 
