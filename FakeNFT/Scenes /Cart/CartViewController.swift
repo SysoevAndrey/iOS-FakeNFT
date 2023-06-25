@@ -1,3 +1,4 @@
+import ProgressHUD
 import UIKit
 
 final class CartViewController: UIViewController {
@@ -5,6 +6,15 @@ final class CartViewController: UIViewController {
     // MARK: - Layout elements
 
     private let summaryView = SummaryView()
+    private lazy var nftsTableView: UITableView = {
+        let tableView = UITableView()
+        tableView.backgroundColor = .clear
+        tableView.separatorStyle = .none
+        tableView.allowsSelection = false
+        tableView.dataSource = self
+        tableView.register(CartNFTCell.self)
+        return tableView
+    }()
     private lazy var sortButton = UIBarButtonItem(
         image: UIImage.Icons.sort,
         style: .plain,
@@ -15,17 +25,28 @@ final class CartViewController: UIViewController {
     // MARK: - Properties
     
     private var viewModel: CartViewModel?
+    private var summaryViewTopConstraint: NSLayoutConstraint?
     
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         viewModel = CartViewModel(viewController: self)
         bind()
-        viewModel?.viewDidLoad()
-        
+
         setupView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        ProgressHUD.show()
+        viewModel?.loadCart()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        viewModel?.clearCart()
     }
     
     // MARK: - Actions
@@ -40,8 +61,15 @@ final class CartViewController: UIViewController {
     private func bind() {
         guard let viewModel = viewModel else { return }
         
-        viewModel.onChange = { [weak self] in
-            self?.summaryView.configure(with: viewModel.summaryInfo)
+        viewModel.onLoad = { [weak self] in
+            guard let self else { return }
+            self.summaryView.configure(with: viewModel.summaryInfo)
+            UIView.animate(withDuration: 0.3) {
+                self.summaryViewTopConstraint?.constant = viewModel.nfts.isEmpty ? 0 : -self.summaryView.bounds.height
+                self.view.layoutIfNeeded()
+            }
+            self.nftsTableView.reloadData()
+            ProgressHUD.dismiss()
         }
     }
 }
@@ -51,7 +79,13 @@ final class CartViewController: UIViewController {
 private extension CartViewController {
 
     func setupView() {
+        view.backgroundColor = .white
+        
+        [summaryView, nftsTableView]
+            .forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
+        
         view.addSubview(summaryView)
+        view.addSubview(nftsTableView)
         setupNavBar()
         setupConstraints()
     }
@@ -66,7 +100,62 @@ private extension CartViewController {
             // summaryView
             summaryView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             summaryView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            summaryView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            // nftsTableView
+            nftsTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            nftsTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            nftsTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            nftsTableView.bottomAnchor.constraint(equalTo: summaryView.topAnchor)
         ])
+        
+        summaryViewTopConstraint = summaryView.topAnchor
+            .constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        summaryViewTopConstraint?.isActive = true
+    }
+}
+
+// MARK: - UITableViewDataSource
+
+extension CartViewController: UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        viewModel?.nfts.count ?? 0
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell: CartNFTCell = tableView.dequeueReusableCell()
+        if let model = viewModel?.nfts[indexPath.row] {
+            cell.delegate = self
+            cell.configure(with: model)
+        }
+        return cell
+    }
+}
+
+// MARK: - CartNFTCellDelegate
+
+extension CartViewController: CartNFTCellDelegate {
+
+    func didTapRemoveButton(on nft: NFTModel) {
+        let removeNFTViewController = RemoveNFTViewController()
+        removeNFTViewController.delegate = self
+        removeNFTViewController.configure(with: nft)
+        removeNFTViewController.modalPresentationStyle = .overFullScreen
+        removeNFTViewController.modalTransitionStyle = .crossDissolve
+        present(removeNFTViewController, animated: true)
+    }
+}
+
+// MARK: - RemoveNFTViewControllerDelegate
+
+extension CartViewController: RemoveNFTViewControllerDelegate {
+
+    func didTapCancelButton() {
+        dismiss(animated: true)
+    }
+    
+    func didTapConfirmButton(_ model: NFTModel) {
+        viewModel?.onDelete(nft: model) { [weak self] in
+            self?.dismiss(animated: true)
+        }
     }
 }

@@ -52,7 +52,6 @@ final class SummaryView: UIView {
 private extension SummaryView {
 
     func setupView() {
-        translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .lightGray
         layer.cornerRadius = 16
         layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
