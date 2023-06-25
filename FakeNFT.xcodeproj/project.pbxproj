@@ -312,7 +312,7 @@
 		3F6806C729CBBC5B00B4F915 /* Scenes  */ = {
 			isa = PBXGroup;
 			children = (
-				435C65572A483F0400104ECE /* CatalogueScene */,
+				435C65692A484A1700104ECE /* Catalogue */,
 				D0D4F1F02A470CC000A0922B /* Profile */,
 				D03C0ADA2A50814600915774 /* MyNFT */,
 				D03C0ACD2A4E078B00915774 /* Favorites */,
@@ -414,6 +414,22 @@
 				435C65632A48424D00104ECE /* MockCatalogueDataProvider.swift */,
 			);
 			path = CatalogueDataProvider;
+			sourceTree = "<group>";
+		};
+		435C65692A484A1700104ECE /* Catalogue */ = {
+			isa = PBXGroup;
+			children = (
+				435C65572A483F0400104ECE /* CatalogueScene */,
+				435C656A2A484A9000104ECE /* CollectionScene */,
+			);
+			path = Catalogue;
+			sourceTree = "<group>";
+		};
+		435C656A2A484A9000104ECE /* CollectionScene */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = CollectionScene;
 			sourceTree = "<group>";
 		};
 		550FB9AB2A481A780062786A /* Checkout */ = {
