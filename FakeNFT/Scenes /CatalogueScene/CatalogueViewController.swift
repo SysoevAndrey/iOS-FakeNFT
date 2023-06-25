@@ -44,10 +44,15 @@ final class CollectionListViewController: UIViewController {
 	
 	func initialise(viewModel: CollectionListViewModel) {
 		self.collectionListViewModel = viewModel
+		bindViewModel()
 	}
 	
 	private func bindViewModel() {
-		
+		guard let viewModel = collectionListViewModel else { return }
+		viewModel.$collections.bind { [weak self] _ in
+			guard let self = self else { return }
+			self.tableView.reloadData()
+		}
 	}
 	
 	private func setupLayout() {
