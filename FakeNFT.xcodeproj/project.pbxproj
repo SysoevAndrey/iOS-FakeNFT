@@ -29,10 +29,11 @@
 		435C65592A483F6700104ECE /* CatalogueCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435C65582A483F6700104ECE /* CatalogueCell.swift */; };
 		435C655B2A483FAF00104ECE /* CollectionItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435C655A2A483FAF00104ECE /* CollectionItem.swift */; };
 		435C655D2A483FE100104ECE /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435C655C2A483FE100104ECE /* String+Extension.swift */; };
-		435C655F2A48417000104ECE /* Catalogue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435C655E2A48417000104ECE /* Catalogue.swift */; };
+		435C655F2A48417000104ECE /* CatalogueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435C655E2A48417000104ECE /* CatalogueViewController.swift */; };
 		435C65612A4841D300104ECE /* CatalogueViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435C65602A4841D300104ECE /* CatalogueViewModel.swift */; };
 		435C65642A48424D00104ECE /* MockCatalogueDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435C65632A48424D00104ECE /* MockCatalogueDataProvider.swift */; };
 		435C65662A48427000104ECE /* CatalogueDataProviderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435C65652A48427000104ECE /* CatalogueDataProviderProtocol.swift */; };
+		435C65682A4846D400104ECE /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435C65672A4846D400104ECE /* Observable.swift */; };
 		550FB9AD2A481A870062786A /* CheckoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550FB9AC2A481A870062786A /* CheckoutViewController.swift */; };
 		550FB9AF2A482DEE0062786A /* PayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550FB9AE2A482DEE0062786A /* PayView.swift */; };
 		550FB9B12A4834F90062786A /* UserAgreementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550FB9B02A4834F90062786A /* UserAgreementViewController.swift */; };
@@ -137,10 +138,11 @@
 		435C65582A483F6700104ECE /* CatalogueCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogueCell.swift; sourceTree = "<group>"; };
 		435C655A2A483FAF00104ECE /* CollectionItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionItem.swift; sourceTree = "<group>"; };
 		435C655C2A483FE100104ECE /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
-		435C655E2A48417000104ECE /* Catalogue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Catalogue.swift; sourceTree = "<group>"; };
+		435C655E2A48417000104ECE /* CatalogueViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogueViewController.swift; sourceTree = "<group>"; };
 		435C65602A4841D300104ECE /* CatalogueViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogueViewModel.swift; sourceTree = "<group>"; };
 		435C65632A48424D00104ECE /* MockCatalogueDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCatalogueDataProvider.swift; sourceTree = "<group>"; };
 		435C65652A48427000104ECE /* CatalogueDataProviderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogueDataProviderProtocol.swift; sourceTree = "<group>"; };
+		435C65672A4846D400104ECE /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		550FB9AC2A481A870062786A /* CheckoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutViewController.swift; sourceTree = "<group>"; };
 		550FB9AE2A482DEE0062786A /* PayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayView.swift; sourceTree = "<group>"; };
 		550FB9B02A4834F90062786A /* UserAgreementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAgreementViewController.swift; sourceTree = "<group>"; };
@@ -398,8 +400,9 @@
 			isa = PBXGroup;
 			children = (
 				435C65582A483F6700104ECE /* CatalogueCell.swift */,
-				435C655E2A48417000104ECE /* Catalogue.swift */,
+				435C655E2A48417000104ECE /* CatalogueViewController.swift */,
 				435C65602A4841D300104ECE /* CatalogueViewModel.swift */,
+				435C65672A4846D400104ECE /* Observable.swift */,
 			);
 			path = CatalogueScene;
 			sourceTree = "<group>";
@@ -746,6 +749,7 @@
 				D0D1719B2A4A05FE00EDC080 /* TextField.swift in Sources */,
 				D03C0AD72A507C4C00915774 /* NFTNetworkModel.swift in Sources */,
 				3F68069929CBBAF100B4F915 /* SceneDelegate.swift in Sources */,
+				435C65682A4846D400104ECE /* Observable.swift in Sources */,
 				D058F14B2A599CEB009AE54F /* FavoritesNetworkModel.swift in Sources */,
 				D0853BFA2A4B0143004385C6 /* PutProfileRequest.swift in Sources */,
 				D03C0ADE2A519FA800915774 /* MyNFTView.swift in Sources */,
@@ -766,7 +770,7 @@
 				D06ADCFE2A4853E000F6E948 /* ProfileAssetsCell.swift in Sources */,
 				3F6806D129CBBE6B00B4F915 /* NetworkClient.swift in Sources */,
 				435C65592A483F6700104ECE /* CatalogueCell.swift in Sources */,
-				435C655F2A48417000104ECE /* Catalogue.swift in Sources */,
+				435C655F2A48417000104ECE /* CatalogueViewController.swift in Sources */,
 				55C59F842A42074F00E602C4 /* OrderModel.swift in Sources */,
 				55C59F822A4205C000E602C4 /* GetOrderRequest.swift in Sources */,
 				5580BC812A4844560099B6A5 /* GetCurrenciesRequest.swift in Sources */,
