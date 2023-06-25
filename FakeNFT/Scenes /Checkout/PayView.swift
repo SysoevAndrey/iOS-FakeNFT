@@ -11,6 +11,7 @@ final class PayView: UIView {
     
     private lazy var payButton: Button = {
         let button = Button(title: "Оплатить")
+        button.isEnabled = false
         button.addTarget(self, action: #selector(didTapPayButton), for: .touchUpInside)
         return button
     }()
@@ -40,6 +41,11 @@ final class PayView: UIView {
     // MARK: - Properties
     
     weak var delegate: PayViewDelegate?
+    var isPayButtonEnabled = false {
+        didSet {
+            payButton.isEnabled = isPayButtonEnabled
+        }
+    }
     
     // MARK: - Lifecycle
 

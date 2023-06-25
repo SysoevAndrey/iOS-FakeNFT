@@ -146,6 +146,8 @@ extension CartViewController: SummaryViewDelegate {
 
     func didTapCheckoutButton() {
         let checkoutViewController = CheckoutViewController()
+        let checkoutViewModel = CheckoutViewModel()
+        checkoutViewController.viewModel = checkoutViewModel
         checkoutViewController.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(checkoutViewController, animated: true)
     }
