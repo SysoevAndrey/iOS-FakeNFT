@@ -68,6 +68,34 @@ final class CheckoutViewController: UIViewController {
         viewModel.onSelectCurrency = { [weak self] in
             self?.payView.isPayButtonEnabled = viewModel.selectedCurrency != nil
         }
+        
+        viewModel.onPay = { [weak self] in
+            let resultsViewController = ResultsViewController()
+            var content: ResultsViewController.Content
+            switch viewModel.paymentStatus {
+            case .failure:
+                content = .init(
+                    image: .failure,
+                    title: "Упс! Что-то пошло не так :(\n Попробуйте ещё раз!",
+                    buttonTitle: "Попробовать еще раз",
+                    buttonAction: { self?.navigationController?.popViewController(animated: true) }
+                )
+            case .success:
+                content = .init(
+                    image: .success,
+                    title: "Успех! Оплата прошла, поздравляем с покупкой!",
+                    buttonTitle: "Вернуться в каталог",
+                    buttonAction: {
+                        self?.tabBarController?.selectedIndex = 1
+                        self?.navigationController?.popToRootViewController(animated: false)
+                    }
+                )
+            default:
+                return
+            }
+            resultsViewController.configure(with: content)
+            self?.navigationController?.pushViewController(resultsViewController, animated: true)
+        }
     }
 }
 
@@ -90,7 +118,7 @@ private extension CheckoutViewController {
 
     func setupNavBar() {
         title = "Выберите способ оплаты"
-        
+
         navigationItem.leftBarButtonItem = backButton
         navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
@@ -204,7 +232,7 @@ extension CheckoutViewController: UIGestureRecognizerDelegate {}
 extension CheckoutViewController: PayViewDelegate {
 
     func didTapPayButton() {
-        // TODO: pay
+        viewModel?.performPayment()
     }
     
     func didTapUserAgreementLink() {
