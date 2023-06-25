@@ -17,10 +17,10 @@ final class CollectionListViewModel {
 	}
 	
 	func setFilterByCount() {
-		collections = collections.sorted(by: { $0.count > $1.count })
+		collections = collections.sorted(by: { $0.count < $1.count })
 	}
 	
 	func setFilterByName() {
-		collections = collections.sorted(by: { $0.title > $1.title })
+		collections = collections.sorted(by: { $0.title < $1.title })
 	}
 }
