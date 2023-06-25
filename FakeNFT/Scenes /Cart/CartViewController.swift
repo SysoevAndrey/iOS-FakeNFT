@@ -31,14 +31,22 @@ final class CartViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        ProgressHUD.show()
-        
+
         viewModel = CartViewModel(viewController: self)
         bind()
-        viewModel?.viewDidLoad()
-        
+
         setupView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        ProgressHUD.show()
+        viewModel?.loadCart()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        viewModel?.clearCart()
     }
     
     // MARK: - Actions
@@ -56,11 +64,11 @@ final class CartViewController: UIViewController {
         viewModel.onLoad = { [weak self] in
             guard let self else { return }
             self.summaryView.configure(with: viewModel.summaryInfo)
-            self.nftsTableView.reloadData()
             UIView.animate(withDuration: 0.3) {
-                self.summaryViewTopConstraint?.constant = -self.summaryView.bounds.height
+                self.summaryViewTopConstraint?.constant = viewModel.nfts.isEmpty ? 0 : -self.summaryView.bounds.height
                 self.view.layoutIfNeeded()
             }
+            self.nftsTableView.reloadData()
             ProgressHUD.dismiss()
         }
     }
@@ -116,8 +124,38 @@ extension CartViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: CartNFTCell = tableView.dequeueReusableCell()
         if let model = viewModel?.nfts[indexPath.row] {
+            cell.delegate = self
             cell.configure(with: model)
         }
         return cell
+    }
+}
+
+// MARK: - CartNFTCellDelegate
+
+extension CartViewController: CartNFTCellDelegate {
+
+    func didTapRemoveButton(on nft: NFTModel) {
+        let removeNFTViewController = RemoveNFTViewController()
+        removeNFTViewController.delegate = self
+        removeNFTViewController.configure(with: nft)
+        removeNFTViewController.modalPresentationStyle = .overFullScreen
+        removeNFTViewController.modalTransitionStyle = .crossDissolve
+        present(removeNFTViewController, animated: true)
+    }
+}
+
+// MARK: - RemoveNFTViewControllerDelegate
+
+extension CartViewController: RemoveNFTViewControllerDelegate {
+
+    func didTapCancelButton() {
+        dismiss(animated: true)
+    }
+    
+    func didTapConfirmButton(_ model: NFTModel) {
+        viewModel?.onDelete(nft: model) { [weak self] in
+            self?.dismiss(animated: true)
+        }
     }
 }

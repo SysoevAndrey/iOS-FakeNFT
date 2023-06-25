@@ -1,6 +1,10 @@
 import Kingfisher
 import UIKit
 
+protocol CartNFTCellDelegate: AnyObject {
+    func didTapRemoveButton(on nft: NFTModel)
+}
+
 final class CartNFTCell: UITableViewCell {
     
     // MARK: - Layout elements
@@ -40,6 +44,11 @@ final class CartNFTCell: UITableViewCell {
         return button
     }()
     
+    // MARK: - Properties
+    
+    weak var delegate: CartNFTCellDelegate?
+    private var model: NFTModel?
+    
     // MARK: - Lifecycle
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -54,6 +63,7 @@ final class CartNFTCell: UITableViewCell {
     // MARK: - Public
     
     func configure(with model: NFTModel) {
+        self.model = model
         if
             let image = model.images.first,
             let url = URL(string: image)
@@ -71,7 +81,10 @@ final class CartNFTCell: UITableViewCell {
     // MARK: - Actions
     
     @objc
-    private func didTapRemoveButton() {}
+    private func didTapRemoveButton() {
+        guard let model else { return }
+        delegate?.didTapRemoveButton(on: model)
+    }
 }
 
 // MARK: - Layout methods
@@ -137,7 +150,7 @@ extension CartNFTCell: ReuseIdentifying {}
 
 // MARK: - Nested types
 
-private extension CartNFTCell {
+extension CartNFTCell {
     
     enum Constants {
         static let imageSize: CGFloat = 108

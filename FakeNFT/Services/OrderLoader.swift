@@ -2,6 +2,7 @@ import Foundation
 
 protocol OrderLoading {
     func load(completion: @escaping (Result<[NFTModel], Error>) -> Void)
+    func update(with nftIds: [String], completion: @escaping (Result<[String], Error>) -> Void)
 }
 
 struct OrderLoader: OrderLoading {
@@ -20,14 +21,14 @@ struct OrderLoader: OrderLoading {
     
     func load(completion: @escaping (Result<[NFTModel], Error>) -> Void) {
         let getOrderRequest = GetOrderRequest()
-        
         networkClient.send(request: getOrderRequest, type: OrderModel.self) { result in
             switch result {
             case .success(let order):
-                var nfts = [NFTModel]()
+                var nftDict = [String: NFTModel]()
                 var requestsFinished = 0  {
                     didSet {
                         guard requestsFinished == order.nfts.count else { return }
+                        let nfts = order.nfts.compactMap { nftDict[$0] }
                         if nfts.count != order.nfts.count {
                             completion(.failure(Errors.loadNFTError))
                         } else {
@@ -39,13 +40,25 @@ struct OrderLoader: OrderLoading {
                     loadNFT(by: nftId) { result in
                         switch result {
                         case .success(let nft):
-                            nfts.append(nft)
+                            nftDict[nft.id] = nft
                         case .failure(let error):
                             print(error.localizedDescription)
                         }
                         requestsFinished += 1
                     }
                 }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func update(with nftIds: [String], completion: @escaping (Result<[String], Error>) -> Void) {
+        let putOrderRequest = PutOrderRequest(nftIds: nftIds)
+        networkClient.send(request: putOrderRequest, type: OrderModel.self) { result in
+            switch result {
+            case .success(let order):
+                completion(.success(order.nfts))
             case .failure(let error):
                 completion(.failure(error))
             }
