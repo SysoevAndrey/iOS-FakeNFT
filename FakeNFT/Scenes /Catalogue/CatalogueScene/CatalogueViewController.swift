@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import ProgressHUD
 
 final class CollectionListViewController: UIViewController {
 	private lazy var tableView: UITableView = {
@@ -35,11 +36,17 @@ final class CollectionListViewController: UIViewController {
 		super.viewDidLoad()
 		
 		if collectionListViewModel == nil {
-			collectionListViewModel = CollectionListViewModel(provider: MockCatalogueProvider())
+			collectionListViewModel = CollectionListViewModel(provider: CatalogueDataProvider())
 		}
 		
 		bindViewModel()
 		setupLayout()
+	}
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		ProgressHUD.show()
+		collectionListViewModel.getCollections()
 	}
 	
 	func initialise(viewModel: CollectionListViewModel) {
@@ -52,6 +59,7 @@ final class CollectionListViewController: UIViewController {
 		viewModel.$collections.bind { [weak self] _ in
 			guard let self = self else { return }
 			self.tableView.reloadData()
+			ProgressHUD.dismiss()
 		}
 	}
 	

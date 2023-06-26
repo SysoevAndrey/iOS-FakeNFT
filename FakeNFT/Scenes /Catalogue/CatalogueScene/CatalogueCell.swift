@@ -57,11 +57,11 @@ final class CollectionListCell: UITableViewCell, ReuseIdentifying {
 		
 	}
 	
-	func config(collectionItem: CollectionItem) {
-		let imageURL = URL(string: collectionItem.imageStringURL.encodeUrl)
+	func config(collectionItem: Collection) {
+		let imageURL = URL(string: collectionItem.cover.encodeUrl)
 		coverImageView.kf.indicatorType = .activity
 		coverImageView.kf.setImage(with: imageURL)
 		
-		collectionNameLabel.text = "\(collectionItem.title) (\(collectionItem.count))"
+		collectionNameLabel.text = "\(collectionItem.name) (\(collectionItem.nfts.count))"
 	}
 }

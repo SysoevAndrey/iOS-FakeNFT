@@ -8,19 +8,33 @@
 import Foundation
 
 final class CollectionListViewModel {
-	@Observable var collections: [CollectionItem] = []
+	@Observable var collections: [Collection] = []
 	private let provider: CatalogueProviderProtocol
 	
 	init(provider: CatalogueProviderProtocol) {
 		self.provider = provider
-		collections = provider.getCollections()
 	}
 	
 	func setFilterByCount() {
-		collections = collections.sorted(by: { $0.count < $1.count })
+		collections = collections.sorted(by: { $0.nfts.count < $1.nfts.count })
 	}
 	
 	func setFilterByName() {
-		collections = collections.sorted(by: { $0.title < $1.title })
+		collections = collections.sorted(by: { $0.name < $1.name })
+	}
+	
+	func getCollections() {
+		provider.getCollections { [weak self] result in
+			guard let self = self else { return }
+			DispatchQueue.main.async {
+				switch result {
+				case .success(let collections):
+					self.collections = collections
+				case .failure(let error):
+					self.collections = []
+					print(error.localizedDescription)
+				}
+			}
+		}
 	}
 }
