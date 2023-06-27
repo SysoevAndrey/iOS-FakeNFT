@@ -1,6 +1,6 @@
 import Foundation
 
-struct CurrencyModel: Codable {
+struct CurrencyModel: Decodable {
     let id: String
     let title: String
     let name: String
