@@ -45,6 +45,13 @@
 		559CF0032A3E1943006B6B88 /* CartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559CF0022A3E1943006B6B88 /* CartViewController.swift */; };
 		559CF0052A3E2FE7006B6B88 /* Icons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559CF0042A3E2FE7006B6B88 /* Icons.swift */; };
 		D06ADCFE2A4853E000F6E948 /* ProfileAssetsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06ADCFD2A4853E000F6E948 /* ProfileAssetsCell.swift */; };
+		D06ADD032A4894C300F6E948 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06ADD022A4894C300F6E948 /* EditProfileViewController.swift */; };
+		D06ADD052A48AA6700F6E948 /* ProfileRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06ADD042A48AA6700F6E948 /* ProfileRequest.swift */; };
+		D06ADD072A48AF7C00F6E948 /* ProfileNetworkModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06ADD062A48AF7C00F6E948 /* ProfileNetworkModel.swift */; };
+		D06ADD0A2A48CC1F00F6E948 /* WebsiteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06ADD092A48CC1F00F6E948 /* WebsiteViewController.swift */; };
+		D06ADD0C2A48D08F00F6E948 /* UIBlockingProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06ADD0B2A48D08F00F6E948 /* UIBlockingProgressHUD.swift */; };
+		D0D171992A49F9BB00EDC080 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D171982A49F9BB00EDC080 /* EditProfileView.swift */; };
+		D0D1719B2A4A05FE00EDC080 /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D1719A2A4A05FE00EDC080 /* TextField.swift */; };
 		D0D4F1F22A470CDD00A0922B /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D4F1F12A470CDD00A0922B /* ProfileViewController.swift */; };
 		D0D4F1F42A47153B00A0922B /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D4F1F32A47153B00A0922B /* ProfileView.swift */; };
 		D0D4F1F62A47159600A0922B /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D4F1F52A47159600A0922B /* ProfileViewModel.swift */; };
@@ -118,6 +125,13 @@
 		559CF0022A3E1943006B6B88 /* CartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartViewController.swift; sourceTree = "<group>"; };
 		559CF0042A3E2FE7006B6B88 /* Icons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icons.swift; sourceTree = "<group>"; };
 		D06ADCFD2A4853E000F6E948 /* ProfileAssetsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileAssetsCell.swift; sourceTree = "<group>"; };
+		D06ADD022A4894C300F6E948 /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
+		D06ADD042A48AA6700F6E948 /* ProfileRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRequest.swift; sourceTree = "<group>"; };
+		D06ADD062A48AF7C00F6E948 /* ProfileNetworkModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileNetworkModel.swift; sourceTree = "<group>"; };
+		D06ADD092A48CC1F00F6E948 /* WebsiteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebsiteViewController.swift; sourceTree = "<group>"; };
+		D06ADD0B2A48D08F00F6E948 /* UIBlockingProgressHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBlockingProgressHUD.swift; sourceTree = "<group>"; };
+		D0D171982A49F9BB00EDC080 /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
+		D0D1719A2A4A05FE00EDC080 /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 		D0D4F1F12A470CDD00A0922B /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		D0D4F1F32A47153B00A0922B /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		D0D4F1F52A47159600A0922B /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
@@ -291,6 +305,7 @@
 				55C59F892A420C7E00E602C4 /* NFTModel.swift */,
 				5580BC7E2A4843D70099B6A5 /* CurrencyModel.swift */,
 				557127612A4863EE00FDFB51 /* PaymentModel.swift */,
+				D06ADD062A48AF7C00F6E948 /* ProfileNetworkModel.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -304,6 +319,7 @@
 				55C4FB9A2A4339C800028007 /* PutOrderRequest.swift */,
 				5580BC802A4844560099B6A5 /* GetCurrenciesRequest.swift */,
 				5571275F2A48635500FDFB51 /* GetOrderPaymentRequest.swift */,
+				D06ADD042A48AA6700F6E948 /* ProfileRequest.swift */,
 			);
 			path = Requests;
 			sourceTree = "<group>";
@@ -344,6 +360,8 @@
 			isa = PBXGroup;
 			children = (
 				559CEFFF2A3E18C4006B6B88 /* Button.swift */,
+				D0D1719A2A4A05FE00EDC080 /* TextField.swift */,
+				D06ADD0B2A48D08F00F6E948 /* UIBlockingProgressHUD.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -360,9 +378,28 @@
 			path = Cart;
 			sourceTree = "<group>";
 		};
+		D06ADD012A48949500F6E948 /* EditProfile */ = {
+			isa = PBXGroup;
+			children = (
+				D06ADD022A4894C300F6E948 /* EditProfileViewController.swift */,
+				D0D171982A49F9BB00EDC080 /* EditProfileView.swift */,
+			);
+			path = EditProfile;
+			sourceTree = "<group>";
+		};
+		D06ADD082A48CBDA00F6E948 /* ProfileWebsite */ = {
+			isa = PBXGroup;
+			children = (
+				D06ADD092A48CC1F00F6E948 /* WebsiteViewController.swift */,
+			);
+			path = ProfileWebsite;
+			sourceTree = "<group>";
+		};
 		D0D4F1F02A470CC000A0922B /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				D06ADD082A48CBDA00F6E948 /* ProfileWebsite */,
+				D06ADD012A48949500F6E948 /* EditProfile */,
 				D0D4F1F12A470CDD00A0922B /* ProfileViewController.swift */,
 				D0D4F1F32A47153B00A0922B /* ProfileView.swift */,
 				D0D4F1F52A47159600A0922B /* ProfileViewModel.swift */,
@@ -537,6 +574,7 @@
 				3FC8C38B29D242E90081F015 /* ProductDetailsTableViewCell.swift in Sources */,
 				55C59F8C2A420E1900E602C4 /* GetNFTByIdRequest.swift in Sources */,
 				D0D4F1F62A47159600A0922B /* ProfileViewModel.swift in Sources */,
+				D06ADD052A48AA6700F6E948 /* ProfileRequest.swift in Sources */,
 				3F478ECF29DB474E00F6D39E /* Colors.swift in Sources */,
 				557127662A48765100FDFB51 /* Images.swift in Sources */,
 				559CF0052A3E2FE7006B6B88 /* Icons.swift in Sources */,
@@ -555,15 +593,18 @@
 				3F68069729CBBAF100B4F915 /* AppDelegate.swift in Sources */,
 				559CF0032A3E1943006B6B88 /* CartViewController.swift in Sources */,
 				D0D4F1F42A47153B00A0922B /* ProfileView.swift in Sources */,
+				D06ADD0C2A48D08F00F6E948 /* UIBlockingProgressHUD.swift in Sources */,
 				559CF0002A3E18C4006B6B88 /* Button.swift in Sources */,
 				55C59F8E2A42201000E602C4 /* CartNFTCell.swift in Sources */,
 				550FB9AD2A481A870062786A /* CheckoutViewController.swift in Sources */,
 				557127642A48720700FDFB51 /* ResultsViewController.swift in Sources */,
 				5580BC832A484A340099B6A5 /* CurrencyCell.swift in Sources */,
+				D0D1719B2A4A05FE00EDC080 /* TextField.swift in Sources */,
 				3F68069929CBBAF100B4F915 /* SceneDelegate.swift in Sources */,
 				3FC8C39129D2453B0081F015 /* ExampleRequest.swift in Sources */,
 				5580BC7F2A4843D70099B6A5 /* CurrencyModel.swift in Sources */,
 				55C4FB9B2A4339C800028007 /* PutOrderRequest.swift in Sources */,
+				D06ADD0A2A48CC1F00F6E948 /* WebsiteViewController.swift in Sources */,
 				3F6806D729CBC50A00B4F915 /* CellsReusingUtils.swift in Sources */,
 				550FB9AF2A482DEE0062786A /* PayView.swift in Sources */,
 				55C59F8A2A420C7E00E602C4 /* NFTModel.swift in Sources */,
@@ -571,11 +612,14 @@
 				5580BC7D2A48436D0099B6A5 /* CurrenciesLoader.swift in Sources */,
 				3F6806D329CBBE9600B4F915 /* NetworkRequest.swift in Sources */,
 				3F6806CB29CBBCC700B4F915 /* ExampleNetworkModel.swift in Sources */,
+				D06ADD072A48AF7C00F6E948 /* ProfileNetworkModel.swift in Sources */,
 				D06ADCFE2A4853E000F6E948 /* ProfileAssetsCell.swift in Sources */,
 				3F6806D129CBBE6B00B4F915 /* NetworkClient.swift in Sources */,
 				55C59F842A42074F00E602C4 /* OrderModel.swift in Sources */,
 				55C59F822A4205C000E602C4 /* GetOrderRequest.swift in Sources */,
 				5580BC812A4844560099B6A5 /* GetCurrenciesRequest.swift in Sources */,
+				D0D171992A49F9BB00EDC080 /* EditProfileView.swift in Sources */,
+				D06ADD032A4894C300F6E948 /* EditProfileViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
