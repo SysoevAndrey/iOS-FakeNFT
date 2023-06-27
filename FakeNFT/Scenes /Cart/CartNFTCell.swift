@@ -6,9 +6,8 @@ protocol CartNFTCellDelegate: AnyObject {
 }
 
 final class CartNFTCell: UITableViewCell {
-    
     // MARK: - Layout elements
-    
+
     private let nftImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.layer.masksToBounds = true
@@ -43,25 +42,25 @@ final class CartNFTCell: UITableViewCell {
         button.addTarget(self, action: #selector(didTapRemoveButton), for: .touchUpInside)
         return button
     }()
-    
+
     // MARK: - Properties
-    
+
     weak var delegate: CartNFTCellDelegate?
     private var model: NFTModel?
-    
+
     // MARK: - Lifecycle
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupView()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     // MARK: - Public
-    
+
     func configure(with model: NFTModel) {
         self.model = model
         if
@@ -72,14 +71,14 @@ final class CartNFTCell: UITableViewCell {
         }
         nftLabel.text = model.name
         priceValue.text = "\(model.price) ETH"
-        
+
         for star in 0..<model.rating {
             ratingStackView.arrangedSubviews[star].tintColor = .yellow
         }
     }
-    
+
     // MARK: - Actions
-    
+
     @objc
     private func didTapRemoveButton() {
         guard let model else { return }
@@ -90,33 +89,32 @@ final class CartNFTCell: UITableViewCell {
 // MARK: - Layout methods
 
 private extension CartNFTCell {
-    
     func setupView() {
         contentView.backgroundColor = .white
-        
+
         [nftImageView, nftLabel, ratingStackView, priceLabel, priceValue, removeButton]
             .forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
-        
+
         contentView.addSubview(nftImageView)
         contentView.addSubview(nftLabel)
         contentView.addSubview(ratingStackView)
         contentView.addSubview(priceLabel)
         contentView.addSubview(priceValue)
         contentView.addSubview(removeButton)
-        
+
         for _ in 0..<5 {
             let starImageView = UIImageView(image: UIImage(systemName: "star.fill"))
             starImageView.tintColor = .lightGray
             NSLayoutConstraint.activate([
                 starImageView.widthAnchor.constraint(equalToConstant: 12),
-                starImageView.heightAnchor.constraint(equalToConstant: 12),
+                starImageView.heightAnchor.constraint(equalToConstant: 12)
             ])
             ratingStackView.addArrangedSubview(starImageView)
         }
-        
+
         setupConstraints()
     }
-    
+
     func setupConstraints() {
         NSLayoutConstraint.activate([
             // nftImageView
@@ -139,7 +137,7 @@ private extension CartNFTCell {
             priceValue.bottomAnchor.constraint(equalTo: nftImageView.bottomAnchor, constant: -8),
             // removeButton
             removeButton.centerYAnchor.constraint(equalTo: nftImageView.centerYAnchor),
-            removeButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            removeButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
         ])
     }
 }
@@ -151,7 +149,6 @@ extension CartNFTCell: ReuseIdentifying {}
 // MARK: - Nested types
 
 extension CartNFTCell {
-    
     enum Constants {
         static let imageSize: CGFloat = 108
     }

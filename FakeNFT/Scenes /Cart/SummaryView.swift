@@ -5,9 +5,8 @@ protocol SummaryViewDelegate: AnyObject {
 }
 
 final class SummaryView: UIView {
-    
     // MARK: - Layout elements
-    
+
     private lazy var checkoutButton: Button = {
         let button = Button(title: "К оплате")
         button.addTarget(self, action: #selector(didTapCheckoutButton), for: .touchUpInside)
@@ -32,54 +31,53 @@ final class SummaryView: UIView {
         label.text = "0 ETH"
         return label
     }()
-    
+
     // MARK: - Properties
-    
+
     weak var delegate: SummaryViewDelegate?
-    
+
     // MARK: - Lifecycle
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     // MARK: - Actions
-    
+
     @objc
     private func didTapCheckoutButton() {
         delegate?.didTapCheckoutButton()
     }
-    
+
     // MARK: - Public
-    
+
     func configure(with summaryInfo: CartViewModel.SummaryInfo) {
         countLabel.text = "\(summaryInfo.count) NFT"
-        priceLabel.text = "\(String(format:"%.2f", summaryInfo.price)) ETH"
+        priceLabel.text = "\(String(format: "%.2f", summaryInfo.price)) ETH"
     }
 }
 
 // MARK: - Layout methods
 
 private extension SummaryView {
-
     func setupView() {
         backgroundColor = .lightGray
         layer.cornerRadius = 16
         layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        
+
         [checkoutButton, labelsStack]
             .forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
-        
+
         addSubview(checkoutButton)
         addSubview(labelsStack)
         labelsStack.addArrangedSubview(countLabel)
         labelsStack.addArrangedSubview(priceLabel)
-        
+
         setupConstraints()
     }
 

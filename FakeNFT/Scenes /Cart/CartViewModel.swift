@@ -1,7 +1,6 @@
 import Foundation
 
 final class CartViewModel {
-    
     // MARK: - Properties
 
     var onLoad: (() -> Void)?
@@ -17,16 +16,16 @@ final class CartViewModel {
 
     private let orderLoader: OrderLoading
     private weak var viewController: CartViewController?
-    
+
     // MARK: - Lifecycle
-    
+
     init(viewController: CartViewController, orderLoader: OrderLoading = OrderLoader()) {
         self.viewController = viewController
         self.orderLoader = orderLoader
     }
-    
+
     // MARK: - Public
-    
+
     func loadCart() {
         orderLoader.load { [weak self] result in
             guard let self else { return }
@@ -42,16 +41,16 @@ final class CartViewModel {
             }
         }
     }
-    
+
     func clearCart() {
         nfts = []
     }
-    
+
     func onDelete(nft: NFTModel, completion: @escaping () -> Void) {
         let updatedIdsArray = nfts
             .filter { $0.id != nft.id }
             .map { $0.id }
-        
+
         orderLoader.update(with: updatedIdsArray) { [weak self] result in
             guard let self else { return }
             DispatchQueue.main.async {

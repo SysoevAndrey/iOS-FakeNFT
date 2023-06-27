@@ -1,9 +1,8 @@
 import UIKit
 
 final class ResultsViewController: UIViewController {
-
     // MARK: - Layout elements
-    
+
     private let imageView = UIImageView()
     private let label: UILabel = {
         let label = UILabel()
@@ -24,27 +23,27 @@ final class ResultsViewController: UIViewController {
         button.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
         return button
     }()
-    
+
     // MARK: - Properties
-    
+
     private var buttonAction: (() -> Void)?
-    
+
     // MARK: - Lifecycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
     }
-    
+
     // MARK: - Actions
-    
+
     @objc
     private func didTapButton() {
         buttonAction?()
     }
-    
+
     // MARK: - Public
-    
+
     func configure(with content: Content) {
         imageView.image = content.image
         label.text = content.title
@@ -56,27 +55,26 @@ final class ResultsViewController: UIViewController {
 // MARK: - Layout methods
 
 private extension ResultsViewController {
-    
     func setupView() {
         view.backgroundColor = .white
-        
+
         [stackView, imageView, button]
             .forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
-        
+
         view.addSubview(stackView)
         stackView.addArrangedSubview(imageView)
         stackView.addArrangedSubview(label)
         view.addSubview(button)
-        
+
         setupNavBar()
         setupConstraints()
     }
-    
+
     func setupNavBar() {
         navigationController?.interactivePopGestureRecognizer?.isEnabled = false
         navigationItem.hidesBackButton = true
     }
-    
+
     func setupConstraints() {
         NSLayoutConstraint.activate([
             // stackView
@@ -99,15 +97,14 @@ private extension ResultsViewController {
 // MARK: - Nested types
 
 extension ResultsViewController {
-    
     struct Content {
         let image: UIImage?
         let title: String
         let buttonTitle: String
         let buttonAction: () -> Void
     }
-    
-    struct Constants {
+
+    enum Constants {
         static let imageSize: CGFloat = 278
     }
 }

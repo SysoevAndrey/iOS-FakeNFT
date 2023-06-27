@@ -1,9 +1,8 @@
 import UIKit
 
 final class CurrencyCell: UICollectionViewCell {
-    
     // MARK: - Layout elements
-    
+
     private let imageView: UIImageView = {
         let imageView = UIImageView()
         return imageView
@@ -14,7 +13,6 @@ final class CurrencyCell: UICollectionViewCell {
         view.layer.cornerRadius = 6
         view.backgroundColor = .blackUniversal
         return view
-        
     }()
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -32,20 +30,20 @@ final class CurrencyCell: UICollectionViewCell {
         stack.axis = .vertical
         return stack
     }()
-    
+
     // MARK: - Lifecycle
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     // MARK: - Public
-    
+
     func configure(with model: CurrencyModel) {
         if let url = URL(string: model.image) {
             imageView.kf.setImage(with: url)
@@ -53,12 +51,12 @@ final class CurrencyCell: UICollectionViewCell {
         titleLabel.text = model.title
         nameLabel.text = model.name
     }
-    
+
     func select() {
         contentView.layer.borderColor = UIColor.black.cgColor
         contentView.layer.borderWidth = 1
     }
-    
+
     func deselect() {
         contentView.layer.borderWidth = 0
     }
@@ -67,24 +65,23 @@ final class CurrencyCell: UICollectionViewCell {
 // MARK: - Layout methods
 
 private extension CurrencyCell {
-    
     func setupView() {
         contentView.layer.masksToBounds = true
         contentView.layer.cornerRadius = 12
         contentView.backgroundColor = .lightGray
-        
+
         [imageBackgroundView, imageView, labelsStackView]
             .forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
-        
+
         contentView.addSubview(imageBackgroundView)
         contentView.addSubview(imageView)
         contentView.addSubview(labelsStackView)
         labelsStackView.addArrangedSubview(titleLabel)
         labelsStackView.addArrangedSubview(nameLabel)
-        
+
         setupConstraints()
     }
-    
+
     func setupConstraints() {
         NSLayoutConstraint.activate([
             // imageBackgroundView
@@ -100,7 +97,7 @@ private extension CurrencyCell {
             imageView.heightAnchor.constraint(equalToConstant: Constants.imageSize),
             // labelsStackView
             labelsStackView.centerYAnchor.constraint(equalTo: imageBackgroundView.centerYAnchor),
-            labelsStackView.leadingAnchor.constraint(equalTo: imageBackgroundView.trailingAnchor, constant: 4),
+            labelsStackView.leadingAnchor.constraint(equalTo: imageBackgroundView.trailingAnchor, constant: 4)
         ])
     }
 }
@@ -108,7 +105,6 @@ private extension CurrencyCell {
 // MARK: - Nested types
 
 private extension CurrencyCell {
-    
     enum Constants {
         static let imageSize: CGFloat = 31.5
         static let imageBackgroundSize: CGFloat = 36

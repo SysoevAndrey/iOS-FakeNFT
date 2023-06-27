@@ -6,9 +6,8 @@ protocol RemoveNFTViewControllerDelegate: AnyObject {
 }
 
 final class RemoveNFTViewController: UIViewController {
-    
     // MARK: - Layout elements
-    
+
     private lazy var blurView: UIVisualEffectView = {
         let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
@@ -52,34 +51,34 @@ final class RemoveNFTViewController: UIViewController {
         button.addTarget(self, action: #selector(didTapConfirmButton), for: .touchUpInside)
         return button
     }()
-    
+
     // MARK: - Properties
-    
+
     weak var delegate: RemoveNFTViewControllerDelegate?
     private var model: NFTModel?
-    
+
     // MARK: - Lifecycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
     }
 
     // MARK: - Actions
-    
+
     @objc
     private func didTapCancelButton() {
         delegate?.didTapCancelButton()
     }
-    
+
     @objc
     private func didTapConfirmButton() {
         guard let model else { return }
         delegate?.didTapConfirmButton(model)
     }
-    
+
     // MARK: - Public
-    
+
     func configure(with model: NFTModel) {
         self.model = model
         if
@@ -94,18 +93,17 @@ final class RemoveNFTViewController: UIViewController {
 // MARK: - Layout methods
 
 private extension RemoveNFTViewController {
-
     func setupView() {
-        [nftImageView, alertLabel, buttonsStackView, ]
+        [nftImageView, alertLabel, buttonsStackView ]
             .forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
-        
+
         view.addSubview(blurView)
         view.addSubview(nftImageView)
         view.addSubview(alertLabel)
         view.addSubview(buttonsStackView)
         buttonsStackView.addArrangedSubview(confirmButton)
         buttonsStackView.addArrangedSubview(cancelButton)
-        
+
         setupConstraints()
     }
 
@@ -124,7 +122,7 @@ private extension RemoveNFTViewController {
             buttonsStackView.centerXAnchor.constraint(equalTo: alertLabel.centerXAnchor),
             buttonsStackView.topAnchor.constraint(equalTo: alertLabel.bottomAnchor, constant: 20),
             buttonsStackView.widthAnchor.constraint(equalToConstant: 262),
-            buttonsStackView.heightAnchor.constraint(equalToConstant: 44),
+            buttonsStackView.heightAnchor.constraint(equalToConstant: 44)
         ])
     }
 }

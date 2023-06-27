@@ -30,16 +30,16 @@ extension UIColor {
     static let textSecondary = UIColor.gray
     static let textOnPrimary = UIColor.white
     static let textOnSecondary = UIColor.black
-    
-    static let black = UIColor(named: "Black")!
-    static let white = UIColor(named: "White")!
-    static let lightGray = UIColor(named: "Light gray")!
-    static let gray = UIColor(named: "Gray")!
-    static let red = UIColor(named: "Red")!
-    static let background = UIColor(named: "Background")!
-    static let green = UIColor(named: "Green")!
-    static let blue = UIColor(named: "Blue")!
-    static let blackUniversal = UIColor(named: "Black Universal")!
-    static let whiteUniversal = UIColor(named: "White Universal")!
-    static let yellow = UIColor(named: "Yellow")!
+
+    static let black = UIColor(named: "Black") ?? UIColor()
+    static let white = UIColor(named: "White") ?? UIColor()
+    static let lightGray = UIColor(named: "Light gray") ?? UIColor()
+    static let gray = UIColor(named: "Gray") ?? UIColor()
+    static let red = UIColor(named: "Red") ?? UIColor()
+    static let background = UIColor(named: "Background") ?? UIColor()
+    static let green = UIColor(named: "Green") ?? UIColor()
+    static let blue = UIColor(named: "Blue") ?? UIColor()
+    static let blackUniversal = UIColor(named: "Black Universal") ?? UIColor()
+    static let whiteUniversal = UIColor(named: "White Universal") ?? UIColor()
+    static let yellow = UIColor(named: "Yellow") ?? UIColor()
 }

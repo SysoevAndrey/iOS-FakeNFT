@@ -1,15 +1,14 @@
 import Foundation
 
 final class CheckoutViewModel {
-    
     // MARK: - Properties
-    
+
     private(set) var currencies: [CurrencyModel] = [] {
         didSet {
             onLoad?()
         }
     }
-    private(set) var selectedCurrency: CurrencyModel? = nil {
+    private(set) var selectedCurrency: CurrencyModel? {
         didSet {
             onSelectCurrency?()
         }
@@ -26,9 +25,9 @@ final class CheckoutViewModel {
     weak var viewController: CartViewController?
     private let currenciesLoader: CurrenciesLoading
     private let orderLoader: OrderLoading?
-    
+
     // MARK: - Lifecycle
-    
+
     init(
         currenciesLoader: CurrenciesLoading = CurrenciesLoader(),
         orderLoader: OrderLoading = OrderLoader()
@@ -36,9 +35,9 @@ final class CheckoutViewModel {
         self.currenciesLoader = currenciesLoader
         self.orderLoader = orderLoader
     }
-    
+
     // MARK: - Public
-    
+
     func loadCurrencies() {
         currenciesLoader.load { [weak self] result in
             guard let self else { return }
@@ -53,11 +52,11 @@ final class CheckoutViewModel {
             }
         }
     }
-    
+
     func selectCurrency(with id: String) {
-        selectedCurrency = currencies.first(where: { $0.id == id })
+        selectedCurrency = currencies.first { $0.id == id }
     }
-    
+
     func performPayment() {
         guard let selectedCurrency else { return }
         currenciesLoader.performPayment(with: selectedCurrency.id) { [weak self] result in
@@ -76,9 +75,9 @@ final class CheckoutViewModel {
             }
         }
     }
-    
+
     // MARK: - Private
-    
+
     private func clearCart(completion: @escaping () -> Void) {
         orderLoader?.update(with: []) { result in
             DispatchQueue.main.async {

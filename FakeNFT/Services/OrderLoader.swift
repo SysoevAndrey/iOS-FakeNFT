@@ -6,19 +6,18 @@ protocol OrderLoading {
 }
 
 struct OrderLoader: OrderLoading {
-
     // MARK: - Properties
-    
+
     private let networkClient: NetworkClient
-    
+
     // MARK: - Lifecycle
-    
+
     init(networkClient: NetworkClient = DefaultNetworkClient()) {
         self.networkClient = networkClient
     }
-    
+
     // MARK: - Public
-    
+
     func load(completion: @escaping (Result<[NFTModel], Error>) -> Void) {
         let getOrderRequest = GetOrderRequest()
         networkClient.send(request: getOrderRequest, type: OrderModel.self) { result in
@@ -28,8 +27,8 @@ struct OrderLoader: OrderLoading {
                     completion(.success([]))
                     return
                 }
-                var nftDict = [String: NFTModel]()
-                var requestsFinished = 0  {
+                var nftDict: [String: NFTModel] = [:]
+                var requestsFinished = 0 {
                     didSet {
                         guard requestsFinished == order.nfts.count else { return }
                         let nfts = order.nfts.compactMap { nftDict[$0] }
@@ -56,7 +55,7 @@ struct OrderLoader: OrderLoading {
             }
         }
     }
-    
+
     func update(with nftIds: [String], completion: @escaping (Result<[String], Error>) -> Void) {
         let putOrderRequest = PutOrderRequest(nftIds: nftIds)
         networkClient.send(request: putOrderRequest, type: OrderModel.self) { result in
@@ -68,9 +67,9 @@ struct OrderLoader: OrderLoading {
             }
         }
     }
-    
+
     // MARK: - Private
-    
+
     private func loadNFT(by id: String, completion: @escaping (Result<NFTModel, Error>) -> Void) {
         let getNFTByIdRequest = GetNFTByIdRequest(id: id)
         networkClient.send(request: getNFTByIdRequest, type: NFTModel.self) { result in

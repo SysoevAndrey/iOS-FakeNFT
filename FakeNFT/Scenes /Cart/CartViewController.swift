@@ -2,7 +2,6 @@ import ProgressHUD
 import UIKit
 
 final class CartViewController: UIViewController {
-
     // MARK: - Layout elements
 
     private lazy var summaryView: SummaryView = {
@@ -32,14 +31,14 @@ final class CartViewController: UIViewController {
         target: self,
         action: #selector(didTapSortButton)
     )
-    
+
     // MARK: - Properties
-    
+
     private var viewModel: CartViewModel?
     private var summaryViewTopConstraint: NSLayoutConstraint?
-    
+
     // MARK: - Lifecycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -48,32 +47,32 @@ final class CartViewController: UIViewController {
 
         setupView()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         ProgressHUD.show()
         viewModel?.loadCart()
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.navigationItem.rightBarButtonItem = nil
         viewModel?.clearCart()
         emptyLabel.isHidden = true
     }
-    
+
     // MARK: - Actions
-    
+
     @objc
     private func didTapSortButton() {
         // TODO: добавить сортировку
     }
-    
+
     // MARK: - Private
-    
+
     private func bind() {
         guard let viewModel = viewModel else { return }
-        
+
         viewModel.onLoad = { [weak self] in
             guard let self else { return }
             self.summaryView.configure(with: viewModel.summaryInfo)
@@ -91,7 +90,7 @@ final class CartViewController: UIViewController {
             ProgressHUD.dismiss()
         }
     }
-    
+
     private func setupTableState() {
         guard let viewModel else { return }
         emptyLabel.isHidden = !viewModel.nfts.isEmpty
@@ -102,13 +101,12 @@ final class CartViewController: UIViewController {
 // MARK: - Layout methods
 
 private extension CartViewController {
-
     func setupView() {
         view.backgroundColor = .white
-        
+
         [summaryView, nftsTableView, emptyLabel]
             .forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
-        
+
         view.addSubview(summaryView)
         view.addSubview(nftsTableView)
         view.addSubview(emptyLabel)
@@ -119,7 +117,7 @@ private extension CartViewController {
     func setupNavBar() {
         navigationController?.navigationBar.tintColor = .black
     }
-    
+
     func setupConstraints() {
         NSLayoutConstraint.activate([
             // summaryView
@@ -132,9 +130,9 @@ private extension CartViewController {
             nftsTableView.bottomAnchor.constraint(equalTo: summaryView.topAnchor),
             // emptyLabel
             emptyLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-            emptyLabel.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
+            emptyLabel.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor)
         ])
-        
+
         summaryViewTopConstraint = summaryView.topAnchor
             .constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         summaryViewTopConstraint?.isActive = true
@@ -144,11 +142,10 @@ private extension CartViewController {
 // MARK: - UITableViewDataSource
 
 extension CartViewController: UITableViewDataSource {
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         viewModel?.nfts.count ?? 0
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: CartNFTCell = tableView.dequeueReusableCell()
         if let model = viewModel?.nfts[indexPath.row] {
@@ -162,7 +159,6 @@ extension CartViewController: UITableViewDataSource {
 // MARK: - SummaryViewDelegate
 
 extension CartViewController: SummaryViewDelegate {
-
     func didTapCheckoutButton() {
         let checkoutViewController = CheckoutViewController()
         let checkoutViewModel = CheckoutViewModel()
@@ -175,7 +171,6 @@ extension CartViewController: SummaryViewDelegate {
 // MARK: - CartNFTCellDelegate
 
 extension CartViewController: CartNFTCellDelegate {
-
     func didTapRemoveButton(on nft: NFTModel) {
         let removeNFTViewController = RemoveNFTViewController()
         removeNFTViewController.delegate = self
@@ -189,11 +184,10 @@ extension CartViewController: CartNFTCellDelegate {
 // MARK: - RemoveNFTViewControllerDelegate
 
 extension CartViewController: RemoveNFTViewControllerDelegate {
-
     func didTapCancelButton() {
         dismiss(animated: true)
     }
-    
+
     func didTapConfirmButton(_ model: NFTModel) {
         viewModel?.onDelete(nft: model) { [weak self] in
             self?.dismiss(animated: true)

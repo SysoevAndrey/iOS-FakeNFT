@@ -42,7 +42,7 @@ extension UICollectionView {
         }
         return cell
     }
-    
+
     func cellForItem<T: UICollectionViewCell>(at indexPath: IndexPath) -> T where T: ReuseIdentifying {
         guard let cell = cellForItem(at: indexPath) as? T else {
             assertionFailure("Could not find cell with identifier: \(T.defaultReuseIdentifier) for: \(indexPath)")
