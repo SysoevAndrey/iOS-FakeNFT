@@ -59,6 +59,7 @@ final class CartViewController: UIViewController {
         super.viewWillDisappear(animated)
         self.navigationItem.rightBarButtonItem = nil
         viewModel?.clearCart()
+        emptyLabel.isHidden = true
     }
     
     // MARK: - Actions
