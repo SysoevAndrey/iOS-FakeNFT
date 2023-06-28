@@ -30,7 +30,7 @@ final class CollectionListViewController: UIViewController {
 		return button
 	}()
 	
-	private var collectionListViewModel: CollectionListViewModel!
+	private var collectionListViewModel: CollectionListViewModel?
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -46,7 +46,7 @@ final class CollectionListViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		ProgressHUD.show()
-		collectionListViewModel.getCollections()
+		collectionListViewModel?.getCollections()
 	}
 	
 	func initialise(viewModel: CollectionListViewModel) {
@@ -88,12 +88,12 @@ final class CollectionListViewController: UIViewController {
 		
 		let sortByName = UIAlertAction(title: "По названию",
 									   style: .default) { [weak self] _ in
-			self?.collectionListViewModel.setFilterByName()
+			self?.collectionListViewModel?.setFilterByName()
 		}
 		
 		let sortByCount = UIAlertAction(title: "По количеству NFT",
 									   style: .default) { [weak self] _ in
-			self?.collectionListViewModel.setFilterByCount()
+			self?.collectionListViewModel?.setFilterByCount()
 		}
 		
 		let cancel = UIAlertAction(title: "Отмена", style: .cancel)
@@ -109,18 +109,15 @@ final class CollectionListViewController: UIViewController {
 
 extension CollectionListViewController: UITableViewDataSource {
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		collectionListViewModel.collections.count
+		collectionListViewModel?.collections.count ?? 0
 	}
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: CollectionListCell.defaultReuseIdentifier, for: indexPath)
+		let cell: CollectionListCell = tableView.dequeueReusableCell()
 		
-		guard let collectionItemCell = cell as? CollectionListCell else {
-			return UITableViewCell()
-		}
+		guard let collectionItem = collectionListViewModel?.collections[indexPath.row] else { return UITableViewCell() }
+		cell.config(collectionItem: collectionItem)
 		
-		let collectionItem = collectionListViewModel.collections[indexPath.row]
-		collectionItemCell.config(collectionItem: collectionItem)
 		return cell
 	}
 }

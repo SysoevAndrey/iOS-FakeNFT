@@ -15,10 +15,6 @@ struct GetCollectionByIdRequest: NetworkRequest {
 	}
 	
 	var endpoint: URL? {
-		ApiConstants.baseURL.appendingPathComponent("/collections")
-	}
-	
-	var queryParameters: [String: String]? {
-		["id" : id]
+		ApiConstants.baseURL.appendingPathComponent("/collections/\(id)")
 	}
 }

@@ -9,8 +9,6 @@ import UIKit
 import Kingfisher
 
 final class CollectionListCell: UITableViewCell, ReuseIdentifying {
-	static var defaultReuseIdentifier: String { "collectionListCell" }
-	
 	private lazy var coverImageView: UIImageView = {
 		let imageView = UIImageView()
 		imageView.contentMode = .scaleAspectFill
