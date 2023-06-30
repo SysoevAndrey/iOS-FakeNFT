@@ -64,8 +64,12 @@ final class CheckoutViewModel {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let payment):
-                    self.clearCart {
-                        self.paymentStatus = payment.success ? .success : .failure
+                    if payment.success == true {
+                        self.clearCart {
+                            self.paymentStatus = .success
+                        }
+                    } else {
+                        self.paymentStatus = .failure
                     }
                 case .failure(let error):
                     // TODO: обработать ошибку
