@@ -72,6 +72,7 @@ final class CartNFTCell: UITableViewCell {
         nftLabel.text = model.name
         priceValue.text = "\(model.price) ETH"
 
+        ratingStackView.arrangedSubviews.forEach { $0.tintColor = .lightGray }
         for star in 0..<model.rating {
             ratingStackView.arrangedSubviews[star].tintColor = .yellow
         }
@@ -104,7 +105,6 @@ private extension CartNFTCell {
 
         for _ in 0..<5 {
             let starImageView = UIImageView(image: UIImage(systemName: "star.fill"))
-            starImageView.tintColor = .lightGray
             NSLayoutConstraint.activate([
                 starImageView.widthAnchor.constraint(equalToConstant: 12),
                 starImageView.heightAnchor.constraint(equalToConstant: 12)

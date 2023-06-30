@@ -8,6 +8,15 @@ final class CartViewModel {
         let price = nfts.reduce(0.0) { $0 + $1.price }
         return SummaryInfo(count: nfts.count, price: price)
     }
+    var sort: Sort? {
+        didSet {
+            guard let sort else {
+                nfts = fetchedNfts
+                return
+            }
+            nfts = applySort(by: sort)
+        }
+    }
     private(set) var nfts: [NFTModel] = [] {
         didSet {
             onLoad?()
@@ -16,6 +25,7 @@ final class CartViewModel {
 
     private let orderLoader: OrderLoading
     private weak var viewController: CartViewController?
+    private var fetchedNfts: [NFTModel] = []
 
     // MARK: - Lifecycle
 
@@ -32,6 +42,7 @@ final class CartViewModel {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let nfts):
+                    self.fetchedNfts = nfts
                     self.nfts = nfts
                 case .failure(let error):
                     // TODO: обработать ошибку
@@ -65,13 +76,33 @@ final class CartViewModel {
             }
         }
     }
+    
+    // MARK: - Private
+    
+    private func applySort(by value: Sort) -> [NFTModel] {
+        switch value {
+        case .price:
+            return fetchedNfts.sorted(by: { $0.price < $1.price })
+        case .rating:
+            return fetchedNfts.sorted(by: { $0.rating < $1.rating })
+        case .name:
+            return fetchedNfts.sorted(by: { $0.name < $1.name })
+        }
+    }
 }
 
 // MARK: - Nested types
 
 extension CartViewModel {
+
     struct SummaryInfo {
         var count: Int
         var price: Double
+    }
+    
+    enum Sort {
+        case price
+        case rating
+        case name
     }
 }
