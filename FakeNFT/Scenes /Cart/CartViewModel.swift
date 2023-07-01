@@ -24,13 +24,11 @@ final class CartViewModel {
     }
 
     private let orderLoader: OrderLoading
-    private weak var viewController: CartViewController?
     private var fetchedNfts: [NFTModel] = []
 
     // MARK: - Lifecycle
 
-    init(viewController: CartViewController, orderLoader: OrderLoading = OrderLoader()) {
-        self.viewController = viewController
+    init(orderLoader: OrderLoading = OrderLoader()) {
         self.orderLoader = orderLoader
     }
 

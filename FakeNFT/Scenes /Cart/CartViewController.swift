@@ -42,7 +42,7 @@ final class CartViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        viewModel = CartViewModel(viewController: self)
+        viewModel = CartViewModel()
         bind()
 
         setupView()
