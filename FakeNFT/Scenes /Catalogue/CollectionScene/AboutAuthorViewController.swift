@@ -7,6 +7,7 @@
 
 import UIKit
 import WebKit
+import ProgressHUD
 
 final class AboutAuthorViewController: UIViewController, UIGestureRecognizerDelegate {
 	private var authorPageURL: String?
@@ -47,15 +48,11 @@ final class AboutAuthorViewController: UIViewController, UIGestureRecognizerDele
 	}
 }
 
-// MARK: - Layout methods
-
 private extension AboutAuthorViewController {
 	func setupView() {
 		view.backgroundColor = .white
 
-		[webView]
-			.forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
-
+		webView.translatesAutoresizingMaskIntoConstraints = false
 		view.addSubview(webView)
 
 		setupNavBar()
@@ -70,7 +67,6 @@ private extension AboutAuthorViewController {
 
 	func setupConstraints() {
 		NSLayoutConstraint.activate([
-			// webView
 			webView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
 			webView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
 			webView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),

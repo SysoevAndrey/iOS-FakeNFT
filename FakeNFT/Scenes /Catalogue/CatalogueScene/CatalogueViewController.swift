@@ -17,18 +17,26 @@ final class CollectionListViewController: UIViewController {
 		tableView.translatesAutoresizingMaskIntoConstraints = false
 		
 		tableView.dataSource = self
+		tableView.delegate = self
 		return tableView
 	}()
 	
-	private lazy var filterButton: UIButton = {
-		let button = UIButton()
-		button.setImage(UIImage.Icons.sort, for: .normal)
-		button.addTarget(self,
-						 action: #selector(sortCollections),
-						 for: .touchUpInside)
-		button.translatesAutoresizingMaskIntoConstraints = false
-		return button
-	}()
+//	private lazy var filterButton: UIButton = {
+//		let button = UIButton()
+//		button.setImage(UIImage.Icons.sort, for: .normal)
+//		button.addTarget(self,
+//						 action: #selector(sortCollections),
+//						 for: .touchUpInside)
+//		button.translatesAutoresizingMaskIntoConstraints = false
+//		return button
+//	}()
+	
+	private lazy var sortButton = UIBarButtonItem(
+		image: UIImage.Icons.sort,
+		style: .plain,
+		target: self,
+		action: #selector(sortCollections)
+	)
 	
 	private var collectionListViewModel: CollectionListViewModel?
 	
@@ -41,6 +49,7 @@ final class CollectionListViewController: UIViewController {
 		
 		bindViewModel()
 		setupLayout()
+		setupNavBar()
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -63,20 +72,19 @@ final class CollectionListViewController: UIViewController {
 		}
 	}
 	
+	func setupNavBar() {
+		navigationItem.rightBarButtonItem = sortButton
+		navigationController?.navigationBar.tintColor = .black
+	}
+	
 	private func setupLayout() {
 		view.addSubview(tableView)
-		view.addSubview(filterButton)
 		
 		NSLayoutConstraint.activate([
 			tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
 			tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-			tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 64),
-			tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-			
-			filterButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-			filterButton.heightAnchor.constraint(equalToConstant: 42),
-			filterButton.widthAnchor.constraint(equalToConstant: 42),
-			filterButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -9)
+			tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+			tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
 		])
 	}
 
@@ -119,5 +127,18 @@ extension CollectionListViewController: UITableViewDataSource {
 		cell.config(collectionItem: collectionItem)
 		
 		return cell
+	}
+}
+
+extension CollectionListViewController: UITableViewDelegate {
+	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		guard let collection = collectionListViewModel?.collections[indexPath.row] else { return }
+		
+		let collectionVC = CollectionViewController()
+		let collectionVM = CollectionViewModel()
+		collectionVC.modalPresentationStyle = .fullScreen
+		collectionVC.initialise(viewModel: collectionVM, model: collection)
+		
+		navigationController?.pushViewController(collectionVC, animated: true)
 	}
 }

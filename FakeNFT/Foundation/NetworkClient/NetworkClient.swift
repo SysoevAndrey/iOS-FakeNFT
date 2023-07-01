@@ -109,7 +109,7 @@ struct DefaultNetworkClient: NetworkClient {
 }
 
 struct StubNetworkClient: NetworkClient {
-    
+
     private let decoder: JSONDecoder
     private let emulateError: Bool
 
@@ -117,27 +117,27 @@ struct StubNetworkClient: NetworkClient {
         self.decoder = decoder
         self.emulateError = emulateError
     }
-    
+
     func send(request: FakeNFT.NetworkRequest, onResponse: @escaping (Result<Data, Error>) -> Void) -> FakeNFT.NetworkTask? {
         if emulateError {
             onResponse(.failure(NetworkClientError.testError))
         } else {
             onResponse(.success(expectedResponse))
         }
-        
+
         return nil
     }
-    
+
     func send<T>(request: FakeNFT.NetworkRequest, type: T.Type, onResponse: @escaping (Result<T, Error>) -> Void) -> FakeNFT.NetworkTask? where T : Decodable {
         if emulateError {
             onResponse(.failure(NetworkClientError.testError))
         } else {
             self.parse(data: expectedResponse, type: type, onResponse: onResponse)
         }
-        
+
         return nil
     }
-    
+
     private func parse<T: Decodable>(data: Data, type _: T.Type, onResponse: @escaping (Result<T, Error>) -> Void) {
         do {
             let response = try decoder.decode(T.self, from: data)
@@ -146,7 +146,7 @@ struct StubNetworkClient: NetworkClient {
             onResponse(.failure(NetworkClientError.parsingError))
         }
     }
-    
+
     private var expectedResponse: Data {
             """
             {
@@ -159,6 +159,6 @@ struct StubNetworkClient: NetworkClient {
                 "id": "1"
             }
 """.data(using: .utf8) ?? Data()
-        
+
     }
 }

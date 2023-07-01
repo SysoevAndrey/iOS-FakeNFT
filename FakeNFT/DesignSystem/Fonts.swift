@@ -18,4 +18,5 @@ extension UIFont {
     static var caption2 = UIFont.systemFont(ofSize: 13, weight: .regular)
 	
 	static let medium10 = UIFont.systemFont(ofSize: 10, weight: .medium)
+	static let bold22 = UIFont.systemFont(ofSize: 22, weight: .bold)
 }

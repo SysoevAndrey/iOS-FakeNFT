@@ -60,7 +60,7 @@ final class CollectionNFTCell: UICollectionViewCell, ReuseIdentifying {
 		return stackView
 	}()
 	
-	private lazy var removeButton: UIButton = {
+	private lazy var cartButton: UIButton = {
 		let button = UIButton(type: .custom)
 		button.setImage(UIImage.Icons.trash, for: .normal)
 		button.addTarget(self, action: #selector(didTapRemoveButton), for: .touchUpInside)
@@ -70,10 +70,10 @@ final class CollectionNFTCell: UICollectionViewCell, ReuseIdentifying {
 	private lazy var priceAndCartButtonHorizontalStackView: UIStackView = {
 		let stackView = UIStackView()
 		stackView.axis = .horizontal
-		stackView.spacing = 12
 		stackView.alignment = .center
+		stackView.distribution = .fill
 		stackView.addArrangedSubview(nameAndPriceVerticalStackView)
-		stackView.addArrangedSubview(removeButton)
+		stackView.addArrangedSubview(cartButton)
 		return stackView
 	}()
 
@@ -85,15 +85,9 @@ final class CollectionNFTCell: UICollectionViewCell, ReuseIdentifying {
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
-
-	// MARK: - Public
-	func configure(with model: NFTModel) {
-		if
-			let image = model.images.first,
-			let url = URL(string: image)
-		{
-			nftImageView.kf.setImage(with: url)
-		}
+	
+	func configure(with model: NFTViewModel) {
+		nftImageView.kf.setImage(with: model.imageURL)
 		nftLabel.text = model.name
 		priceValue.text = "\(model.price) ETH"
 
@@ -101,12 +95,22 @@ final class CollectionNFTCell: UICollectionViewCell, ReuseIdentifying {
 			ratingStackView.arrangedSubviews[star].tintColor = .yellow
 		}
 		
-		//add logic for heartButton and cart status
+		if model.inOrdered {
+			cartButton.setImage(UIImage.Icons.trash, for: .normal)
+		} else {
+			cartButton.setImage(UIImage.Icons.addToCart, for: .normal)
+		}
+		
+		if model.isLiked {
+			heartButton.setImage(UIImage.Icons.likeActive, for: .normal)
+		} else {
+			heartButton.setImage(UIImage.Icons.likeNotActive, for: .normal)
+		}
 	}
 
 	@objc
 	private func didTapRemoveButton() {
-		delegate?.nftCellDidTapLike(self)
+		delegate?.nftCellAddToCart(self)
 	}
 	
 	@objc
@@ -119,19 +123,11 @@ private extension CollectionNFTCell {
 	func setupView() {
 		contentView.backgroundColor = .white
 
-		[nftImageView, heartButton, ratingStackView, priceAndCartButtonHorizontalStackView]
-			.forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
-
-		contentView.addSubview(nftImageView)
-		contentView.addSubview(heartButton)
-		contentView.addSubview(ratingStackView)
-		contentView.addSubview(priceAndCartButtonHorizontalStackView)
-//		contentView.addSubview(nftLabel)
-//		contentView.addSubview(priceValue)
-//		contentView.addSubview(nameAndPriceVerticalStackView)
-//		contentView.addSubview(removeButton)
+		[nftImageView, heartButton, ratingStackView, priceAndCartButtonHorizontalStackView].forEach {
+			$0.translatesAutoresizingMaskIntoConstraints = false
+			contentView.addSubview($0)
+		}
 		
-
 		for _ in 0..<5 {
 			let starImageView = UIImageView(image: UIImage(systemName: "star.fill"))
 			starImageView.tintColor = .lightGray
@@ -141,27 +137,24 @@ private extension CollectionNFTCell {
 			])
 			ratingStackView.addArrangedSubview(starImageView)
 		}
-
 		setupConstraints()
 	}
 
 	func setupConstraints() {
 		NSLayoutConstraint.activate([
-			// nftImageView
 			nftImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
 			nftImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
 			nftImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
 			nftImageView.heightAnchor.constraint(equalToConstant: 108),
 			
-			//heartButton
-			heartButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 11),
-			heartButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -11),
+			heartButton.topAnchor.constraint(equalTo: nftImageView.topAnchor),
+			heartButton.trailingAnchor.constraint(equalTo: nftImageView.trailingAnchor),
+			heartButton.heightAnchor.constraint(equalToConstant: 42),
+			heartButton.widthAnchor.constraint(equalToConstant: 42),
 			
-			// ratingStackView
 			ratingStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
 			ratingStackView.topAnchor.constraint(equalTo: nftImageView.bottomAnchor, constant: 8),
 			
-			//stackView
 			priceAndCartButtonHorizontalStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
 			priceAndCartButtonHorizontalStackView.topAnchor.constraint(equalTo: ratingStackView.bottomAnchor, constant: 4),
 		])

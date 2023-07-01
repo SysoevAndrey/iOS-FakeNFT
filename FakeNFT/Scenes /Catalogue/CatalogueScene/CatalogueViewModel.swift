@@ -8,7 +8,7 @@
 import Foundation
 
 final class CollectionListViewModel {
-	@Observable var collections: [Collection] = []
+	@Observable private(set) var collections: [Collection] = []
 	private let provider: CatalogueProviderProtocol
 	
 	init(provider: CatalogueProviderProtocol) {
