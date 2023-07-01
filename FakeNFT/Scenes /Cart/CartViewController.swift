@@ -50,7 +50,6 @@ final class CartViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        ProgressHUD.show()
         viewModel?.loadCart()
     }
 
@@ -95,6 +94,14 @@ final class CartViewController: UIViewController {
     private func bind() {
         guard let viewModel = viewModel else { return }
 
+        viewModel.onLoadingChange = { [weak self] in
+            if let isLoading = self?.viewModel?.isLoading, isLoading {
+                ProgressHUD.show()
+            } else {
+                ProgressHUD.dismiss()
+            }
+        }
+        
         viewModel.onLoad = { [weak self] in
             guard let self else { return }
             self.summaryView.configure(with: viewModel.summaryInfo)
@@ -109,7 +116,6 @@ final class CartViewController: UIViewController {
             }
             self.setupTableState()
             self.nftsTableView.reloadData()
-            ProgressHUD.dismiss()
         }
     }
 

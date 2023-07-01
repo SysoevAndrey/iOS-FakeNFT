@@ -4,6 +4,7 @@ final class CartViewModel {
     // MARK: - Properties
 
     var onLoad: (() -> Void)?
+    var onLoadingChange: (() -> Void)?
     var summaryInfo: SummaryInfo {
         let price = nfts.reduce(0.0) { $0 + $1.price }
         return SummaryInfo(count: nfts.count, price: price)
@@ -17,6 +18,11 @@ final class CartViewModel {
             nfts = applySort(by: sort)
         }
     }
+    private(set) var isLoading = false {
+        didSet {
+            onLoadingChange?()
+        }
+    }
     private(set) var nfts: [NFTModel] = [] {
         didSet {
             onLoad?()
@@ -24,7 +30,11 @@ final class CartViewModel {
     }
 
     private let orderLoader: OrderLoading
-    private var fetchedNfts: [NFTModel] = []
+    private var fetchedNfts: [NFTModel] = [] {
+        didSet {
+            nfts = fetchedNfts
+        }
+    }
 
     // MARK: - Lifecycle
 
@@ -35,17 +45,18 @@ final class CartViewModel {
     // MARK: - Public
 
     func loadCart() {
+        isLoading = true
         orderLoader.load { [weak self] result in
             guard let self else { return }
             DispatchQueue.main.async {
                 switch result {
                 case .success(let nfts):
                     self.fetchedNfts = nfts
-                    self.nfts = nfts
                 case .failure(let error):
                     self.nfts = []
                     print(error.localizedDescription)
                 }
+                self.isLoading = false
             }
         }
     }
@@ -55,6 +66,7 @@ final class CartViewModel {
     }
 
     func onDelete(nft: NFTModel, completion: @escaping () -> Void) {
+        isLoading = true
         let updatedIdsArray = nfts
             .filter { $0.id != nft.id }
             .map { $0.id }
@@ -68,6 +80,7 @@ final class CartViewModel {
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
+                self.isLoading = false
                 completion()
             }
         }
