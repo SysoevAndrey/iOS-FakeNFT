@@ -43,7 +43,6 @@ final class CartViewModel {
                     self.fetchedNfts = nfts
                     self.nfts = nfts
                 case .failure(let error):
-                    // TODO: обработать ошибку
                     self.nfts = []
                     print(error.localizedDescription)
                 }
@@ -67,7 +66,6 @@ final class CartViewModel {
                 case .success(let nfts):
                     self.nfts = self.nfts.filter { nfts.contains($0.id) }
                 case .failure(let error):
-                    // TODO: обработать ошибку
                     print(error.localizedDescription)
                 }
                 completion()

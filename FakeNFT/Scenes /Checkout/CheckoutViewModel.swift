@@ -46,7 +46,6 @@ final class CheckoutViewModel {
                 case .success(let currencies):
                     self.currencies = currencies
                 case .failure(let error):
-                    // TODO: обработать ошибку
                     print(error.localizedDescription)
                 }
             }
@@ -72,7 +71,6 @@ final class CheckoutViewModel {
                         self.paymentStatus = .failure
                     }
                 case .failure(let error):
-                    // TODO: обработать ошибку
                     self.paymentStatus = .failure
                     print(error.localizedDescription)
                 }
@@ -89,7 +87,6 @@ final class CheckoutViewModel {
                 case .success:
                     completion()
                 case .failure(let error):
-                    // TODO: обработать ошибку
                     self.paymentStatus = .failure
                     print(error.localizedDescription)
                 }
