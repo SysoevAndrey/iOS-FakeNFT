@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import ProgressHUD
 import Kingfisher
 
 final class CollectionViewController: UIViewController, UIGestureRecognizerDelegate {
@@ -80,6 +79,11 @@ final class CollectionViewController: UIViewController, UIGestureRecognizerDeleg
 		collection.register(CollectionNFTCell.self)
 		return collection
 	}()
+	
+	private lazy var contentView: UIView = {
+		let contentView = UIView()
+		return contentView
+	}()
 
 	private var nftCollectionModel: Collection?
 	private var viewModel: CollectionViewModel?
@@ -135,9 +139,9 @@ final class CollectionViewController: UIViewController, UIGestureRecognizerDeleg
 		
 		viewModel.$loadingInProgress.bind { _ in
 			if viewModel.loadingInProgress {
-				ProgressHUD.show()
+				UIBlockingProgressHUD.show()
 			} else {
-				ProgressHUD.dismiss()
+				UIBlockingProgressHUD.dismiss()
 			}
 		}
 		
@@ -208,7 +212,7 @@ private extension CollectionViewController {
 			nftCollectionView.topAnchor.constraint(equalTo: fullDescriptionVerticalStackView.bottomAnchor, constant: 24),
 			nftCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
 			nftCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-			nftCollectionView.heightAnchor.constraint(equalToConstant: 700)//CGFloat(viewModel?.nftItems.count ?? 0 * 192)
+			nftCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
 		])
 	}
 }
@@ -237,7 +241,7 @@ extension CollectionViewController: UICollectionViewDataSource {
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 		let cell: CollectionNFTCell = collectionView.dequeueReusableCell(indexPath: indexPath)
 		if let model = viewModel?.nftItems[indexPath.row] {
-			cell.configure(with: model)
+			cell.configure(with: model, delegate: self)
 		}
 		return cell
 	}

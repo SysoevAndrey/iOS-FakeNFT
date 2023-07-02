@@ -145,6 +145,6 @@ final class CollectionViewModel {
 			likedItems.append(nftViewModel.id)
 		}
 		
-		loadingInProgress = true
+		//loadingInProgress = true
 	}
 }

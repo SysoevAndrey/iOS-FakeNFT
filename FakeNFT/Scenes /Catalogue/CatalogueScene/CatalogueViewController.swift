@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import ProgressHUD
 
 final class CollectionListViewController: UIViewController {
 	private lazy var tableView: UITableView = {
@@ -20,16 +19,6 @@ final class CollectionListViewController: UIViewController {
 		tableView.delegate = self
 		return tableView
 	}()
-	
-//	private lazy var filterButton: UIButton = {
-//		let button = UIButton()
-//		button.setImage(UIImage.Icons.sort, for: .normal)
-//		button.addTarget(self,
-//						 action: #selector(sortCollections),
-//						 for: .touchUpInside)
-//		button.translatesAutoresizingMaskIntoConstraints = false
-//		return button
-//	}()
 	
 	private lazy var sortButton = UIBarButtonItem(
 		image: UIImage.Icons.sort,
@@ -50,17 +39,13 @@ final class CollectionListViewController: UIViewController {
 		bindViewModel()
 		setupLayout()
 		setupNavBar()
-	}
-	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		ProgressHUD.show()
+		
+		UIBlockingProgressHUD.show()
 		collectionListViewModel?.getCollections()
 	}
 	
 	func initialise(viewModel: CollectionListViewModel) {
 		self.collectionListViewModel = viewModel
-		bindViewModel()
 	}
 	
 	private func bindViewModel() {
@@ -68,11 +53,11 @@ final class CollectionListViewController: UIViewController {
 		viewModel.$collections.bind { [weak self] _ in
 			guard let self = self else { return }
 			self.tableView.reloadData()
-			ProgressHUD.dismiss()
+			UIBlockingProgressHUD.dismiss()
 		}
 	}
 	
-	func setupNavBar() {
+	private func setupNavBar() {
 		navigationItem.rightBarButtonItem = sortButton
 		navigationController?.navigationBar.tintColor = .black
 	}
@@ -96,12 +81,22 @@ final class CollectionListViewController: UIViewController {
 		
 		let sortByName = UIAlertAction(title: "По названию",
 									   style: .default) { [weak self] _ in
-			self?.collectionListViewModel?.setFilterByName()
+			guard let self = self else { return }
+			
+			UIView.animate(withDuration: 0.3) {
+				self.collectionListViewModel?.setFilterByName()
+				self.view.layoutIfNeeded()
+			}
 		}
 		
 		let sortByCount = UIAlertAction(title: "По количеству NFT",
 									   style: .default) { [weak self] _ in
-			self?.collectionListViewModel?.setFilterByCount()
+			guard let self = self else { return }
+			
+			UIView.animate(withDuration: 0.3) {
+				self.collectionListViewModel?.setFilterByCount()
+				self.view.layoutIfNeeded()
+			}
 		}
 		
 		let cancel = UIAlertAction(title: "Отмена", style: .cancel)
@@ -112,7 +107,6 @@ final class CollectionListViewController: UIViewController {
 		
 		present(actionSheet, animated: true)
 	}
-	
 }
 
 extension CollectionListViewController: UITableViewDataSource {

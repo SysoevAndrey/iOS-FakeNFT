@@ -63,7 +63,7 @@ final class CollectionNFTCell: UICollectionViewCell, ReuseIdentifying {
 	private lazy var cartButton: UIButton = {
 		let button = UIButton(type: .custom)
 		button.setImage(UIImage.Icons.trash, for: .normal)
-		button.addTarget(self, action: #selector(didTapRemoveButton), for: .touchUpInside)
+		button.addTarget(self, action: #selector(didTapCartButton), for: .touchUpInside)
 		return button
 	}()
 	
@@ -86,7 +86,9 @@ final class CollectionNFTCell: UICollectionViewCell, ReuseIdentifying {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
-	func configure(with model: NFTViewModel) {
+	func configure(with model: NFTViewModel, delegate: CollectionNFTCellDelegate) {
+		self.delegate = delegate
+		
 		nftImageView.kf.setImage(with: model.imageURL)
 		nftLabel.text = model.name
 		priceValue.text = "\(model.price) ETH"
@@ -109,7 +111,7 @@ final class CollectionNFTCell: UICollectionViewCell, ReuseIdentifying {
 	}
 
 	@objc
-	private func didTapRemoveButton() {
+	private func didTapCartButton() {
 		delegate?.nftCellAddToCart(self)
 	}
 	
