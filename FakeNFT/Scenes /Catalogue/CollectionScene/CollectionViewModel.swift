@@ -14,26 +14,10 @@ final class CollectionViewModel {
 	@Observable private(set) var authorModel: AuthorModel = AuthorModel(id: "", name: "", website: "")
 	@Observable private(set) var loadingInProgress: Bool = false
 	
-	private let collectionDataProvider: CollectionDataProvider
+	private let collectionDataProvider: CollectionDataProviderProtocol
 
-	init(collectionDataProvider: CollectionDataProvider = CollectionDataProvider()) {
+	init(collectionDataProvider: CollectionDataProviderProtocol = CollectionDataProvider()) {
 		self.collectionDataProvider = collectionDataProvider
-	}
-	
-	private func convertToViewModel(from nftModel: NFTModel) -> NFTViewModel? {
-		guard let image = nftModel.images.first,
-			  let imageURL = URL(string: image) else { return nil }
-		
-		let isNFTordered = orderItems.contains(nftModel.id)
-		let isNFTLiked = likedItems.contains(nftModel.id)
-		
-		return NFTViewModel(id: nftModel.id,
-							name: nftModel.name,
-							imageURL: imageURL,
-							rating: nftModel.rating,
-							price: nftModel.price,
-							inOrdered: isNFTordered,
-							isLiked: isNFTLiked)
 	}
 	
 	func loadNFTForCollection(collection: Collection) {
@@ -60,6 +44,22 @@ final class CollectionViewModel {
 				}
 			})
 		}
+	}
+	
+	private func convertToViewModel(from nftModel: NFTModel) -> NFTViewModel? {
+		guard let image = nftModel.images.first,
+			  let imageURL = URL(string: image) else { return nil }
+		
+		let isNFTordered = orderItems.contains(nftModel.id)
+		let isNFTLiked = likedItems.contains(nftModel.id)
+		
+		return NFTViewModel(id: nftModel.id,
+							name: nftModel.name,
+							imageURL: imageURL,
+							rating: nftModel.rating,
+							price: nftModel.price,
+							inOrdered: isNFTordered,
+							isLiked: isNFTLiked)
 	}
 	
 	func getAuthorURL(collection: Collection) {

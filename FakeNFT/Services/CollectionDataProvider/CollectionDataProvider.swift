@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class CollectionDataProvider {
+final class CollectionDataProvider: CollectionDataProviderProtocol {
 	private let networkClient: NetworkClient
 	
 	init(networkClient: NetworkClient = DefaultNetworkClient()) {
@@ -64,5 +64,9 @@ final class CollectionDataProvider {
 	
 	func getFavorites(completion: @escaping (Result<FavoritesModel, Error>) -> Void) {
 		//get favorites
+	}
+	
+	func updateFavorites(with favoritesIDs: [String], completion: @escaping (Result<Void, Error>) -> Void) {
+		//
 	}
 }
