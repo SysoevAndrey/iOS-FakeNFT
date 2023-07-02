@@ -70,7 +70,6 @@ final class CollectionNFTCell: UICollectionViewCell, ReuseIdentifying {
 	private lazy var priceAndCartButtonHorizontalStackView: UIStackView = {
 		let stackView = UIStackView()
 		stackView.axis = .horizontal
-		stackView.alignment = .center
 		stackView.distribution = .fill
 		stackView.addArrangedSubview(nameAndPriceVerticalStackView)
 		stackView.addArrangedSubview(cartButton)
@@ -158,6 +157,7 @@ private extension CollectionNFTCell {
 			ratingStackView.topAnchor.constraint(equalTo: nftImageView.bottomAnchor, constant: 8),
 			
 			priceAndCartButtonHorizontalStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+			priceAndCartButtonHorizontalStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
 			priceAndCartButtonHorizontalStackView.topAnchor.constraint(equalTo: ratingStackView.bottomAnchor, constant: 4),
 		])
 	}
