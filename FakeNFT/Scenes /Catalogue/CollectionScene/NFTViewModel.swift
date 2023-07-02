@@ -13,6 +13,6 @@ struct NFTViewModel {
 	let imageURL: URL
 	let rating: Int
 	let price: Double
-	let inOrdered: Bool
+	let isOrdered: Bool
 	let isLiked: Bool
 }

@@ -107,7 +107,6 @@ final class CollectionViewController: UIViewController, UIGestureRecognizerDeleg
 		guard let collection = nftCollectionModel else { return }
 		viewModel?.loadNFTForCollection(collection: collection)
 		viewModel?.getAuthorURL(collection: collection)
-		viewModel?.getOrder()
 	}
 	
 	func initialise(viewModel: CollectionViewModel, model: Collection) {
@@ -143,16 +142,6 @@ final class CollectionViewController: UIViewController, UIGestureRecognizerDeleg
 			} else {
 				UIBlockingProgressHUD.dismiss()
 			}
-		}
-		
-		viewModel.$orderItems.bind { [weak self] _ in
-			guard let self = self else { return }
-			self.nftCollectionView.reloadData()
-		}
-		
-		viewModel.$likedItems.bind { [weak self] _ in
-			guard let self = self else { return }
-			self.nftCollectionView.reloadData()
 		}
 		
 		viewModel.$authorModel.bind { [weak self] _ in

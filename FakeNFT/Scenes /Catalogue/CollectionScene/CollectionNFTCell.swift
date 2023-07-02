@@ -96,7 +96,7 @@ final class CollectionNFTCell: UICollectionViewCell, ReuseIdentifying {
 			ratingStackView.arrangedSubviews[star].tintColor = .yellow
 		}
 		
-		if model.inOrdered {
+		if model.isOrdered {
 			cartButton.setImage(UIImage.Icons.trash, for: .normal)
 		} else {
 			cartButton.setImage(UIImage.Icons.addToCart, for: .normal)

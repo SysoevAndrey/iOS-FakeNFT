@@ -63,10 +63,26 @@ final class CollectionDataProvider: CollectionDataProviderProtocol {
 	}
 	
 	func getFavorites(completion: @escaping (Result<FavoritesModel, Error>) -> Void) {
-		//get favorites
+		let getFavoritesRequest = GetFavoritesRequest()
+		networkClient.send(request: getFavoritesRequest, type: FavoritesModel.self) { result in
+			switch result {
+			case .success(let favoritesModel):
+					completion(.success(favoritesModel))
+			case .failure(let error):
+				completion(.failure(error))
+			}
+		}
 	}
 	
 	func updateFavorites(with favoritesIDs: [String], completion: @escaping (Result<Void, Error>) -> Void) {
-		//
+		let putFavoritesRequest = PutFavoritesRequest(likes: favoritesIDs)
+		networkClient.send(request: putFavoritesRequest, type: FavoritesModel.self) { result in
+			switch result {
+			case .success(_):
+				completion(.success(()))
+			case .failure(let error):
+				completion(.failure(error))
+			}
+		}
 	}
 }
