@@ -16,7 +16,6 @@ final class CollectionViewModel {
 	
 	private let collectionDataProvider: CollectionDataProvider
 
-
 	init(collectionDataProvider: CollectionDataProvider = CollectionDataProvider()) {
 		self.collectionDataProvider = collectionDataProvider
 	}
@@ -39,6 +38,8 @@ final class CollectionViewModel {
 	
 	func loadNFTForCollection(collection: Collection) {
 		loadingInProgress = true
+		var countNFTDidLoad = 0
+		
 		collection.nfts.forEach { id in
 			collectionDataProvider.getNFT(by: id, completion: { [weak self] result in
 				guard let self else { return }
@@ -47,6 +48,11 @@ final class CollectionViewModel {
 					case .success(let nftModel):
 						if let nftViewModel = self.convertToViewModel(from: nftModel) {
 							self.nftItems.append(nftViewModel)
+							
+							countNFTDidLoad += 1
+							if countNFTDidLoad == collection.nfts.count {
+								self.loadingInProgress = false
+							}
 						}
 					case .failure(let error):
 						print(error.localizedDescription)
@@ -54,38 +60,31 @@ final class CollectionViewModel {
 				}
 			})
 		}
-		loadingInProgress = false
 	}
 	
 	func getAuthorURL(collection: Collection) {
-		loadingInProgress = true
 		collectionDataProvider.getAuthor(by: collection.author) { [weak self] result in
 			guard let self else { return }
 			DispatchQueue.main.async {
 				switch result {
 				case .success(let authorModel):
 					self.authorModel = authorModel
-					self.loadingInProgress = false
 				case .failure(let error):
 					print(error.localizedDescription)
-					self.loadingInProgress = false
 				}
 			}
 		}
 	}
 	
 	func getOrder() {
-		loadingInProgress = true
 		collectionDataProvider.getOrder { [weak self] result in
 			guard let self else { return }
 			DispatchQueue.main.async {
 				switch result {
 				case .success(let orderModel):
 					self.orderItems = orderModel.nfts
-					self.loadingInProgress = false
 				case .failure(let error):
 					print(error.localizedDescription)
-					self.loadingInProgress = false
 				}
 			}
 		}

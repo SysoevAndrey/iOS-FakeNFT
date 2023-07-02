@@ -7,7 +7,6 @@
 
 import UIKit
 import WebKit
-import ProgressHUD
 
 final class AboutAuthorViewController: UIViewController, UIGestureRecognizerDelegate {
 	private var authorPageURL: String?
@@ -44,6 +43,9 @@ final class AboutAuthorViewController: UIViewController, UIGestureRecognizerDele
 			  let url = URL(string: authorPageStringURL) else { return }
 		
 		let request = URLRequest(url: url)
+		webView.navigationDelegate = self
+		
+		UIBlockingProgressHUD.show()
 		webView.load(request)
 	}
 }
@@ -72,5 +74,11 @@ private extension AboutAuthorViewController {
 			webView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
 			webView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
 		])
+	}
+}
+
+extension AboutAuthorViewController: WKNavigationDelegate {
+	func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+		UIBlockingProgressHUD.dismiss()
 	}
 }
