@@ -45,13 +45,15 @@ final class CollectionListCell: UITableViewCell, ReuseIdentifying {
         addSubview(collectionNameLabel)
         
         NSLayoutConstraint.activate([
-            coverImageView.topAnchor.constraint(equalTo: topAnchor),
+            coverImageView.topAnchor.constraint(equalTo: topAnchor, constant: 20),
             coverImageView.leadingAnchor.constraint(equalTo: leadingAnchor),
             coverImageView.trailingAnchor.constraint(equalTo: trailingAnchor),
             coverImageView.heightAnchor.constraint(equalToConstant: 140),
+            coverImageView.bottomAnchor.constraint(equalTo: collectionNameLabel.topAnchor, constant: -4),
             
             collectionNameLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
-            collectionNameLabel.topAnchor.constraint(equalTo: coverImageView.bottomAnchor, constant: 4)
+            collectionNameLabel.heightAnchor.constraint(equalToConstant: 22),
+            collectionNameLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -1)
         ])
         
     }
