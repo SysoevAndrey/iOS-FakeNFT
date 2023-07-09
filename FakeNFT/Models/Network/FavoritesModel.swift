@@ -8,5 +8,5 @@
 import Foundation
 
 struct FavoritesModel: Decodable {
-	let likes: [String]
+    let likes: [String]
 }

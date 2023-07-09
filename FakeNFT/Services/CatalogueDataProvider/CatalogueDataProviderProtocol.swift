@@ -8,5 +8,5 @@
 import Foundation
 
 protocol CatalogueProviderProtocol {
-	func getCollections(completion: @escaping (Result<[Collection], Error>) -> Void)
+    func getCollections(completion: @escaping (Result<[Collection], Error>) -> Void)
 }

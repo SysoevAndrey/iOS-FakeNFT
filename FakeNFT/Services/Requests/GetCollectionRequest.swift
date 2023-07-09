@@ -8,7 +8,7 @@
 import Foundation
 
 struct GetCollectionsRequest: NetworkRequest {
-	var endpoint: URL? {
-		ApiConstants.baseURL.appendingPathComponent("/collections")
-	}
+    var endpoint: URL? {
+        ApiConstants.baseURL.appendingPathComponent("/collections")
+    }
 }
