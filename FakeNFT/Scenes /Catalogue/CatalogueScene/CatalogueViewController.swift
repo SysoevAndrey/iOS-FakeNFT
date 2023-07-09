@@ -27,6 +27,7 @@ final class CollectionListViewController: UIViewController {
     )
     
     private var collectionListViewModel: CollectionListViewModel?
+    private var settingsManager = SettingsManager.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -83,7 +84,7 @@ final class CollectionListViewController: UIViewController {
             guard let self = self else { return }
             
             UIView.animate(withDuration: 0.3) {
-                self.collectionListViewModel?.setFilterByName()
+                self.collectionListViewModel?.setSortType(sortType: SortType.sortByName)
                 self.view.layoutIfNeeded()
             }
         }
@@ -93,7 +94,7 @@ final class CollectionListViewController: UIViewController {
             guard let self = self else { return }
             
             UIView.animate(withDuration: 0.3) {
-                self.collectionListViewModel?.setFilterByCount()
+                self.collectionListViewModel?.setSortType(sortType: SortType.sortByCount)
                 self.view.layoutIfNeeded()
             }
         }

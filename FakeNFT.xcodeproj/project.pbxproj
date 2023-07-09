@@ -39,6 +39,7 @@
 		435C65722A4871C800104ECE /* ApiConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435C65712A4871C800104ECE /* ApiConstants.swift */; };
 		435C65742A48767900104ECE /* GetCollectionByIdRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435C65732A48767900104ECE /* GetCollectionByIdRequest.swift */; };
 		435EA13B2A5ACE4500B84D46 /* RatingStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435EA13A2A5ACE4500B84D46 /* RatingStackView.swift */; };
+		435EA13D2A5ADFE400B84D46 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435EA13C2A5ADFE400B84D46 /* SettingsManager.swift */; };
 		43978FF32A501DB800FC2CE3 /* AboutAuthorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43978FF22A501DB800FC2CE3 /* AboutAuthorViewController.swift */; };
 		43978FF52A502B3900FC2CE3 /* CollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43978FF42A502B3900FC2CE3 /* CollectionViewController.swift */; };
 		43978FF92A50665700FC2CE3 /* GetOrderRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43978FF82A50665700FC2CE3 /* GetOrderRequest.swift */; };
@@ -172,6 +173,7 @@
 		435C65712A4871C800104ECE /* ApiConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiConstants.swift; sourceTree = "<group>"; };
 		435C65732A48767900104ECE /* GetCollectionByIdRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetCollectionByIdRequest.swift; sourceTree = "<group>"; };
 		435EA13A2A5ACE4500B84D46 /* RatingStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingStackView.swift; sourceTree = "<group>"; };
+		435EA13C2A5ADFE400B84D46 /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
 		43978FF22A501DB800FC2CE3 /* AboutAuthorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutAuthorViewController.swift; sourceTree = "<group>"; };
 		43978FF42A502B3900FC2CE3 /* CollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewController.swift; sourceTree = "<group>"; };
 		43978FF82A50665700FC2CE3 /* GetOrderRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetOrderRequest.swift; sourceTree = "<group>"; };
@@ -353,6 +355,7 @@
 				435C65622A48422100104ECE /* CatalogueDataProvider */,
 				43978FFE2A506E6E00FC2CE3 /* CollectionDataProvider */,
 				3FC8C38F29D245250081F015 /* Requests */,
+				435EA13C2A5ADFE400B84D46 /* SettingsManager.swift */,
 				55C59F852A4207C100E602C4 /* OrderLoader.swift */,
 				5580BC7C2A48436D0099B6A5 /* CurrenciesLoader.swift */,
 			);
@@ -820,6 +823,7 @@
 				D09584462A5447A500DEDF82 /* FavoritesCell.swift in Sources */,
 				D06ADD052A48AA6700F6E948 /* GetProfileRequest.swift in Sources */,
 				3F478ECF29DB474E00F6D39E /* Colors.swift in Sources */,
+				435EA13D2A5ADFE400B84D46 /* SettingsManager.swift in Sources */,
 				557127662A48765100FDFB51 /* Images.swift in Sources */,
 				559CF0052A3E2FE7006B6B88 /* Icons.swift in Sources */,
 				435C65612A4841D300104ECE /* CatalogueViewModel.swift in Sources */,
