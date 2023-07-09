@@ -85,8 +85,7 @@ final class CollectionViewController: UIViewController, UIGestureRecognizerDeleg
         return contentView
     }()
     
-    private var nftCollectionModel: Collection?
-    private var viewModel: CollectionViewModel?
+    private var viewModel: CollectionViewModel
     
     private let collectionConfig = UICollectionView.Config(
         cellCount: 3,
@@ -98,20 +97,23 @@ final class CollectionViewController: UIViewController, UIGestureRecognizerDeleg
         cellSpacing: 8
     )
     
+    init(viewModel: CollectionViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
         bindViewModel()
         setupValuesForUIElements()
         
-        guard let collection = nftCollectionModel else { return }
-        viewModel?.loadNFTForCollection(collection: collection)
-        viewModel?.getAuthorURL(collection: collection)
-    }
-    
-    func initialise(viewModel: CollectionViewModel, model: Collection) {
-        self.viewModel = viewModel
-        self.nftCollectionModel = model
+        viewModel.loadNFTForCollection()
+        viewModel.getAuthorURL()
     }
     
     @objc
@@ -123,21 +125,19 @@ final class CollectionViewController: UIViewController, UIGestureRecognizerDeleg
     private func didTapAuthorLink() {
         let aboutAuthorScreen = AboutAuthorViewController()
         aboutAuthorScreen.modalPresentationStyle = .fullScreen
-        aboutAuthorScreen.inialise(authorPageURL: viewModel?.authorModel.website ?? "")
+        aboutAuthorScreen.inialise(authorPageURL: viewModel.authorModel.website)
         
         navigationController?.pushViewController(aboutAuthorScreen, animated: true)
     }
     
     private func bindViewModel() {
-        guard let viewModel else { return }
-        
         viewModel.$nftItems.bind { [weak self] _ in
             guard let self = self else { return }
             self.nftCollectionView.reloadData()
         }
         
         viewModel.$loadingInProgress.bind { _ in
-            if viewModel.loadingInProgress {
+            if self.viewModel.loadingInProgress {
                 UIBlockingProgressHUD.show()
             } else {
                 UIBlockingProgressHUD.dismiss()
@@ -170,12 +170,12 @@ private extension CollectionViewController {
     }
     
     func setupValuesForUIElements() {
-        let coverURL = URL(string: nftCollectionModel?.cover.encodeUrl ?? "")
+        let coverURL = URL(string: viewModel.collectionModel.cover.encodeUrl)
         coverImage.kf.setImage(with: coverURL)
         
-        collectionNameLabel.text = nftCollectionModel?.name
-        authorLink.text = viewModel?.authorModel.name
-        nftDescriptionLabel.text = nftCollectionModel?.description
+        collectionNameLabel.text = viewModel.collectionModel.name
+        authorLink.text = viewModel.authorModel.name
+        nftDescriptionLabel.text = viewModel.collectionModel.description
     }
     
     func setupNavBar() {
@@ -209,29 +209,25 @@ private extension CollectionViewController {
 extension CollectionViewController: CollectionNFTCellDelegate {
     func nftCellDidTapLike(_ cell: CollectionNFTCell) {
         guard let indexPath = nftCollectionView.indexPath(for: cell) else { return }
-        guard let nftItem = viewModel?.nftItems[indexPath.row] else { return }
-        
-        viewModel?.addToFavorites(nftViewModel: nftItem)
+        viewModel.onAddToFavorites(indexPath: indexPath)
     }
     
     func nftCellAddToCart(_ cell: CollectionNFTCell) {
         guard let indexPath = nftCollectionView.indexPath(for: cell) else { return }
-        guard let nftItem = viewModel?.nftItems[indexPath.row] else { return }
-        
-        viewModel?.addToCart(nftViewModel: nftItem)
+        viewModel.onAddToCart(indexPath: indexPath)
     }
 }
 
 extension CollectionViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel?.nftItems.count ?? 0
+        viewModel.numberOfItems
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: CollectionNFTCell = collectionView.dequeueReusableCell(indexPath: indexPath)
-        if let model = viewModel?.nftItems[indexPath.row] {
-            cell.configure(with: model, delegate: self)
-        }
+        let model = viewModel.nftItems[indexPath.row]
+           
+        cell.configure(with: model, delegate: self)
         return cell
     }
 }

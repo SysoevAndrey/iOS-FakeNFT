@@ -8,6 +8,12 @@
 import Foundation
 
 final class CollectionViewModel {
+    var numberOfItems: Int {
+        nftItems.count
+    }
+    
+    let collectionModel: Collection
+    
     @Observable private(set) var nftItems: [NFTViewModel] = []
     @Observable private(set) var authorModel: AuthorModel = AuthorModel(id: "", name: "", website: "")
     @Observable private(set) var loadingInProgress: Bool = false
@@ -17,11 +23,12 @@ final class CollectionViewModel {
     
     private let collectionDataProvider: CollectionDataProviderProtocol
     
-    init(collectionDataProvider: CollectionDataProviderProtocol = CollectionDataProvider()) {
+    init(collectionModel: Collection, collectionDataProvider: CollectionDataProviderProtocol = CollectionDataProvider()) {
         self.collectionDataProvider = collectionDataProvider
+        self.collectionModel = collectionModel
     }
     
-    func loadNFTForCollection(collection: Collection) {
+    func loadNFTForCollection() {
         loadingInProgress = true
         
         collectionDataProvider.getOrder { [weak self] result in
@@ -49,7 +56,7 @@ final class CollectionViewModel {
         }
         
         var countNFTDidLoad = 0
-        collection.nfts.forEach { id in
+        collectionModel.nfts.forEach { id in
             collectionDataProvider.getNFT(by: id, completion: { [weak self] result in
                 guard let self else { return }
                 DispatchQueue.main.async {
@@ -59,11 +66,12 @@ final class CollectionViewModel {
                             self.nftItems.append(nftViewModel)
                             
                             countNFTDidLoad += 1
-                            if countNFTDidLoad == collection.nfts.count {
+                            if countNFTDidLoad == self.collectionModel.nfts.count {
                                 self.loadingInProgress = false
                             }
                         }
                     case .failure(let error):
+                        self.loadingInProgress = false
                         print(error.localizedDescription)
                     }
                 }
@@ -99,8 +107,8 @@ final class CollectionViewModel {
         
     }
     
-    func getAuthorURL(collection: Collection) {
-        collectionDataProvider.getAuthor(by: collection.author) { [weak self] result in
+    func getAuthorURL() {
+        collectionDataProvider.getAuthor(by: collectionModel.author) { [weak self] result in
             guard let self else { return }
             DispatchQueue.main.async {
                 switch result {
@@ -113,14 +121,15 @@ final class CollectionViewModel {
         }
     }
     
-    func addToCart(nftViewModel: NFTViewModel) {
+    func onAddToCart(indexPath: IndexPath) {
         let orderItemsBeforeAdding = orderItems
         
-        if nftViewModel.isOrdered {
-            guard let itemIndex = orderItems.firstIndex(of: nftViewModel.id) else { return }
+        let nftItem = nftItems[indexPath.row]
+        if nftItem.isOrdered {
+            guard let itemIndex = orderItems.firstIndex(of: nftItem.id) else { return }
             orderItems.remove(at: itemIndex)
         } else {
-            orderItems.append(nftViewModel.id)
+            orderItems.append(nftItem.id)
         }
         
         loadingInProgress = true
@@ -129,7 +138,7 @@ final class CollectionViewModel {
             DispatchQueue.main.async {
                 switch result {
                 case .success():
-                    self.replaceNFT(nft: nftViewModel, isLiked: nftViewModel.isLiked, isOrdered: !nftViewModel.isOrdered)
+                    self.replaceNFT(nft: nftItem, isLiked: nftItem.isLiked, isOrdered: !nftItem.isOrdered)
                     self.loadingInProgress = false
                     break
                 case .failure(let error):
@@ -141,14 +150,15 @@ final class CollectionViewModel {
         }
     }
     
-    func addToFavorites(nftViewModel: NFTViewModel) {
+    func onAddToFavorites(indexPath: IndexPath) {
         let favoritesBeforeAdding = likedItems
         
-        if nftViewModel.isLiked {
-            guard let itemIndex = likedItems.firstIndex(of: nftViewModel.id) else { return }
+        let nftItem = nftItems[indexPath.row]
+        if nftItem.isLiked {
+            guard let itemIndex = likedItems.firstIndex(of: nftItem.id) else { return }
             likedItems.remove(at: itemIndex)
         } else {
-            likedItems.append(nftViewModel.id)
+            likedItems.append(nftItem.id)
         }
         
         loadingInProgress = true
@@ -157,9 +167,8 @@ final class CollectionViewModel {
             DispatchQueue.main.async {
                 switch result {
                 case .success():
-                    self.replaceNFT(nft: nftViewModel, isLiked: !nftViewModel.isLiked, isOrdered: nftViewModel.isOrdered)
+                    self.replaceNFT(nft: nftItem, isLiked: !nftItem.isLiked, isOrdered: nftItem.isOrdered)
                     self.loadingInProgress = false
-                    break
                 case .failure(let error):
                     self.likedItems = favoritesBeforeAdding
                     self.loadingInProgress = false

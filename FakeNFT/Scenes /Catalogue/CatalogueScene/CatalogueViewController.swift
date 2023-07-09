@@ -127,11 +127,10 @@ extension CollectionListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let collection = collectionListViewModel?.collections[indexPath.row] else { return }
         
-        let collectionVC = CollectionViewController()
-        let collectionVM = CollectionViewModel()
-        collectionVC.modalPresentationStyle = .fullScreen
-        collectionVC.initialise(viewModel: collectionVM, model: collection)
+        let collectionVM = CollectionViewModel(collectionModel: collection)
+        let collectionVC = CollectionViewController(viewModel: collectionVM)
         
+        collectionVC.modalPresentationStyle = .fullScreen
         navigationController?.pushViewController(collectionVC, animated: true)
     }
 }

@@ -53,6 +53,7 @@ final class AboutAuthorViewController: UIViewController, UIGestureRecognizerDele
 private extension AboutAuthorViewController {
     func setupView() {
         view.backgroundColor = .white
+        tabBarController?.tabBar.isHidden = true
         
         webView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(webView)

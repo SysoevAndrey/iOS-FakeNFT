@@ -16,8 +16,10 @@ final class CatalogueDataProvider: CatalogueProviderProtocol {
     
     func getCollections(completion: @escaping (Result<[Collection], Error>) -> Void) {
         let getCollectionsRequest = GetCollectionsRequest()
-        networkClient.send(request: getCollectionsRequest,
-                           type: [Collection].self) { result in
+        networkClient.send(
+            request: getCollectionsRequest,
+            type: [Collection].self
+        ) { result in
             switch result {
             case .success(let collections):
                 completion(.success(collections))
@@ -25,7 +27,6 @@ final class CatalogueDataProvider: CatalogueProviderProtocol {
                 completion(.failure(error))
             }
         }
-        
     }
 }
 

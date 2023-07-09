@@ -30,10 +30,8 @@ final class CollectionNFTCell: UICollectionViewCell, ReuseIdentifying {
         return heartButton
     }()
     
-    private lazy var ratingStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .horizontal
-        stackView.spacing = 2
+    private lazy var ratingStackView: RatingStackView = {
+        let stackView = RatingStackView(countOfStars: 5)
         return stackView
     }()
     
@@ -92,21 +90,13 @@ final class CollectionNFTCell: UICollectionViewCell, ReuseIdentifying {
         nftLabel.text = model.name
         priceValue.text = "\(model.price) ETH"
         
-        for star in 0..<model.rating {
-            ratingStackView.arrangedSubviews[star].tintColor = .yellow
-        }
+        ratingStackView.setupRating(rating: model.rating)
         
-        if model.isOrdered {
-            cartButton.setImage(UIImage.Icons.trash, for: .normal)
-        } else {
-            cartButton.setImage(UIImage.Icons.addToCart, for: .normal)
-        }
+        let orderIcon = model.isOrdered ? UIImage.Icons.trash : UIImage.Icons.addToCart
+        cartButton.setImage(orderIcon, for: .normal)
         
-        if model.isLiked {
-            heartButton.setImage(UIImage.Icons.likeActive, for: .normal)
-        } else {
-            heartButton.setImage(UIImage.Icons.likeNotActive, for: .normal)
-        }
+        let heathIcon = model.isLiked ? UIImage.Icons.likeActive : UIImage.Icons.likeNotActive
+        heartButton.setImage(heathIcon, for: .normal)
     }
     
     @objc
@@ -127,16 +117,6 @@ private extension CollectionNFTCell {
         [nftImageView, heartButton, ratingStackView, priceAndCartButtonHorizontalStackView].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             contentView.addSubview($0)
-        }
-        
-        for _ in 0..<5 {
-            let starImageView = UIImageView(image: UIImage(systemName: "star.fill"))
-            starImageView.tintColor = .lightGray
-            NSLayoutConstraint.activate([
-                starImageView.widthAnchor.constraint(equalToConstant: 12),
-                starImageView.heightAnchor.constraint(equalToConstant: 12)
-            ])
-            ratingStackView.addArrangedSubview(starImageView)
         }
         setupConstraints()
     }

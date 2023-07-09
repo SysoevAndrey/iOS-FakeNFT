@@ -8,13 +8,13 @@
 import Foundation
 
 struct GetUserByIdRequest: NetworkRequest {
+    var endpoint: URL? {
+        ApiConstants.baseURL.appendingPathComponent("/users/\(id)")
+    }
+    
     private let id: String
     
     init(id: String) {
         self.id = id
-    }
-    
-    var endpoint: URL? {
-        ApiConstants.baseURL.appendingPathComponent("/users/\(id)")
     }
 }
