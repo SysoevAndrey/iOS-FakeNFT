@@ -86,6 +86,7 @@ final class CollectionViewController: UIViewController, UIGestureRecognizerDeleg
     }()
     
     private var viewModel: CollectionViewModel
+    private var alertPresenter: AlertPresenter
     
     private let collectionConfig = UICollectionView.Config(
         cellCount: 3,
@@ -97,8 +98,9 @@ final class CollectionViewController: UIViewController, UIGestureRecognizerDeleg
         cellSpacing: 8
     )
     
-    init(viewModel: CollectionViewModel) {
+    init(viewModel: CollectionViewModel, alertPresenter: AlertPresenter = AlertPresenter()) {
         self.viewModel = viewModel
+        self.alertPresenter = alertPresenter
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -108,6 +110,8 @@ final class CollectionViewController: UIViewController, UIGestureRecognizerDeleg
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        alertPresenter.delegate = self
+        
         setupView()
         bindViewModel()
         setupValuesForUIElements()
@@ -147,6 +151,24 @@ final class CollectionViewController: UIViewController, UIGestureRecognizerDeleg
         viewModel.$authorModel.bind { [weak self] _ in
             guard let self = self else { return }
             self.authorLink.text = viewModel.authorModel.name
+        }
+        
+        viewModel.$mainLoadErrorDescription.bind { [weak self] _ in
+            guard let self = self else { return }
+            self.alertPresenter.preparingAlertWithRepeat(alertText: viewModel.mainLoadErrorDescription) {
+                self.viewModel.loadNFTForCollection()
+                self.viewModel.getAuthorURL()
+            }
+        }
+        
+        viewModel.$addToCartErrorDescription.bind { [weak self] _ in
+            guard let self = self else { return }
+            self.alertPresenter.preparingDataAndDisplay(alertText: viewModel.addToCartErrorDescription){}
+        }
+        
+        viewModel.$addToFavoritesErrorDescription.bind { [weak self] _ in
+            guard let self = self else { return }
+            self.alertPresenter.preparingDataAndDisplay(alertText: viewModel.addToFavoritesErrorDescription){}
         }
     }
 }
@@ -270,6 +292,12 @@ extension CollectionViewController: UICollectionViewDelegateFlowLayout {
         minimumLineSpacingForSectionAt section: Int
     ) -> CGFloat {
         collectionConfig.cellSpacing
+    }
+}
+
+extension CollectionViewController: AlertPresenterDelegate {
+    func showAlert(alert: UIAlertController) {
+        present(alert, animated: true)
     }
 }
 

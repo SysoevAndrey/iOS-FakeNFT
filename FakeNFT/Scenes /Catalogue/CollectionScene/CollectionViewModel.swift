@@ -17,6 +17,9 @@ final class CollectionViewModel {
     @Observable private(set) var nftItems: [NFTViewModel] = []
     @Observable private(set) var authorModel: AuthorModel = AuthorModel(id: "", name: "", website: "")
     @Observable private(set) var loadingInProgress: Bool = false
+    @Observable private(set) var mainLoadErrorDescription: String = ""
+    @Observable private(set) var addToCartErrorDescription: String = ""
+    @Observable private(set) var addToFavoritesErrorDescription: String = ""
     
     private var orderItems: [String] = []
     private var likedItems: [String] = []
@@ -38,7 +41,7 @@ final class CollectionViewModel {
                 case .success(let orderModel):
                     self.orderItems = orderModel.nfts
                 case .failure(let error):
-                    print(error.localizedDescription)
+                    self.mainLoadErrorDescription = error.localizedDescription
                 }
             }
         }
@@ -50,7 +53,7 @@ final class CollectionViewModel {
                 case .success(let favoritesModel):
                     self.likedItems = favoritesModel.likes
                 case .failure(let error):
-                    print(error.localizedDescription)
+                    self.mainLoadErrorDescription = error.localizedDescription
                 }
             }
         }
@@ -72,7 +75,7 @@ final class CollectionViewModel {
                         }
                     case .failure(let error):
                         self.loadingInProgress = false
-                        print(error.localizedDescription)
+                        self.mainLoadErrorDescription = error.localizedDescription
                     }
                 }
             })
@@ -115,7 +118,7 @@ final class CollectionViewModel {
                 case .success(let authorModel):
                     self.authorModel = authorModel
                 case .failure(let error):
-                    print(error.localizedDescription)
+                    self.mainLoadErrorDescription = error.localizedDescription
                 }
             }
         }
@@ -144,7 +147,7 @@ final class CollectionViewModel {
                 case .failure(let error):
                     self.orderItems = orderItemsBeforeAdding
                     self.loadingInProgress = false
-                    print(error.localizedDescription)
+                    self.addToCartErrorDescription = error.localizedDescription
                 }
             }
         }
@@ -172,7 +175,7 @@ final class CollectionViewModel {
                 case .failure(let error):
                     self.likedItems = favoritesBeforeAdding
                     self.loadingInProgress = false
-                    print(error.localizedDescription)
+                    self.addToFavoritesErrorDescription = error.localizedDescription
                 }
             }
         }

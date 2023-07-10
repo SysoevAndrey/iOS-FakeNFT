@@ -28,6 +28,7 @@ final class CollectionListViewController: UIViewController {
     
     private var collectionListViewModel: CollectionListViewModel?
     private var settingsManager = SettingsManager.shared
+    private var alertPresenter: AlertPresenterProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,6 +36,7 @@ final class CollectionListViewController: UIViewController {
         if collectionListViewModel == nil {
             collectionListViewModel = CollectionListViewModel(provider: CatalogueDataProvider())
         }
+        alertPresenter = AlertPresenter(delegate: self)
         
         bindViewModel()
         setupLayout()
@@ -51,9 +53,15 @@ final class CollectionListViewController: UIViewController {
     private func bindViewModel() {
         guard let viewModel = collectionListViewModel else { return }
         viewModel.$collections.bind { [weak self] _ in
-            guard let self = self else { return }
-            self.tableView.reloadData()
+            self?.tableView.reloadData()
             UIBlockingProgressHUD.dismiss()
+        }
+        
+        viewModel.$errorDescription.bind { [weak self] _ in
+            UIBlockingProgressHUD.dismiss()
+            self?.alertPresenter?.preparingAlertWithRepeat(alertText: viewModel.errorDescription) {
+                viewModel.getCollections()
+            }
         }
     }
     
@@ -81,21 +89,17 @@ final class CollectionListViewController: UIViewController {
         
         let sortByName = UIAlertAction(title: "По названию",
                                        style: .default) { [weak self] _ in
-            guard let self = self else { return }
-            
             UIView.animate(withDuration: 0.3) {
-                self.collectionListViewModel?.setSortType(sortType: SortType.sortByName)
-                self.view.layoutIfNeeded()
+                self?.collectionListViewModel?.setSortType(sortType: SortType.sortByName)
+                self?.view.layoutIfNeeded()
             }
         }
         
         let sortByCount = UIAlertAction(title: "По количеству NFT",
                                         style: .default) { [weak self] _ in
-            guard let self = self else { return }
-            
             UIView.animate(withDuration: 0.3) {
-                self.collectionListViewModel?.setSortType(sortType: SortType.sortByCount)
-                self.view.layoutIfNeeded()
+                self?.collectionListViewModel?.setSortType(sortType: SortType.sortByCount)
+                self?.view.layoutIfNeeded()
             }
         }
         
@@ -133,5 +137,11 @@ extension CollectionListViewController: UITableViewDelegate {
         
         collectionVC.modalPresentationStyle = .fullScreen
         navigationController?.pushViewController(collectionVC, animated: true)
+    }
+}
+
+extension CollectionListViewController: AlertPresenterDelegate {
+    func showAlert(alert: UIAlertController) {
+        present(alert, animated: true)
     }
 }

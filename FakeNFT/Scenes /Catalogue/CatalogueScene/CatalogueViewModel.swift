@@ -9,6 +9,7 @@ import Foundation
 
 final class CollectionListViewModel {
     @Observable private(set) var collections: [Collection] = []
+    @Observable private(set) var errorDescription: String = ""
     
     private var sort: SortType? {
         didSet {
@@ -38,7 +39,7 @@ final class CollectionListViewModel {
                     }
                 case .failure(let error):
                     self.collections = []
-                    print(error.localizedDescription)
+                    self.errorDescription = error.localizedDescription
                 }
             }
         }
