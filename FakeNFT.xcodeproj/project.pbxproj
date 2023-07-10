@@ -41,6 +41,7 @@
 		435EA13B2A5ACE4500B84D46 /* RatingStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435EA13A2A5ACE4500B84D46 /* RatingStackView.swift */; };
 		435EA13D2A5ADFE400B84D46 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435EA13C2A5ADFE400B84D46 /* SettingsManager.swift */; };
 		435EA1402A5C9B8900B84D46 /* AlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435EA13F2A5C9B8900B84D46 /* AlertPresenter.swift */; };
+		435EA1432A5CB33C00B84D46 /* AboutAuthorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435EA1422A5CB33C00B84D46 /* AboutAuthorViewModel.swift */; };
 		43978FF32A501DB800FC2CE3 /* AboutAuthorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43978FF22A501DB800FC2CE3 /* AboutAuthorViewController.swift */; };
 		43978FF52A502B3900FC2CE3 /* CollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43978FF42A502B3900FC2CE3 /* CollectionViewController.swift */; };
 		43978FF92A50665700FC2CE3 /* GetOrderRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43978FF82A50665700FC2CE3 /* GetOrderRequest.swift */; };
@@ -176,6 +177,7 @@
 		435EA13A2A5ACE4500B84D46 /* RatingStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingStackView.swift; sourceTree = "<group>"; };
 		435EA13C2A5ADFE400B84D46 /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
 		435EA13F2A5C9B8900B84D46 /* AlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenter.swift; sourceTree = "<group>"; };
+		435EA1422A5CB33C00B84D46 /* AboutAuthorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutAuthorViewModel.swift; sourceTree = "<group>"; };
 		43978FF22A501DB800FC2CE3 /* AboutAuthorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutAuthorViewController.swift; sourceTree = "<group>"; };
 		43978FF42A502B3900FC2CE3 /* CollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewController.swift; sourceTree = "<group>"; };
 		43978FF82A50665700FC2CE3 /* GetOrderRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetOrderRequest.swift; sourceTree = "<group>"; };
@@ -519,6 +521,7 @@
 			isa = PBXGroup;
 			children = (
 				43978FF22A501DB800FC2CE3 /* AboutAuthorViewController.swift */,
+				435EA1422A5CB33C00B84D46 /* AboutAuthorViewModel.swift */,
 			);
 			path = AboutAuthorScreen;
 			sourceTree = "<group>";
@@ -827,6 +830,7 @@
 			files = (
 				435C65722A4871C800104ECE /* ApiConstants.swift in Sources */,
 				43978FF32A501DB800FC2CE3 /* AboutAuthorViewController.swift in Sources */,
+				435EA1432A5CB33C00B84D46 /* AboutAuthorViewModel.swift in Sources */,
 				439790062A5074B800FC2CE3 /* GetUserByIdRequest.swift in Sources */,
 				439F1BF92A4CC24F00438ACF /* NFTModel.swift in Sources */,
 				435C65702A486FE500104ECE /* GetCollectionRequest.swift in Sources */,

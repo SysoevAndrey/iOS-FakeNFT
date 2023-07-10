@@ -9,7 +9,7 @@ import UIKit
 import WebKit
 
 final class AboutAuthorViewController: UIViewController, UIGestureRecognizerDelegate {
-    private var authorPageURL: String?
+    private var viewModel: AboutAuthorViewModel
     
     private lazy var webView: WKWebView = {
         let webView = WKWebView()
@@ -23,14 +23,30 @@ final class AboutAuthorViewController: UIViewController, UIGestureRecognizerDele
         action: #selector(didTapBackButton)
     )
     
+    init(viewModel: AboutAuthorViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+        bindViewModel()
         loadPage()
     }
     
-    func inialise(authorPageURL: String) {
-        self.authorPageURL = authorPageURL
+    private func bindViewModel() {
+        viewModel.$loadingInProgress.bind { _ in
+            if self.viewModel.loadingInProgress {
+                UIBlockingProgressHUD.show()
+            } else {
+                UIBlockingProgressHUD.dismiss()
+            }
+        }
     }
     
     @objc
@@ -39,13 +55,12 @@ final class AboutAuthorViewController: UIViewController, UIGestureRecognizerDele
     }
     
     private func loadPage() {
-        guard let authorPageStringURL = authorPageURL,
-              let url = URL(string: authorPageStringURL) else { return }
+        guard let url = URL(string: viewModel.authorPageURL) else { return }
         
         let request = URLRequest(url: url)
         webView.navigationDelegate = self
         
-        UIBlockingProgressHUD.show()
+        viewModel.changeLoadingStatus(loadingInProgress: true)
         webView.load(request)
     }
 }
@@ -80,6 +95,6 @@ private extension AboutAuthorViewController {
 
 extension AboutAuthorViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        UIBlockingProgressHUD.dismiss()
+        viewModel.changeLoadingStatus(loadingInProgress: false)
     }
 }

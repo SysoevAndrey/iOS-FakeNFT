@@ -127,9 +127,9 @@ final class CollectionViewController: UIViewController, UIGestureRecognizerDeleg
     
     @objc
     private func didTapAuthorLink() {
-        let aboutAuthorScreen = AboutAuthorViewController()
+        let aboutAuthorViewModel = AboutAuthorViewModel(authorPageURL: viewModel.authorModel.website)
+        let aboutAuthorScreen = AboutAuthorViewController(viewModel: aboutAuthorViewModel)
         aboutAuthorScreen.modalPresentationStyle = .fullScreen
-        aboutAuthorScreen.inialise(authorPageURL: viewModel.authorModel.website)
         
         navigationController?.pushViewController(aboutAuthorScreen, animated: true)
     }

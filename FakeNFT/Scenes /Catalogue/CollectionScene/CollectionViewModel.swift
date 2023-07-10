@@ -13,6 +13,7 @@ final class CollectionViewModel {
     }
     
     let collectionModel: Collection
+    let collectionDataProvider: CollectionDataProviderProtocol
     
     @Observable private(set) var nftItems: [NFTViewModel] = []
     @Observable private(set) var authorModel: AuthorModel = AuthorModel(id: "", name: "", website: "")
@@ -23,8 +24,6 @@ final class CollectionViewModel {
     
     private var orderItems: [String] = []
     private var likedItems: [String] = []
-    
-    private let collectionDataProvider: CollectionDataProviderProtocol
     
     init(collectionModel: Collection, collectionDataProvider: CollectionDataProviderProtocol = CollectionDataProvider()) {
         self.collectionDataProvider = collectionDataProvider
