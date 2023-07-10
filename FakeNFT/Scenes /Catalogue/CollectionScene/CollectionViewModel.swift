@@ -58,8 +58,9 @@ final class CollectionViewModel {
             }
         }
         
-        var countNFTDidLoad = 0
+        let group = DispatchGroup()
         collectionModel.nfts.forEach { id in
+            group.enter()
             collectionDataProvider.getNFT(by: id, completion: { [weak self] result in
                 guard let self else { return }
                 DispatchQueue.main.async {
@@ -67,18 +68,19 @@ final class CollectionViewModel {
                     case .success(let nftModel):
                         if let nftViewModel = self.convertToViewModel(from: nftModel) {
                             self.nftItems.append(nftViewModel)
-                            
-                            countNFTDidLoad += 1
-                            if countNFTDidLoad == self.collectionModel.nfts.count {
-                                self.loadingInProgress = false
-                            }
+                            group.leave()
                         }
                     case .failure(let error):
                         self.loadingInProgress = false
                         self.mainLoadErrorDescription = error.localizedDescription
+                        group.leave()
                     }
                 }
             })
+        }
+        
+        group.notify(queue: .main) { [weak self] in
+            self?.loadingInProgress = false
         }
     }
     
