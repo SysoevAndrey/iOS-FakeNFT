@@ -75,6 +75,7 @@
 		D0D4F1F22A470CDD00A0922B /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D4F1F12A470CDD00A0922B /* ProfileViewController.swift */; };
 		D0D4F1F42A47153B00A0922B /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D4F1F32A47153B00A0922B /* ProfileView.swift */; };
 		D0D4F1F62A47159600A0922B /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D4F1F52A47159600A0922B /* ProfileViewModel.swift */; };
+		D0DF0C412A61DF0E0064F5E8 /* GetItemByIdRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0DF0C402A61DF0E0064F5E8 /* GetItemByIdRequest.swift */; };
 		55C4FB992A43248C00028007 /* RemoveNFTViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C4FB982A43248C00028007 /* RemoveNFTViewController.swift */; };
 		55C4FB9B2A4339C800028007 /* PutOrderRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C4FB9A2A4339C800028007 /* PutOrderRequest.swift */; };
 		55C59F822A4205C000E602C4 /* GetOrderRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C59F812A4205C000E602C4 /* GetOrderRequest.swift */; };
@@ -187,6 +188,7 @@
 		55C59F8B2A420E1900E602C4 /* GetNFTByIdRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetNFTByIdRequest.swift; sourceTree = "<group>"; };
 		55C59F8D2A42201000E602C4 /* CartNFTCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartNFTCell.swift; sourceTree = "<group>"; };
 		55DE56692A40C2C7004F8042 /* SummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryView.swift; sourceTree = "<group>"; };
+		D0DF0C402A61DF0E0064F5E8 /* GetItemByIdRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetItemByIdRequest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
