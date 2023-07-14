@@ -44,7 +44,7 @@ final class DevelopersViewController: UIViewController, WKUIDelegate {
     }
     
     // MARK: - Layout methods
-    func setupView() {
+    private func setupView() {
         navigationController?.navigationBar.tintColor = .black
         navigationItem.leftBarButtonItem = backButton
         backButton.accessibilityIdentifier = "backButton"
@@ -53,7 +53,7 @@ final class DevelopersViewController: UIViewController, WKUIDelegate {
         
     }
     
-    func addWebView() {
+    private func addWebView() {
         view.addSubview(webView)
         
         NSLayoutConstraint.activate([
@@ -67,9 +67,8 @@ final class DevelopersViewController: UIViewController, WKUIDelegate {
 
 extension DevelopersViewController: UIGestureRecognizerDelegate {}
 
-// MARK: - Nested types
+// MARK: - Types
 private extension DevelopersViewController {
-
     enum Constants {
         static let url = "https://practicum.yandex.ru/ios-developer"
     }

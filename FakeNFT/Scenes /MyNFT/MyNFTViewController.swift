@@ -6,7 +6,8 @@ final class MyNFTViewController: UIViewController, UIGestureRecognizerDelegate {
     var nftIDs: [String]
     var likedIDs: [String]
     
-    private var viewModel: MyNFTViewModel
+    private let viewModel: MyNFTViewModel
+    
     private var badConnection: Bool = false
     
     //MARK: - Layout elements
@@ -53,6 +54,15 @@ final class MyNFTViewController: UIViewController, UIGestureRecognizerDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        if let sortOrder = UserDefaults.standard.data(forKey: "sortOrder") {
+            let order = try? PropertyListDecoder().decode(MyNFTViewModel.Sort.self, from: sortOrder)
+            self.viewModel.sort = order
+        } else {
+            self.viewModel.sort = .rating
+        }
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         if badConnection { viewModel.getMyNFTs(nftIDs: nftIDs) }
         navigationController?.interactivePopGestureRecognizer?.isEnabled = true
@@ -67,11 +77,11 @@ final class MyNFTViewController: UIViewController, UIGestureRecognizerDelegate {
             view.updateNFT(nfts: nfts)
         }
         
-        viewModel.onError = { [weak self] in
+        viewModel.onError = { [weak self] error in
             self?.badConnection = true
             let alert = UIAlertController(
                 title: "Нет интернета",
-                message: "Что-то не так со связью :(",
+                message: error.localizedDescription,
                 preferredStyle: .alert)
             let action = UIAlertAction(title: "Ok", style: .cancel) { _ in
                 self?.navigationController?.popViewController(animated: true)
@@ -79,10 +89,6 @@ final class MyNFTViewController: UIViewController, UIGestureRecognizerDelegate {
             alert.addAction(action)
             self?.present(alert, animated: true)
         }
-    }
-    
-    func getAuthorById(id: String) -> String {
-        return viewModel.authors[id] ?? ""
     }
     
     @objc
@@ -97,15 +103,18 @@ final class MyNFTViewController: UIViewController, UIGestureRecognizerDelegate {
             message: "Сортировка",
             preferredStyle: .actionSheet
         )
-        
+                
         let sortByPriceAction = UIAlertAction(title: "По цене", style: .default) { [weak self] _ in
             self?.viewModel.sort = .price
+            self?.saveSortOrder(order: .price)
         }
         let sortByRatingAction = UIAlertAction(title: "По рейтингу", style: .default) { [weak self] _ in
             self?.viewModel.sort = .rating
+            self?.saveSortOrder(order: .rating)
         }
         let sortByNameAction = UIAlertAction(title: "По названию", style: .default) { [weak self] _ in
             self?.viewModel.sort = .name
+            self?.saveSortOrder(order: .name)
         }
         let closeAction = UIAlertAction(title: "Закрыть", style: .cancel)
         
@@ -115,6 +124,11 @@ final class MyNFTViewController: UIViewController, UIGestureRecognizerDelegate {
         alert.addAction(closeAction)
         
         present(alert, animated: true)
+    }
+    
+    private func saveSortOrder(order: MyNFTViewModel.Sort) {
+        let data = try? PropertyListEncoder().encode(order)
+        UserDefaults.standard.set(data, forKey: "sortOrder")
     }
     
     // MARK: - Layout methods

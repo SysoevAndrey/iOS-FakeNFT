@@ -4,16 +4,16 @@ final class FavoritesViewModel {
     
     // MARK: - Properties
     var onChange: (() -> Void)?
-    var onError: (() -> Void)?
+    var onError: ((_ error: Error) -> Void)?
     
     private let networkClient = DefaultNetworkClient()
-
+    
     private(set) var likedNFTs: [NFTNetworkModel]? {
         didSet {
             onChange?()
         }
     }
-
+    
     // MARK: - Lifecycle
     init(likedIDs: [String]){
         self.likedNFTs = []
@@ -26,12 +26,12 @@ final class FavoritesViewModel {
         )
     }
     
-    // MARK: - Methods
+    // MARK: - Public Methods
     func getLikedNFTs(likedIDs: [String]) {
         var loadedNFTs: [NFTNetworkModel] = []
         
         likedIDs.forEach { id in
-            networkClient.send(request: GetNFTByIdRequest(id: id), type: NFTNetworkModel.self) { [weak self] result in
+            networkClient.send(request: GetItemByIdRequest(id: id, item: .nft), type: NFTNetworkModel.self) { [weak self] result in
                 DispatchQueue.main.async {
                     switch result {
                     case .success(let nft):
@@ -41,8 +41,7 @@ final class FavoritesViewModel {
                             UIBlockingProgressHUD.dismiss()
                         }
                     case .failure(let error):
-                        print(error)
-                        self?.onError?()
+                        self?.onError?(error)
                         UIBlockingProgressHUD.dismiss()
                     }
                 }
@@ -60,8 +59,7 @@ final class FavoritesViewModel {
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: "likesUpdated"), object: likedIDs.count)
                     UIBlockingProgressHUD.dismiss()
                 case .failure(let error):
-                    print(error)
-                    self?.onError?()
+                    self?.onError?(error)
                     UIBlockingProgressHUD.dismiss()
                 }
             }
@@ -77,6 +75,7 @@ final class FavoritesViewModel {
         self.putLikedNFTs(likedIDs: likedIDs)
     }
     
+    // MARK: - Private Methods
     @objc
     private func myNFTliked(notification: Notification) {
         guard var likedNFTs = likedNFTs,
@@ -90,5 +89,5 @@ final class FavoritesViewModel {
         
         let likedIDs = likedNFTs.map ({ $0.id })
         putLikedNFTs(likedIDs: likedIDs)
-        }
+    }
 }

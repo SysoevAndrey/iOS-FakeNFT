@@ -3,9 +3,9 @@ import UIKit
 final class FavoritesViewController: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK: - Properties
-    var likedIDs: [String]
+    private let likedIDs: [String]
+    private let viewModel: FavoritesViewModel
     
-    private var viewModel: FavoritesViewModel
     private var badConnection: Bool = false
     
     //MARK: - Layout elements
@@ -58,11 +58,11 @@ final class FavoritesViewController: UIViewController, UIGestureRecognizerDelega
             view.updateNFT(nfts: nfts)
         }
         
-        viewModel.onError = { [weak self] in
+        viewModel.onError = { [weak self] error in
             self?.badConnection = true
             let alert = UIAlertController(
                 title: "Нет интернета",
-                message: "Что-то не так со связью :(",
+                message: error.localizedDescription,
                 preferredStyle: .alert)
             let action = UIAlertAction(title: "Ok", style: .cancel) { _ in
                 self?.navigationController?.popViewController(animated: true)
@@ -78,7 +78,7 @@ final class FavoritesViewController: UIViewController, UIGestureRecognizerDelega
     }
     
     // MARK: - Layout methods
-    func setupView() {
+    private func setupView() {
         if likedIDs.isEmpty {
             view.backgroundColor = .white
             setupNavBar(emptyNFTs: true)
@@ -89,7 +89,7 @@ final class FavoritesViewController: UIViewController, UIGestureRecognizerDelega
         }
     }
     
-    func setupNavBar(emptyNFTs: Bool) {
+    private func setupNavBar(emptyNFTs: Bool) {
         navigationController?.navigationBar.tintColor = .black
         navigationItem.leftBarButtonItem = backButton
         backButton.accessibilityIdentifier = "backButton"
@@ -98,7 +98,7 @@ final class FavoritesViewController: UIViewController, UIGestureRecognizerDelega
         }
     }
     
-    func addEmptyLabel() {
+    private func addEmptyLabel() {
         view.addSubview(emptyLabel)
         
         NSLayoutConstraint.activate([

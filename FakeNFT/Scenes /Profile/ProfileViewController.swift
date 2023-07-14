@@ -3,6 +3,7 @@ import UIKit
 final class ProfileViewController: UIViewController {
     
     // MARK: - Properties
+    private var profileView: ProfileView?
     private var viewModel: ProfileViewModel
     private var badConnection: Bool = false
     
@@ -18,7 +19,8 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         bind()
-        setupView()
+        self.view = profileView
+        setupNavBar()
         viewModel.getProfileData()
         navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
@@ -32,6 +34,7 @@ final class ProfileViewController: UIViewController {
     required init?(coder aDecoder: NSCoder) {
         self.viewModel = ProfileViewModel(networkClient: nil)
         super.init(coder: aDecoder)
+        self.profileView = ProfileView(frame: .zero, viewModel: self.viewModel, viewController: self)
     }
     
     // MARK: - Methods
@@ -45,7 +48,6 @@ final class ProfileViewController: UIViewController {
     private func bind() {
         viewModel.onChange = { [weak self] in
             self?.badConnection = false
-            self?.setupView()
             let view = self?.view as? ProfileView
             view?.updateViews(
                 avatarURL: self?.viewModel.avatarURL,
@@ -57,16 +59,16 @@ final class ProfileViewController: UIViewController {
             )
         }
         
+        viewModel.onLoaded = { [weak self] in
+            let view = self?.view as? ProfileView
+            view?.initiateViewControllers()
+        }
+        
         viewModel.onError = { [weak self] in
             self?.badConnection = true
             self?.view = NoInternetView()
             self?.navigationController?.navigationBar.isHidden = true
         }
-    }
-    
-    func setupView() {
-        self.view = ProfileView(frame: .zero, viewModel: self.viewModel, viewController: self)
-        setupNavBar()
     }
     
     func setupNavBar() {

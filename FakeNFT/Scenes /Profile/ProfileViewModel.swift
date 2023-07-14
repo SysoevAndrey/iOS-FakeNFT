@@ -4,6 +4,7 @@ final class ProfileViewModel {
     
     // MARK: - Properties
     var onChange: (() -> Void)?
+    var onLoaded: (() -> Void)?
     var onError: (() -> Void)?
     
     private var networkClient: NetworkClient = DefaultNetworkClient()
@@ -35,12 +36,14 @@ final class ProfileViewModel {
     private(set) var nfts: [String]? {
         didSet {
             onChange?()
+            onLoaded?()
         }
     }
     
     private(set) var likes: [String]? {
         didSet {
             onChange?()
+            onLoaded?()
         }
     }
     
@@ -61,13 +64,10 @@ final class ProfileViewModel {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let profile):
-                    self?.avatarURL = URL(string: profile.avatar)
-                    self?.name = profile.name
-                    self?.description = profile.description
-                    self?.website = profile.website
+                    self?.fillSelfFromResponse(response: profile)
                     self?.nfts = profile.nfts
                     self?.likes = profile.likes
-                    self?.id = profile.id
+//                    self?.id = profile.id
                     UIBlockingProgressHUD.dismiss()
                 case .failure(let error):
                     self?.error = error
@@ -93,13 +93,7 @@ final class ProfileViewModel {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let profile):
-                    self?.avatarURL = URL(string: profile.avatar)
-                    self?.name = profile.name
-                    self?.description = profile.description
-                    self?.website = profile.website
-                    self?.nfts = profile.nfts
-                    self?.likes = profile.likes
-                    self?.id = profile.id
+                    self?.fillSelfFromResponse(response: profile)
                     UIBlockingProgressHUD.dismiss()
                 case .failure(let error):
                     self?.error = error
@@ -108,5 +102,13 @@ final class ProfileViewModel {
                 }
             }
         }
+    }
+    
+    func fillSelfFromResponse(response: ProfileNetworkModel) {
+        self.avatarURL = URL(string: response.avatar)
+        self.name = response.name
+        self.description = response.description
+        self.website = response.website
+        self.id = response.id
     }
 }

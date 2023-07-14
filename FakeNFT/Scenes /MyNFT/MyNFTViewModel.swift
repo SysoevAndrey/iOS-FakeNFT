@@ -4,7 +4,7 @@ final class MyNFTViewModel {
     
     // MARK: - Properties
     var onChange: (() -> Void)?
-    var onError: (() -> Void)?
+    var onError: ((_ error: Error) -> Void)?
     
     private let networkClient = DefaultNetworkClient()
         
@@ -49,7 +49,7 @@ final class MyNFTViewModel {
         var loadedNFTs: [NFTNetworkModel] = []
         
         nftIDs.forEach { id in
-            networkClient.send(request: GetNFTByIdRequest(id: id), type: NFTNetworkModel.self) { [weak self] result in
+            networkClient.send(request: GetItemByIdRequest(id: id, item: .nft), type: NFTNetworkModel.self) { [weak self] result in
                 DispatchQueue.main.async {
                     switch result {
                     case .success(let nft):
@@ -60,8 +60,7 @@ final class MyNFTViewModel {
                             UIBlockingProgressHUD.dismiss()
                         }
                     case .failure(let error):
-                        print(error)
-                        self?.onError?()
+                        self?.onError?(error)
                         UIBlockingProgressHUD.dismiss()
                     }
                 }
@@ -76,14 +75,13 @@ final class MyNFTViewModel {
         }
         let semaphore = DispatchSemaphore(value: 0)
         authorsSet.forEach { author in
-            networkClient.send(request: GetAuthorByIdRequest(id: author), type: AuthorNetworkModel.self) { [weak self] result in
+            networkClient.send(request: GetItemByIdRequest(id: author, item: .author), type: AuthorNetworkModel.self) { [weak self] result in
                 switch result {
                 case .success(let author):
                     self?.authors.updateValue(author.name, forKey: author.id)
                     if self?.authors.count == authorsSet.count { semaphore.signal() }
                 case .failure(let error):
-                    print(error)
-                    self?.onError?()
+                    self?.onError?(error)
                     return
                 }
             }
@@ -123,7 +121,7 @@ final class MyNFTViewModel {
 // MARK: - Nested types
 extension MyNFTViewModel {
     
-    enum Sort {
+    enum Sort: Codable {
         case price
         case rating
         case name

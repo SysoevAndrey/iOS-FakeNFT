@@ -3,7 +3,7 @@ import Kingfisher
 
 final class MyNFTView: UIView {
     // MARK: - Properties
-    private var viewModel: MyNFTViewModel
+    private let viewModel: MyNFTViewModel
     
     private(set) var myNFTs: [NFTNetworkModel]?
     

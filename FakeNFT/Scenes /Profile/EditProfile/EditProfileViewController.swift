@@ -3,7 +3,7 @@ import UIKit
 final class EditProfileViewController: UIViewController {
     
     // MARK: - Properties
-    var viewModel: ProfileViewModel
+    private let viewModel: ProfileViewModel
     
     // MARK: - Lifecycle
     override func viewDidLoad() {

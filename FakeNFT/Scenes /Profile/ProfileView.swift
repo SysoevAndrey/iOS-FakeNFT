@@ -4,8 +4,8 @@ import Kingfisher
 final class ProfileView: UIView {
     
     // MARK: - Properties
-    private var viewModel: ProfileViewModel
-    private var viewController: ProfileViewController
+    private let viewModel: ProfileViewModel
+    private let viewController: ProfileViewController
     private var assetViewControllers: [UIViewController] = []
     
     private lazy var assetLabel: [String] = [
@@ -92,12 +92,6 @@ final class ProfileView: UIView {
         addWebsiteLabel()
         addProfileAssetsTable()
         
-        let myNFTViewController = MyNFTViewController(nftIDs: viewModel.nfts ?? [], likedIDs: viewModel.likes ?? [])
-        let favoritesViewController = FavoritesViewController(likedIDs: viewModel.likes ?? [])
-        let developersViewController = DevelopersViewController()
-        
-        assetViewControllers = [myNFTViewController, favoritesViewController, developersViewController]
-        
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(likesUpdated),
@@ -131,6 +125,20 @@ final class ProfileView: UIView {
         nameLabel.text = userName
         descriptionLabel.text = description
         websiteLabel.text = website
+        
+        let myNFTCell = profileAssetsTable.cellForRow(at: [0,0]) as? ProfileAssetsCell
+        myNFTCell?.setAssets(label: nil, value: nftCount)
+        
+        let likesCell = profileAssetsTable.cellForRow(at: [0,1]) as? ProfileAssetsCell
+        likesCell?.setAssets(label: nil, value: likesCount)
+    }
+    
+    func initiateViewControllers() {
+        let myNFTViewController = MyNFTViewController(nftIDs: viewModel.nfts ?? [], likedIDs: viewModel.likes ?? [])
+        let favoritesViewController = FavoritesViewController(likedIDs: viewModel.likes ?? [])
+        let developersViewController = DevelopersViewController()
+        
+        assetViewControllers = [myNFTViewController, favoritesViewController, developersViewController]
     }
     
     @objc

@@ -3,7 +3,7 @@ import Kingfisher
 
 final class FavoritesView: UIView {
     // MARK: - Properties
-    private var viewModel: FavoritesViewModel
+    private let viewModel: FavoritesViewModel
     
     private(set) var likedNFTs: [NFTNetworkModel]?
     
@@ -66,18 +66,20 @@ extension FavoritesView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: FavoritesCell = collectionView.dequeueReusableCell(indexPath: indexPath)
         cell.backgroundColor = .white
-        guard let likedNFT = likedNFTs?[indexPath.row] else { return FavoritesCell() }
+        guard let likedNFTs = likedNFTs,
+              !likedNFTs.isEmpty else { return FavoritesCell() }
+        let likedNFT = likedNFTs[indexPath.row]
         
         let model = FavoritesCell.Model(
-            image: likedNFT.images[0],
+            image: likedNFT.images.first ?? "",
             name: likedNFT.name,
             rating: likedNFT.rating,
             price: likedNFT.price,
             isFavorite: true,
             id: likedNFT.id
         )
-        cell.tapAction = { [weak self] in
-            self?.viewModel.favoriteUnliked(id: likedNFT.id)
+        cell.tapAction = { [unowned viewModel] in
+            viewModel.favoriteUnliked(id: likedNFT.id)
         }
         cell.configureCell(with: model)
         

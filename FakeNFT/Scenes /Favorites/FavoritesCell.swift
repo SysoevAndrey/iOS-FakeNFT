@@ -2,15 +2,6 @@ import UIKit
 
 final class FavoritesCell: UICollectionViewCell, ReuseIdentifying {
     
-    struct Model {
-        let image: String
-        let name: String
-        let rating: Int
-        let price: Float
-        let isFavorite: Bool
-        let id: String
-    }
-    
     var tapAction: (() -> Void)?
     
     //MARK: - Layout elements
@@ -74,13 +65,7 @@ final class FavoritesCell: UICollectionViewCell, ReuseIdentifying {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Methods
-    @objc
-    private func didTapFavoriteButton(sender: FavoriteButton) {
-        sender.isFavorite.toggle()
-        if let tapAction = tapAction { tapAction() }
-    }
-    
+    // MARK: - Public Methods
     func configureCell(with model: Model) {
         nftImage.kf.setImage(with: URL(string: model.image))
         nftName.text = model.name
@@ -88,6 +73,13 @@ final class FavoritesCell: UICollectionViewCell, ReuseIdentifying {
         nftPriceValue.text = "\(model.price) ETH"
         nftFavorite.isFavorite = model.isFavorite
         nftFavorite.nftID = model.id
+    }
+    
+    // MARK: - Private Methods
+    @objc
+    private func didTapFavoriteButton(sender: FavoriteButton) {
+        sender.isFavorite.toggle()
+        if let tapAction = tapAction { tapAction() }
     }
     
     // MARK: - Layout methods
@@ -122,5 +114,17 @@ final class FavoritesCell: UICollectionViewCell, ReuseIdentifying {
             nftStack.leadingAnchor.constraint(equalTo: nftImage.trailingAnchor, constant: 12),
             nftRating.heightAnchor.constraint(equalToConstant: 12)
         ])
+    }
+}
+
+// MARK: - Types
+extension FavoritesCell {
+    struct Model {
+        let image: String
+        let name: String
+        let rating: Int
+        let price: Float
+        let isFavorite: Bool
+        let id: String
     }
 }

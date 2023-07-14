@@ -192,8 +192,9 @@ final class EditProfileView: UIView {
         alert.addAction(UIAlertAction(
             title: "Ok",
             style: UIAlertAction.Style.default,
-            handler: {_ in
-                guard let textField = alert.textFields?[0],
+            handler: { [weak self] _ in
+                guard let self = self,
+                      let textField = alert.textFields?[0],
                       let updatedURL = textField.text else { return }
                 
                 if self.verifyUrl(urlString: updatedURL) {
@@ -203,18 +204,20 @@ final class EditProfileView: UIView {
                         title: "Неверная ссылка",
                         message: "Проверьте формат ссылки",
                         preferredStyle: .alert)
-                    wrongURLalert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+                    wrongURLalert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: { _ in
+                        wrongURLalert.dismiss(animated: true)
+                    }))
                     self.viewController.present(wrongURLalert, animated: true)
                 }
+                alert.dismiss(animated: true)
             }))
         self.viewController.present(alert, animated: true, completion: nil)
     }
     
     private func verifyUrl (urlString: String?) -> Bool {
-        if let urlString = urlString {
-            if let url = NSURL(string: urlString) {
-                return UIApplication.shared.canOpenURL(url as URL)
-            }
+        if let urlString = urlString,
+           let url = NSURL(string: urlString) {
+            return UIApplication.shared.canOpenURL(url as URL)
         }
         return false
     }
@@ -268,12 +271,12 @@ final class EditProfileView: UIView {
         self.addSubview(nameLabel)
         self.addSubview(nameTextField)
         NSLayoutConstraint.activate([
-        nameLabel.topAnchor.constraint(equalTo: avatarImage.bottomAnchor, constant: 24),
-        nameLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constraints.basicLeading),
-        nameTextField.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: Constraints.basicInterim),
-        nameTextField.heightAnchor.constraint(equalToConstant: 46),
-        nameTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constraints.basicLeading),
-        nameTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: Constraints.basicTrailing)
+            nameLabel.topAnchor.constraint(equalTo: avatarImage.bottomAnchor, constant: 24),
+            nameLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constraints.basicLeading),
+            nameTextField.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: Constraints.basicInterim),
+            nameTextField.heightAnchor.constraint(equalToConstant: 46),
+            nameTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constraints.basicLeading),
+            nameTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: Constraints.basicTrailing)
         ])
     }
     

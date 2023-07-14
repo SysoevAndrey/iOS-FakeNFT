@@ -34,11 +34,7 @@ final class StarRatingController: UIStackView {
         let stackSubViews = self.subviews
         for subView in stackSubViews {
             if let image = subView as? UIImageView{
-                if image.tag > starsRating {
-                    image.image = UIImage(named: starsEmptyPicName)
-                } else {
-                    image.image = UIImage(named: starsFilledPicName)
-                }
+                image.image = UIImage(named: image.tag > starsRating ? starsEmptyPicName : starsFilledPicName)
             }
         }
     }
