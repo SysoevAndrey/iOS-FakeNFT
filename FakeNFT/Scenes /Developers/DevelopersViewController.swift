@@ -1,7 +1,7 @@
 import UIKit
 import WebKit
 
-final class DevelopersViewController: UIViewController, WKUIDelegate {
+final class DevelopersViewController: UIViewController, WKUIDelegate, UIGestureRecognizerDelegate {
     
     //MARK: - Layout elements
     private lazy var backButton = UIBarButtonItem(
@@ -64,8 +64,6 @@ final class DevelopersViewController: UIViewController, WKUIDelegate {
         ])
     }
 }
-
-extension DevelopersViewController: UIGestureRecognizerDelegate {}
 
 // MARK: - Types
 private extension DevelopersViewController {

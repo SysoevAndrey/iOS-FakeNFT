@@ -3,15 +3,8 @@ import Kingfisher
 
 final class EditProfileView: UIView {
     
-    enum Constraints {
-        static let basicLeading = 16.0
-        static let basicTrailing = -16.0
-        static let basicInterim = 8.0
-        static let avatarDimensions = 70.0
-    }
-    
     // MARK: - Properties
-    private var viewModel: ProfileViewModel
+    private var viewModel: ProfileViewModelProtocol
     private var viewController: EditProfileViewController
     
     //MARK: - Layout elements
@@ -130,7 +123,7 @@ final class EditProfileView: UIView {
     }()
     
     // MARK: - Lifecycle
-    init(frame: CGRect, viewController: EditProfileViewController, viewModel: ProfileViewModel) {
+    init(frame: CGRect, viewController: EditProfileViewController, viewModel: ProfileViewModelProtocol) {
         self.viewController = viewController
         self.viewModel = viewModel
         super.init(frame: .zero)
@@ -308,13 +301,18 @@ final class EditProfileView: UIView {
 }
 
 // MARK: - Extensions
-extension EditProfileView: UITextFieldDelegate {
+extension EditProfileView: UITextFieldDelegate, UITextViewDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
 }
 
-extension EditProfileView: UITextViewDelegate {
-    
+extension EditProfileView {
+    enum Constraints {
+        static let basicLeading = 16.0
+        static let basicTrailing = -16.0
+        static let basicInterim = 8.0
+        static let avatarDimensions = 70.0
+    }
 }

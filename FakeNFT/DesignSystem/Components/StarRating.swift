@@ -20,7 +20,7 @@ final class StarRatingController: UIStackView {
             image.image = UIImage(named: starsEmptyPicName)
             image.tag = starTag
             self.addArrangedSubview(image)
-            starTag = starTag + 1
+            starTag += 1
         }
     }
     
@@ -31,8 +31,7 @@ final class StarRatingController: UIStackView {
     //MARK: - Methods
     func setStarsRating(rating: Int){
         self.starsRating = rating
-        let stackSubViews = self.subviews
-        for subView in stackSubViews {
+        for subView in self.subviews {
             if let image = subView as? UIImageView{
                 image.image = UIImage(named: image.tag > starsRating ? starsEmptyPicName : starsFilledPicName)
             }

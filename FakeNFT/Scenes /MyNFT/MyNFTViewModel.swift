@@ -1,6 +1,18 @@
 import UIKit
 
-final class MyNFTViewModel {
+protocol MyNFTViewModelProtocol: AnyObject {
+    var onChange: (() -> Void)? { get set }
+    var onError: ((_ error: Error) -> Void)? { get set }
+    var myNFTs: [NFTNetworkModel]? { get }
+    var likedIDs: [String]? { get }
+    var authors: [String: String] { get }
+    var sort: MyNFTViewModel.Sort? { get set }
+    
+    func getMyNFTs(nftIDs: [String])
+    func toggleLikeFromMyNFT(id: String)
+}
+
+final class MyNFTViewModel: MyNFTViewModelProtocol {
     
     // MARK: - Properties
     var onChange: (() -> Void)?
@@ -43,7 +55,7 @@ final class MyNFTViewModel {
         )
     }
     
-    // MARK: - Methods
+    // MARK: - Public Methods
     func getMyNFTs(nftIDs: [String]) {
         UIBlockingProgressHUD.show()
         var loadedNFTs: [NFTNetworkModel] = []
@@ -68,6 +80,17 @@ final class MyNFTViewModel {
         }
     }
     
+    func toggleLikeFromMyNFT(id: String) {
+        guard var likedIDs = self.likedIDs else { return }
+        if likedIDs.contains(id) {
+            self.likedIDs = likedIDs.filter({ $0 != id })
+        } else {
+            likedIDs.append(id)
+            self.likedIDs = likedIDs
+        }
+    }
+    
+    // MARK: - Private Methods
     private func getAuthors(nfts: [NFTNetworkModel]){
         var authorsSet: Set<String> = []
         nfts.forEach { nft in
@@ -95,30 +118,20 @@ final class MyNFTViewModel {
         self.likedIDs = likedIDs?.filter({ $0 != nftID })
     }
     
-    func toggleLikeFromMyNFT(id: String) {
-        guard var likedIDs = self.likedIDs else { return }
-        if likedIDs.contains(id) {
-            self.likedIDs = likedIDs.filter({ $0 != id })
-        } else {
-            likedIDs.append(id)
-            self.likedIDs = likedIDs
-        }
-    }
-    
     private func applySort(by value: Sort) -> [NFTNetworkModel] {
         guard let myNFTs = myNFTs else { return [] }
         switch value {
         case .price:
             return myNFTs.sorted(by: { $0.price < $1.price })
         case .rating:
-            return myNFTs.sorted(by: { $0.rating < $1.rating })
+            return myNFTs.sorted(by: { $0.rating > $1.rating })
         case .name:
             return myNFTs.sorted(by: { $0.name < $1.name })
         }
     }
 }
 
-// MARK: - Nested types
+// MARK: - Types
 extension MyNFTViewModel {
     
     enum Sort: Codable {

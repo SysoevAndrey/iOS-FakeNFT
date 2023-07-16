@@ -1,10 +1,10 @@
 import UIKit
 
-final class ProfileViewController: UIViewController {
+final class ProfileViewController: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK: - Properties
     private var profileView: ProfileView?
-    private var viewModel: ProfileViewModel
+    private var viewModel: ProfileViewModelProtocol
     private var badConnection: Bool = false
     
     //MARK: - Layout elements
@@ -37,7 +37,7 @@ final class ProfileViewController: UIViewController {
         self.profileView = ProfileView(frame: .zero, viewModel: self.viewModel, viewController: self)
     }
     
-    // MARK: - Methods
+    // MARK: - Private Methods
     @objc
     private func didTapEditButton() {
         let editProfileViewController = EditProfileViewController(viewModel: viewModel)
@@ -71,11 +71,9 @@ final class ProfileViewController: UIViewController {
         }
     }
     
-    func setupNavBar() {
+    private func setupNavBar() {
         navigationController?.navigationBar.tintColor = .black
         navigationItem.rightBarButtonItem = editButton
         self.navigationController?.navigationBar.isHidden = false
     }
 }
-
-extension ProfileViewController: UIGestureRecognizerDelegate {}

@@ -3,10 +3,10 @@ import UIKit
 final class MyNFTViewController: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK: - Properties
-    var nftIDs: [String]
-    var likedIDs: [String]
+    private let viewModel: MyNFTViewModelProtocol
     
-    private let viewModel: MyNFTViewModel
+    private let nftIDs: [String]
+    private let likedIDs: [String]
     
     private var badConnection: Bool = false
     
@@ -83,7 +83,7 @@ final class MyNFTViewController: UIViewController, UIGestureRecognizerDelegate {
                 title: "Нет интернета",
                 message: error.localizedDescription,
                 preferredStyle: .alert)
-            let action = UIAlertAction(title: "Ok", style: .cancel) { _ in
+            let action = UIAlertAction(title: "Ok", style: .cancel) { [weak self] _ in
                 self?.navigationController?.popViewController(animated: true)
             }
             alert.addAction(action)

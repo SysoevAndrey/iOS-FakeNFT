@@ -3,7 +3,7 @@ import Kingfisher
 
 final class FavoritesView: UIView {
     // MARK: - Properties
-    private let viewModel: FavoritesViewModel
+    private let viewModel: FavoritesViewModelProtocol
     
     private(set) var likedNFTs: [NFTNetworkModel]?
     
@@ -21,7 +21,7 @@ final class FavoritesView: UIView {
     }()
     
     // MARK: - Lifecycle
-    init(frame: CGRect, viewModel: FavoritesViewModel) {
+    init(frame: CGRect, viewModel: FavoritesViewModelProtocol) {
         self.viewModel = viewModel
         self.likedNFTs = viewModel.likedNFTs
         super.init(frame: frame)

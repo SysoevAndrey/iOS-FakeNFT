@@ -3,7 +3,7 @@ import Kingfisher
 
 final class MyNFTView: UIView {
     // MARK: - Properties
-    private let viewModel: MyNFTViewModel
+    private let viewModel: MyNFTViewModelProtocol
     
     private(set) var myNFTs: [NFTNetworkModel]?
     
@@ -22,7 +22,7 @@ final class MyNFTView: UIView {
     }()
     
     // MARK: - Lifecycle
-    init(frame: CGRect, viewModel: MyNFTViewModel) {
+    init(frame: CGRect, viewModel: MyNFTViewModelProtocol) {
         self.viewModel = viewModel
         self.myNFTs = viewModel.myNFTs
         super.init(frame: .zero)
@@ -64,10 +64,13 @@ extension MyNFTView: UITableViewDataSource, UITableViewDelegate {
         let cell: MyNFTCell = tableView.dequeueReusableCell()
         cell.backgroundColor = .white
         cell.selectionStyle = .none
-        guard let myNFT = myNFTs?[indexPath.row] else { return MyNFTCell() }
+        guard let myNFTs = myNFTs,
+              !myNFTs.isEmpty else { return MyNFTCell() }
+              
+        let myNFT = myNFTs[indexPath.row]
         
         let model = MyNFTCell.Model(
-            image: myNFT.images[0],
+            image: myNFT.images.first ?? "",
             name: myNFT.name,
             rating: myNFT.rating,
             author: viewModel.authors[myNFT.author] ?? "",
@@ -76,10 +79,10 @@ extension MyNFTView: UITableViewDataSource, UITableViewDelegate {
             id: myNFT.id
         )
         
-        cell.tapAction = {
-            let tappedNFT = self.myNFTs?.filter({ $0.id == myNFT.id })[0]
+        cell.tapAction = { [weak self] in
+            let tappedNFT = self?.myNFTs?.filter({ $0.id == myNFT.id }).first
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "myNFTliked"), object: tappedNFT)
-            if let tappedNFTid = tappedNFT?.id { self.viewModel.toggleLikeFromMyNFT(id: tappedNFTid) }
+            if let tappedNFTid = tappedNFT?.id { self?.viewModel.toggleLikeFromMyNFT(id: tappedNFTid) }
         }
         cell.configureCell(with: model)
         return cell

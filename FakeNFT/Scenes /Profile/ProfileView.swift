@@ -4,7 +4,7 @@ import Kingfisher
 final class ProfileView: UIView {
     
     // MARK: - Properties
-    private let viewModel: ProfileViewModel
+    private let viewModel: ProfileViewModelProtocol
     private let viewController: ProfileViewController
     private var assetViewControllers: [UIViewController] = []
     
@@ -80,7 +80,7 @@ final class ProfileView: UIView {
     }()
     
     // MARK: - Lifecycle
-    init(frame: CGRect, viewModel: ProfileViewModel, viewController: ProfileViewController) {
+    init(frame: CGRect, viewModel: ProfileViewModelProtocol, viewController: ProfileViewController) {
         self.viewModel = viewModel
         self.viewController = viewController
         super.init(frame: .zero)

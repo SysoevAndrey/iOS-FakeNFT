@@ -4,7 +4,7 @@ final class FavoritesViewController: UIViewController, UIGestureRecognizerDelega
     
     // MARK: - Properties
     private let likedIDs: [String]
-    private let viewModel: FavoritesViewModel
+    private var viewModel: FavoritesViewModelProtocol
     
     private var badConnection: Bool = false
     
@@ -49,7 +49,7 @@ final class FavoritesViewController: UIViewController, UIGestureRecognizerDelega
         navigationController?.interactivePopGestureRecognizer?.isEnabled = true
     }
     
-    // MARK: - Methods
+    // MARK: - Private Methods
     private func bind() {
         viewModel.onChange = { [weak self] in
             self?.badConnection = false
@@ -64,7 +64,7 @@ final class FavoritesViewController: UIViewController, UIGestureRecognizerDelega
                 title: "Нет интернета",
                 message: error.localizedDescription,
                 preferredStyle: .alert)
-            let action = UIAlertAction(title: "Ok", style: .cancel) { _ in
+            let action = UIAlertAction(title: "Ok", style: .cancel) { [weak self] _ in
                 self?.navigationController?.popViewController(animated: true)
             }
             alert.addAction(action)

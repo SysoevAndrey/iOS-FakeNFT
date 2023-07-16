@@ -1,6 +1,24 @@
 import UIKit
 
-final class ProfileViewModel {
+protocol ProfileViewModelProtocol: AnyObject {
+    var onChange: (() -> Void)? { get set }
+    var onLoaded: (() -> Void)? { get set }
+    var onError: (() -> Void)? { get set }
+    var avatarURL: URL? { get }
+    var name: String? { get }
+    var description: String? { get }
+    var website: String? { get }
+    var nfts: [String]? { get }
+    var likes: [String]? { get }
+    var id: String? { get }
+    var error: Error? { get }
+    
+    func getProfileData()
+    func putProfileData(name: String, avatar: String, description: String, website: String, likes: [String])
+    func fillSelfFromResponse(response: ProfileNetworkModel)
+}
+
+final class ProfileViewModel: ProfileViewModelProtocol {
     
     // MARK: - Properties
     var onChange: (() -> Void)?
@@ -55,7 +73,7 @@ final class ProfileViewModel {
         if let networkClient = networkClient { self.networkClient = networkClient }
     }
     
-    // MARK: - Methods
+    // MARK: - Public Methods
     func getProfileData() {
         UIBlockingProgressHUD.show()
         
@@ -67,7 +85,6 @@ final class ProfileViewModel {
                     self?.fillSelfFromResponse(response: profile)
                     self?.nfts = profile.nfts
                     self?.likes = profile.likes
-//                    self?.id = profile.id
                     UIBlockingProgressHUD.dismiss()
                 case .failure(let error):
                     self?.error = error

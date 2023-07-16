@@ -1,6 +1,16 @@
 import UIKit
 
-final class FavoritesViewModel {
+protocol FavoritesViewModelProtocol: AnyObject {
+    var onChange: (() -> Void)? { get set }
+    var onError: ((_ error: Error) -> Void)? { get set }
+    var likedNFTs: [NFTNetworkModel]? { get }
+    
+    func getLikedNFTs(likedIDs: [String])
+    func putLikedNFTs(likedIDs: [String])
+    func favoriteUnliked(id: String)
+}
+
+final class FavoritesViewModel: FavoritesViewModelProtocol {
     
     // MARK: - Properties
     var onChange: (() -> Void)?

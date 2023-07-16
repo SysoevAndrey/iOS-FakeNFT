@@ -2,16 +2,6 @@ import UIKit
 
 final class MyNFTCell: UITableViewCell, ReuseIdentifying {
     
-    struct Model {
-        let image: String
-        let name: String
-        let rating: Int
-        let author: String
-        let price: Float
-        let isFavorite: Bool
-        let id: String
-    }
-    
     var tapAction: (() -> Void)?
         
     //MARK: - Layout elements
@@ -162,5 +152,17 @@ final class MyNFTCell: UITableViewCell, ReuseIdentifying {
             nftPriceStack.leadingAnchor.constraint(equalTo: nftStack.trailingAnchor),
             nftPriceStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -39)
         ])
+    }
+}
+
+extension MyNFTCell {
+    struct Model {
+        let image: String
+        let name: String
+        let rating: Int
+        let author: String
+        let price: Float
+        let isFavorite: Bool
+        let id: String
     }
 }
