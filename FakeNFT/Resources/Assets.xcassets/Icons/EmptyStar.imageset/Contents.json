@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Favourites icons 2.svg",
+      "filename" : "EmptyStar.svg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Favourites icons 1.svg",
+      "filename" : "EmptyStar 1.svg",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Favourites icons.svg",
+      "filename" : "EmptyStar 2.svg",
       "idiom" : "universal",
       "scale" : "3x"
     }

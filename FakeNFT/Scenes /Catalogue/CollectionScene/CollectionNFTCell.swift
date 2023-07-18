@@ -44,7 +44,7 @@ final class CollectionNFTCell: UICollectionViewCell, ReuseIdentifying {
     
     private let numberFormatter: NumberFormatter = {
         let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = .currency
+        numberFormatter.numberStyle = .decimal
         numberFormatter.locale = Locale.current
         return numberFormatter
     }()
@@ -138,12 +138,12 @@ private extension CollectionNFTCell {
             nftImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             nftImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             nftImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            nftImageView.heightAnchor.constraint(equalToConstant: 108),
+            nftImageView.widthAnchor.constraint(equalTo: nftImageView.heightAnchor, multiplier: 1.0/1.0),
             
             heartButton.topAnchor.constraint(equalTo: nftImageView.topAnchor),
             heartButton.trailingAnchor.constraint(equalTo: nftImageView.trailingAnchor),
-            heartButton.heightAnchor.constraint(equalToConstant: 42),
-            heartButton.widthAnchor.constraint(equalToConstant: 42),
+            heartButton.heightAnchor.constraint(equalToConstant: 40),
+            heartButton.widthAnchor.constraint(equalToConstant: 40),
             
             ratingStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             ratingStackView.topAnchor.constraint(equalTo: nftImageView.bottomAnchor, constant: 8),

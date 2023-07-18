@@ -95,7 +95,7 @@ final class CollectionViewController: UIViewController, UIGestureRecognizerDeleg
         topInset: 0,
         bottomInset: 0,
         height: 192,
-        cellSpacing: 9
+        cellSpacing: 8
     )
     
     init(viewModel: CollectionViewModel, alertPresenter: AlertPresenter = AlertPresenter()) {

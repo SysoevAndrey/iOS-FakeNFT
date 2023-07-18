@@ -27,15 +27,12 @@ final class CollectionListViewController: UIViewController {
     )
     
     private var collectionListViewModel: CollectionListViewModel?
-    private var settingsManager = SettingsManager.shared
     private var alertPresenter: AlertPresenterProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        if collectionListViewModel == nil {
-            collectionListViewModel = CollectionListViewModel(provider: CatalogueDataProvider())
-        }
+            
+        collectionListViewModel = CollectionListViewModel(provider: CatalogueDataProvider())
         alertPresenter = AlertPresenter(delegate: self)
         
         bindViewModel()
@@ -46,21 +43,16 @@ final class CollectionListViewController: UIViewController {
         collectionListViewModel?.getCollections()
     }
     
-    func initialise(viewModel: CollectionListViewModel) {
-        self.collectionListViewModel = viewModel
-    }
-    
     private func bindViewModel() {
-        guard let viewModel = collectionListViewModel else { return }
-        viewModel.$collections.bind { [weak self] _ in
+        collectionListViewModel?.$collections.bind { [weak self] _ in
             self?.tableView.reloadData()
             UIBlockingProgressHUD.dismiss()
         }
         
-        viewModel.$errorDescription.bind { [weak self] _ in
+        collectionListViewModel?.$errorDescription.bind { [weak self] _ in
             UIBlockingProgressHUD.dismiss()
-            self?.alertPresenter?.preparingAlertWithRepeat(alertText: viewModel.errorDescription) {
-                viewModel.getCollections()
+            self?.alertPresenter?.preparingAlertWithRepeat(alertText: self?.collectionListViewModel?.errorDescription ?? "") {
+                self?.collectionListViewModel?.getCollections()
             }
         }
     }

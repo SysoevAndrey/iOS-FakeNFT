@@ -9,6 +9,8 @@ import UIKit
 
 final class RatingStackView: UIStackView {
     let countOfStars: Int
+    let fillStarImageView = UIImage(named: "FillStar")
+    let emptyStarImageView = UIImage(named: "EmptyStar")
     
     init(countOfStars: Int) {
         self.countOfStars = countOfStars
@@ -25,21 +27,21 @@ final class RatingStackView: UIStackView {
         axis = .horizontal
         spacing = 2
         
+        var starTag = 1
         for _ in 0..<countOfStars {
-            let starImageView = UIImageView(image: UIImage(systemName: "star.fill"))
-            starImageView.tintColor = .lightGray
-            
-            NSLayoutConstraint.activate([
-                starImageView.widthAnchor.constraint(equalToConstant: 12),
-                starImageView.heightAnchor.constraint(equalToConstant: 12)
-            ])
-            addArrangedSubview(starImageView)
+            let image = UIImageView()
+            image.image = emptyStarImageView
+            image.tag = starTag
+            self.addArrangedSubview(image)
+            starTag += 1
         }
     }
     
     func setupRating(rating: Int) {
-        for star in 0..<rating {
-            arrangedSubviews[star].tintColor = .yellow
+        for subView in self.subviews {
+            if let image = subView as? UIImageView{
+                image.image = image.tag > rating ? emptyStarImageView : fillStarImageView
+            }
         }
     }
 }

@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Property 1=Add.png",
+      "filename" : "Property 1=AddToCart.svg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Property 1=Add@2x.png",
+      "filename" : "Property 1=AddToCart 1.svg",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Property 1=Add@3x.png",
+      "filename" : "Property 1=AddToCart 2.svg",
       "idiom" : "universal",
       "scale" : "3x"
     }
