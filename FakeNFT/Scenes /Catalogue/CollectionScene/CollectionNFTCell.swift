@@ -42,6 +42,13 @@ final class CollectionNFTCell: UICollectionViewCell, ReuseIdentifying {
         return label
     }()
     
+    private let numberFormatter: NumberFormatter = {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .currency
+        numberFormatter.locale = Locale.current
+        return numberFormatter
+    }()
+    
     private let priceValue: UILabel = {
         let label = UILabel()
         label.font = .medium10
@@ -88,7 +95,12 @@ final class CollectionNFTCell: UICollectionViewCell, ReuseIdentifying {
         
         nftImageView.kf.setImage(with: model.imageURL)
         nftLabel.text = model.name
-        priceValue.text = "\(model.price) ETH"
+        
+        var formatPrice = "\(model.price) ETH"
+        if let price = numberFormatter.string(from: NSNumber(value: model.price)) {
+            formatPrice = price
+        }
+        priceValue.text = "\(String(describing: formatPrice)) ETH"
         
         ratingStackView.setupRating(rating: model.rating)
         

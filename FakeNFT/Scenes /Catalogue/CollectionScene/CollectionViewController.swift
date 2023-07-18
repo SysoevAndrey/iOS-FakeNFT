@@ -95,7 +95,7 @@ final class CollectionViewController: UIViewController, UIGestureRecognizerDeleg
         topInset: 0,
         bottomInset: 0,
         height: 192,
-        cellSpacing: 8
+        cellSpacing: 9
     )
     
     init(viewModel: CollectionViewModel, alertPresenter: AlertPresenter = AlertPresenter()) {
@@ -140,7 +140,8 @@ final class CollectionViewController: UIViewController, UIGestureRecognizerDeleg
             self.nftCollectionView.reloadData()
         }
         
-        viewModel.$loadingInProgress.bind { _ in
+        viewModel.$loadingInProgress.bind { [weak self] _ in
+            guard let self = self else { return }
             if self.viewModel.loadingInProgress {
                 UIBlockingProgressHUD.show()
             } else {
@@ -150,12 +151,12 @@ final class CollectionViewController: UIViewController, UIGestureRecognizerDeleg
         
         viewModel.$authorModel.bind { [weak self] _ in
             guard let self = self else { return }
-            self.authorLink.text = viewModel.authorModel.name
+            self.authorLink.text = self.viewModel.authorModel.name
         }
         
         viewModel.$mainLoadErrorDescription.bind { [weak self] _ in
             guard let self = self else { return }
-            self.alertPresenter.preparingAlertWithRepeat(alertText: viewModel.mainLoadErrorDescription) {
+            self.alertPresenter.preparingAlertWithRepeat(alertText: self.viewModel.mainLoadErrorDescription) {
                 self.viewModel.loadNFTForCollection()
                 self.viewModel.getAuthorURL()
             }
@@ -163,12 +164,12 @@ final class CollectionViewController: UIViewController, UIGestureRecognizerDeleg
         
         viewModel.$addToCartErrorDescription.bind { [weak self] _ in
             guard let self = self else { return }
-            self.alertPresenter.preparingDataAndDisplay(alertText: viewModel.addToCartErrorDescription){}
+            self.alertPresenter.preparingDataAndDisplay(alertText: self.viewModel.addToCartErrorDescription)
         }
         
         viewModel.$addToFavoritesErrorDescription.bind { [weak self] _ in
             guard let self = self else { return }
-            self.alertPresenter.preparingDataAndDisplay(alertText: viewModel.addToFavoritesErrorDescription){}
+            self.alertPresenter.preparingDataAndDisplay(alertText: self.viewModel.addToFavoritesErrorDescription)
         }
     }
 }

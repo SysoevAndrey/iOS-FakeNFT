@@ -40,7 +40,8 @@ final class AboutAuthorViewController: UIViewController, UIGestureRecognizerDele
     }
     
     private func bindViewModel() {
-        viewModel.$loadingInProgress.bind { _ in
+        viewModel.$loadingInProgress.bind { [weak self] _ in
+            guard let self = self else { return }
             if self.viewModel.loadingInProgress {
                 UIBlockingProgressHUD.show()
             } else {

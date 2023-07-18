@@ -8,7 +8,7 @@
 import UIKit
 
 protocol AlertPresenterProtocol {
-    func preparingDataAndDisplay(alertText: String, handler: @escaping () -> Void)
+    func preparingDataAndDisplay(alertText: String)
     func preparingAlertWithRepeat(alertText: String, handler: @escaping () -> Void )
 }
 
@@ -19,13 +19,11 @@ protocol AlertPresenterDelegate: AnyObject {
 struct AlertPresenter: AlertPresenterProtocol {
     weak var delegate: AlertPresenterDelegate?
     
-    func preparingDataAndDisplay(alertText: String, handler: @escaping () -> Void ) {
+    func preparingDataAndDisplay(alertText: String) {
         let alert = UIAlertController(title: "Произошла ошибка!",
                                       message: alertText,
                                       preferredStyle: .alert)
-        let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
-            handler()
-        }
+        let alertAction = UIAlertAction(title: "OK", style: .default)
         
         alert.addAction(alertAction)
         delegate?.showAlert(alert: alert)
