@@ -30,11 +30,14 @@ final class ProfileViewController: UIViewController, UIGestureRecognizerDelegate
         navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }
 
+    init(viewModel: ProfileViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+        self.profileView = ProfileView(frame: .zero, viewModel: self.viewModel, viewController: self)
+    }
     
     required init?(coder aDecoder: NSCoder) {
-        self.viewModel = ProfileViewModel(networkClient: nil)
-        super.init(coder: aDecoder)
-        self.profileView = ProfileView(frame: .zero, viewModel: self.viewModel, viewController: self)
+        fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: - Private Methods
