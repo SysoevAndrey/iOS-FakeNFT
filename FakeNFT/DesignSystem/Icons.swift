@@ -7,8 +7,8 @@ extension UIImage {
         static let sort = UIImage(named: "Sort")
 
         static let trash = UIImage(named: "Trash")
-        static let addToCart = UIImage(named: "AddToCart")
-
+        static let addToCart = UIImage(named: "AddToCartIcon")
+        
         static let likeActive = UIImage(named: "LikeActive")
         static let likeNotActive = UIImage(named: "LikeNotActive")
 
