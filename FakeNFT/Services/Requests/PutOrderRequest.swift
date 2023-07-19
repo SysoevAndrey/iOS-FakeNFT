@@ -14,7 +14,9 @@ struct PutOrderRequest: NetworkRequest {
     var endpoint: URL? {
         NetworkConstants.baseUrl.appendingPathComponent("/orders/1")
     }
+
     var httpMethod: HttpMethod = .put
+
     var body: Data? {
         try? JSONEncoder().encode(Body(nfts: nftIds))
     }
