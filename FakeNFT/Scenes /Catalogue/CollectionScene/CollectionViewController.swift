@@ -85,7 +85,7 @@ final class CollectionViewController: UIViewController, UIGestureRecognizerDeleg
         return contentView
     }()
     
-    private var viewModel: CollectionViewModel
+    private let viewModel: CollectionViewModel
     private var alertPresenter: AlertPresenter
     
     private let collectionConfig = UICollectionView.Config(

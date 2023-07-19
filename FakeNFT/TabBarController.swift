@@ -21,9 +21,9 @@ final class TabBarController: UITabBarController {
             rootViewController: ProfileViewController(viewModel: profileViewModel)
         )
         
-        let catalogueVM = CollectionListViewModel(provider: CatalogueDataProvider())
+        let catalogueViewModel = CollectionListViewModel(provider: CatalogueDataProvider())
         let catalogueViewController = UINavigationController(
-            rootViewController: CollectionListViewController()
+            rootViewController: CollectionListViewController(viewModel: catalogueViewModel)
         )
         
         let cartViewModel = CartViewModel()

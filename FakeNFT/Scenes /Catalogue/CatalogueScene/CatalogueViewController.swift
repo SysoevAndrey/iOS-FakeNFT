@@ -26,7 +26,7 @@ final class CollectionListViewController: UIViewController {
         action: #selector(sortCollections)
     )
     
-    private var collectionListViewModel: CollectionListViewModel?
+    private let collectionListViewModel: CollectionListViewModel
     private var alertPresenter: AlertPresenterProtocol?
     
     override func viewDidLoad() {
@@ -38,11 +38,11 @@ final class CollectionListViewController: UIViewController {
         setupNavBar()
         
         UIBlockingProgressHUD.show()
-        collectionListViewModel?.getCollections()
+        collectionListViewModel.getCollections()
     }
     
-    init() {
-        collectionListViewModel = CollectionListViewModel(provider: CatalogueDataProvider())
+    init(viewModel: CollectionListViewModel) {
+        self.collectionListViewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -51,15 +51,15 @@ final class CollectionListViewController: UIViewController {
     }
     
     private func bindViewModel() {
-        collectionListViewModel?.$collections.bind { [weak self] _ in
+        collectionListViewModel.$collections.bind { [weak self] _ in
             self?.tableView.reloadData()
             UIBlockingProgressHUD.dismiss()
         }
         
-        collectionListViewModel?.$errorDescription.bind { [weak self] _ in
+        collectionListViewModel.$errorDescription.bind { [weak self] _ in
             UIBlockingProgressHUD.dismiss()
-            self?.alertPresenter?.preparingAlertWithRepeat(alertText: self?.collectionListViewModel?.errorDescription ?? "") {
-                self?.collectionListViewModel?.getCollections()
+            self?.alertPresenter?.preparingAlertWithRepeat(alertText: self?.collectionListViewModel.errorDescription ?? "") {
+                self?.collectionListViewModel.getCollections()
             }
         }
     }
@@ -90,7 +90,7 @@ final class CollectionListViewController: UIViewController {
         let sortByName = UIAlertAction(title: "По названию",
                                        style: .default) { [weak self] _ in
             UIView.animate(withDuration: 0.3) {
-                self?.collectionListViewModel?.setSortType(sortType: SortType.sortByName)
+                self?.collectionListViewModel.setSortType(sortType: SortType.sortByName)
                 self?.view.layoutIfNeeded()
             }
         }
@@ -98,7 +98,7 @@ final class CollectionListViewController: UIViewController {
         let sortByCount = UIAlertAction(title: "По количеству NFT",
                                         style: .default) { [weak self] _ in
             UIView.animate(withDuration: 0.3) {
-                self?.collectionListViewModel?.setSortType(sortType: SortType.sortByCount)
+                self?.collectionListViewModel.setSortType(sortType: SortType.sortByCount)
                 self?.view.layoutIfNeeded()
             }
         }
@@ -115,13 +115,13 @@ final class CollectionListViewController: UIViewController {
 
 extension CollectionListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        collectionListViewModel?.collections.count ?? 0
+        collectionListViewModel.collections.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: CollectionListCell = tableView.dequeueReusableCell()
         
-        guard let collectionItem = collectionListViewModel?.collections[indexPath.row] else { return UITableViewCell() }
+        let collectionItem = collectionListViewModel.collections[indexPath.row]
         cell.config(collectionItem: collectionItem)
         
         return cell
@@ -130,7 +130,7 @@ extension CollectionListViewController: UITableViewDataSource {
 
 extension CollectionListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let collection = collectionListViewModel?.collections[indexPath.row] else { return }
+        let collection = collectionListViewModel.collections[indexPath.row]
         
         let collectionVM = CollectionViewModel(collectionModel: collection)
         let collectionVC = CollectionViewController(viewModel: collectionVM)
