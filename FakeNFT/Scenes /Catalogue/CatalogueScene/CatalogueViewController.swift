@@ -31,8 +31,6 @@ final class CollectionListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-            
-        collectionListViewModel = CollectionListViewModel(provider: CatalogueDataProvider())
         alertPresenter = AlertPresenter(delegate: self)
         
         bindViewModel()
@@ -41,6 +39,15 @@ final class CollectionListViewController: UIViewController {
         
         UIBlockingProgressHUD.show()
         collectionListViewModel?.getCollections()
+    }
+    
+    init() {
+        collectionListViewModel = CollectionListViewModel(provider: CatalogueDataProvider())
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     private func bindViewModel() {
@@ -63,6 +70,7 @@ final class CollectionListViewController: UIViewController {
     }
     
     private func setupLayout() {
+        view.backgroundColor = .white
         view.addSubview(tableView)
         
         NSLayoutConstraint.activate([

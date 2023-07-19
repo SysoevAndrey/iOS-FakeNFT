@@ -24,5 +24,4 @@ extension NetworkRequest {
     var queryParameters: [String: String]? { nil }
     var body: Data? { nil }
     var httpMethod: HttpMethod { .get }
-    var body: Data? { nil }
 }

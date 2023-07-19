@@ -20,14 +20,4 @@ struct PutFavoritesRequest: NetworkRequest {
             likes: likes
         ))
     }
-
-    private struct Body: Codable {
-        let likes: [String]
-    }
-
-    private let likes: [String]
-
-    init(likes: [String]) {
-        self.likes = likes
-    }
 }
