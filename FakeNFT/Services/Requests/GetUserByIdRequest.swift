@@ -9,7 +9,7 @@ import Foundation
 
 struct GetUserByIdRequest: NetworkRequest {
     var endpoint: URL? {
-        ApiConstants.baseURL.appendingPathComponent("/users/\(id)")
+        NetworkConstants.baseUrl.appendingPathComponent("/users/\(id)")
     }
     
     private let id: String

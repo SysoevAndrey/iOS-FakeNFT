@@ -39,6 +39,16 @@ final class AboutAuthorViewController: UIViewController, UIGestureRecognizerDele
         loadPage()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        tabBarController?.tabBar.isTranslucent = true
+        tabBarController?.tabBar.isHidden = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        tabBarController?.tabBar.isTranslucent = false
+        tabBarController?.tabBar.isHidden = false
+    }
+    
     private func bindViewModel() {
         viewModel.$loadingInProgress.bind { [weak self] _ in
             guard let self = self else { return }
@@ -69,8 +79,7 @@ final class AboutAuthorViewController: UIViewController, UIGestureRecognizerDele
 private extension AboutAuthorViewController {
     func setupView() {
         view.backgroundColor = .white
-        tabBarController?.tabBar.isHidden = true
-        
+
         webView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(webView)
         

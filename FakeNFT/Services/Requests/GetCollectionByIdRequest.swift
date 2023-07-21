@@ -9,7 +9,7 @@ import Foundation
 
 struct GetCollectionByIdRequest: NetworkRequest {
     var endpoint: URL? {
-        ApiConstants.baseURL.appendingPathComponent("/collections/\(id)")
+        NetworkConstants.baseUrl.appendingPathComponent("/collections/\(id)")
     }
     
     private let id: String

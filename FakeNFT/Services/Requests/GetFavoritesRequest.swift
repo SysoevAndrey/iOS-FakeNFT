@@ -9,6 +9,6 @@ import Foundation
 
 struct GetFavoritesRequest: NetworkRequest {
     var endpoint: URL? {
-        ApiConstants.baseURL.appendingPathComponent("/profile/1")
+        NetworkConstants.baseUrl.appendingPathComponent("/profile/1")
     }
 }

@@ -9,6 +9,6 @@ import Foundation
 
 struct GetCollectionsRequest: NetworkRequest {
     var endpoint: URL? {
-        ApiConstants.baseURL.appendingPathComponent("/collections")
+        NetworkConstants.baseUrl.appendingPathComponent("/collections")
     }
 }

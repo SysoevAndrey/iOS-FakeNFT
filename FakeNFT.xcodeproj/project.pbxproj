@@ -36,7 +36,6 @@
 		435C656C2A484B5400104ECE /* CatalogueDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435C656B2A484B5400104ECE /* CatalogueDataProvider.swift */; };
 		435C656E2A484BF000104ECE /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435C656D2A484BF000104ECE /* Collection.swift */; };
 		435C65702A486FE500104ECE /* GetCollectionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435C656F2A486FE500104ECE /* GetCollectionRequest.swift */; };
-		435C65722A4871C800104ECE /* ApiConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435C65712A4871C800104ECE /* ApiConstants.swift */; };
 		435C65742A48767900104ECE /* GetCollectionByIdRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435C65732A48767900104ECE /* GetCollectionByIdRequest.swift */; };
 		435EA13B2A5ACE4500B84D46 /* RatingStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435EA13A2A5ACE4500B84D46 /* RatingStackView.swift */; };
 		435EA13D2A5ADFE400B84D46 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435EA13C2A5ADFE400B84D46 /* SettingsManager.swift */; };
@@ -169,7 +168,6 @@
 		435C656B2A484B5400104ECE /* CatalogueDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogueDataProvider.swift; sourceTree = "<group>"; };
 		435C656D2A484BF000104ECE /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		435C656F2A486FE500104ECE /* GetCollectionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetCollectionRequest.swift; sourceTree = "<group>"; };
-		435C65712A4871C800104ECE /* ApiConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiConstants.swift; sourceTree = "<group>"; };
 		435C65732A48767900104ECE /* GetCollectionByIdRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetCollectionByIdRequest.swift; sourceTree = "<group>"; };
 		435EA13A2A5ACE4500B84D46 /* RatingStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingStackView.swift; sourceTree = "<group>"; };
 		435EA13C2A5ADFE400B84D46 /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
@@ -557,7 +555,6 @@
 				D095843E2A53131500DEDF82 /* Group3_Decomposition.md */,
 				D095843F2A53131500DEDF82 /* Readme.md */,
 				3F6806A429CBBAF200B4F915 /* Info.plist */,
-				435C65712A4871C800104ECE /* ApiConstants.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -811,7 +808,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				435C65722A4871C800104ECE /* ApiConstants.swift in Sources */,
 				43978FF32A501DB800FC2CE3 /* AboutAuthorViewController.swift in Sources */,
 				435EA1432A5CB33C00B84D46 /* AboutAuthorViewModel.swift in Sources */,
 				439790062A5074B800FC2CE3 /* GetUserByIdRequest.swift in Sources */,
