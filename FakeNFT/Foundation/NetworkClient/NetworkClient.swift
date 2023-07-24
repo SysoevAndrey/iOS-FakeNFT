@@ -5,17 +5,22 @@ enum NetworkClientError: Error {
     case urlRequestError(Error)
     case urlSessionError
     case parsingError
+    case testError
 }
 
 protocol NetworkClient {
     @discardableResult
-    func send(request: NetworkRequest,
-              onResponse: @escaping (Result<Data, Error>) -> Void) -> NetworkTask?
+    func send(
+        request: NetworkRequest,
+        onResponse: @escaping (Result<Data, Error>) -> Void
+    ) -> NetworkTask?
 
     @discardableResult
-    func send<T: Decodable>(request: NetworkRequest,
-                            type: T.Type,
-                            onResponse: @escaping (Result<T, Error>) -> Void) -> NetworkTask?
+    func send<T: Decodable>(
+        request: NetworkRequest,
+        type: T.Type,
+        onResponse: @escaping (Result<T, Error>) -> Void
+    ) -> NetworkTask?
 }
 
 struct DefaultNetworkClient: NetworkClient {
@@ -85,6 +90,10 @@ struct DefaultNetworkClient: NetworkClient {
 
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = request.httpMethod.rawValue
+        urlRequest.httpBody = request.body
+
+        urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
 
         return urlRequest
     }
@@ -96,5 +105,60 @@ struct DefaultNetworkClient: NetworkClient {
         } catch {
             onResponse(.failure(NetworkClientError.parsingError))
         }
+    }
+}
+
+struct StubNetworkClient: NetworkClient {
+
+    private let decoder: JSONDecoder
+    private let emulateError: Bool
+
+    init(decoder: JSONDecoder = JSONDecoder(), emulateError: Bool) {
+        self.decoder = decoder
+        self.emulateError = emulateError
+    }
+
+    func send(request: FakeNFT.NetworkRequest, onResponse: @escaping (Result<Data, Error>) -> Void) -> FakeNFT.NetworkTask? {
+        if emulateError {
+            onResponse(.failure(NetworkClientError.testError))
+        } else {
+            onResponse(.success(expectedResponse))
+        }
+
+        return nil
+    }
+
+    func send<T>(request: FakeNFT.NetworkRequest, type: T.Type, onResponse: @escaping (Result<T, Error>) -> Void) -> FakeNFT.NetworkTask? where T : Decodable {
+        if emulateError {
+            onResponse(.failure(NetworkClientError.testError))
+        } else {
+            self.parse(data: expectedResponse, type: type, onResponse: onResponse)
+        }
+
+        return nil
+    }
+
+    private func parse<T: Decodable>(data: Data, type _: T.Type, onResponse: @escaping (Result<T, Error>) -> Void) {
+        do {
+            let response = try decoder.decode(T.self, from: data)
+            onResponse(.success(response))
+        } catch {
+            onResponse(.failure(NetworkClientError.parsingError))
+        }
+    }
+
+    private var expectedResponse: Data {
+            """
+            {
+                "name": "Test Profile",
+                "avatar": "",
+                "description": "",
+                "website": "",
+                "nfts": ["1", "2", "3"],
+                "likes": ["4", "5", "6"],
+                "id": "1"
+            }
+""".data(using: .utf8) ?? Data()
+
     }
 }
